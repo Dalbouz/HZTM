@@ -1,11 +1,8 @@
 package studiobox.jobs.hztm_patient_manager.model;
 
 import jakarta.persistence.*;
-import org.apache.catalina.User;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class UserData implements Serializable {

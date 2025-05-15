@@ -23,6 +23,8 @@ public class PatientData implements Serializable {
     private String TimeOfSample;
     private String SampleReceipt;
     private String TestRequirements;
+    @ManyToOne
+    @JoinColumn(name = "analizator_id")
     private AnalizatorData Analizator;
 
     public PatientData() {}
