@@ -7,7 +7,7 @@ import { UserData } from "../dataStructure/UserData";
     providedIn:'root'
 })
 
-export class UserServices{
+export class UserService{
     private apiServerUrl = '';
 
     constructor(private http: HttpClient){}
