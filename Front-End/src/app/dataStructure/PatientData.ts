@@ -1,6 +1,7 @@
 import { AnalizatorData } from "./AnalizatorData";
 
 export interface PatientData{
+    id: number;
     name:string;
     surname:string;
     dateOfBirh:string;
