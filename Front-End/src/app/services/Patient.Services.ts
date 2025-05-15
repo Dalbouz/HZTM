@@ -8,12 +8,16 @@ import { PatientData } from "../dataStructure/PatientData";
     providedIn:'root'
 })
 
-export class InstitutionService{
+export class PatientService{
     private apiServerUrl = '';
 
     constructor(private http: HttpClient){}
  
-    public getUserPatients(currentUser: UserData): PatientData[]{
-        return currentUser.patientList;
+    public getPatients(): Observable<PatientData[]>{
+        return this.http.get<PatientData[]>(`${this.apiServerUrl}/patients/all`);
+    }
+
+    public getUser(username: string): Observable<UserData>{
+        return this.http.get<UserData>(`${this.apiServerUrl}/users/${username}`);
     }
 }

@@ -20,17 +20,15 @@ public class UserData implements Serializable {
     private String UserName;
     private int PasswordTimeout;
     private boolean ActiveStatus;
-    private List<PatientData> PatientList;
 
     public UserData() {}
 
-    public UserData(String FullName, String Password, String UserName, int PasswordTimeout, boolean ActiveStatus, List<PatientData> PatientList) {
+    public UserData(String FullName, String Password, String UserName, int PasswordTimeout, boolean ActiveStatus) {
         this.FullName = FullName;
         this.Password = Password;
         this.UserName = UserName;
         this.PasswordTimeout = PasswordTimeout;
         this.ActiveStatus = false;
-        this.PatientList = new ArrayList<>();
     }
 
     public Long getId() {
@@ -70,13 +68,5 @@ public class UserData implements Serializable {
 
     public void setActiveStatus(boolean activeStatus) {
         ActiveStatus = activeStatus;
-    }
-
-    public List<PatientData> getPatientList() {
-        return PatientList;
-    }
-
-    public void setPatientList(List<PatientData> patientList) {
-        PatientList = patientList;
     }
 }

@@ -1,4 +1,3 @@
-import { PatientData } from "./PatientData";
 
 export interface UserData {
     id:number;
@@ -7,5 +6,4 @@ export interface UserData {
     username:string;
     passwordTimeout:number;
     activeStatus: boolean;
-    patientList: PatientData[];
 }
