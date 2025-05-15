@@ -1,7 +1,10 @@
+import { PatientData } from "./PatientData";
+
 export interface UserData {
-    userFullName: string;
+    fullName: string;
     password:string;
-    userUsername:string;
+    username:string;
     passwordTimeout:number;
     activeStatus: boolean;
+    patientList: PatientData[];
 }
