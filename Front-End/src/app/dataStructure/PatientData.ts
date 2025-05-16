@@ -5,8 +5,8 @@ export interface PatientData{
     name:string;
     surname:string;
     dateOfBirh:string;
-    MBO: number;
-    OIB: number;
+    mbo: number;
+    oib: number;
     priority:string;
     priorityReason:string;
     sampleNumber:string;
@@ -14,5 +14,5 @@ export interface PatientData{
     timeOfSample:string;
     sampleReceipt:string;
     testRequirements:string;
-    analizatorData: AnalizatorData;
+    analizator: AnalizatorData;
 }

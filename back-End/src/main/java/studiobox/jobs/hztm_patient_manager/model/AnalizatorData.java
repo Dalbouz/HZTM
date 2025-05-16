@@ -25,7 +25,7 @@ public class AnalizatorData implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     public AnalizatorData() {}
 
@@ -68,11 +68,11 @@ public class AnalizatorData implements Serializable {
     }
 
     public void setId(Long id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public int getSampleNumber() {

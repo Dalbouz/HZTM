@@ -12,8 +12,8 @@ export class UserService{
 
     constructor(private http: HttpClient){}
  
-    public getUser(username: string): Observable<UserData>{
-        return this.http.get<UserData>(`${this.apiServerUrl}/users/${username}`);
+    public getUser(userName: string, passwrod:string): Observable<UserData>{
+        return this.http.get<UserData>(`${this.apiServerUrl}/users/find/${userName}/${passwrod}`);
     }
 
     public addUser(newUser: UserData): Observable<UserData>{

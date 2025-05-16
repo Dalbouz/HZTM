@@ -14,13 +14,13 @@ public class InstitutionController {
         this.institutionService = institutionService;
     }
 
-    @PostMapping("/institution/add")
+    @PostMapping("/institutions/add")
     public ResponseEntity<InstitutionLabData> addInstitution(@RequestBody InstitutionLabData institutionLabData){
         InstitutionLabData newInstitutionLabData = institutionService.addInstitution(institutionLabData);
         return new ResponseEntity<>(newInstitutionLabData, HttpStatus.CREATED);
     }
 
-    @GetMapping("/institution/find/{name}")
+    @GetMapping("/institutions/find/{name}")
     public ResponseEntity<InstitutionLabData> findInstitution(@PathVariable String name){
         InstitutionLabData institution = institutionService.findInstitutionByName(name);
         return new ResponseEntity<>(institution, HttpStatus.OK);

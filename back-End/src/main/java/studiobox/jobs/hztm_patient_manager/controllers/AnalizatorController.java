@@ -37,7 +37,7 @@ public class AnalizatorController {
         return new ResponseEntity<>(analizator, HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("analizator/delete/{id}")
+    @DeleteMapping("/analizator/delete/{id}")
     public ResponseEntity<AnalizatorData> deleteAnalizatorDataById(@PathVariable Long id){
         analizatorService.deleteAnalizatorDataById(id);
         return new ResponseEntity<>(HttpStatus.OK);

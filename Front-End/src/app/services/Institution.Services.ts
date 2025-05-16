@@ -12,8 +12,8 @@ export class InstitutionService{
 
     constructor(private http: HttpClient){}
  
-    public getInstitution(institutioId: number): Observable<InstitutionLabData>{
-        return this.http.get<InstitutionLabData>(`${this.apiServerUrl}/institutions/${institutioId}`);
+    public getInstitution(name: string): Observable<InstitutionLabData>{
+        return this.http.get<InstitutionLabData>(`${this.apiServerUrl}/institutions/find/${name}`);
     }
 
     public addInstitution(newInstitution: InstitutionLabData): Observable<InstitutionLabData>{

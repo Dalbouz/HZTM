@@ -12,4 +12,5 @@ export interface AnalizatorData{
     interpretationForEDelphyn:string;
     testMarkForEDelphyn:string;
     notes:string;
+    id: number;
 }

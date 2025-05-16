@@ -14,7 +14,7 @@ public class UserController {
         this.userService = userService;
     }
 
-        @GetMapping("/user/find/{userName}/{password}")
+        @GetMapping("/users/find/{userName}/{password}")
         public ResponseEntity<UserData> checkAndGetUser(@PathVariable("userName") String userName, @PathVariable("password") String password){
             UserData checkUser = userService.checkUserCredentials(userName, password);
             if(checkUser!=null){
@@ -23,7 +23,7 @@ public class UserController {
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/user/add")
+    @PostMapping("/users/add")
     public ResponseEntity<UserData> addUser(@RequestBody UserData user){
         UserData newUser = userService.addUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
