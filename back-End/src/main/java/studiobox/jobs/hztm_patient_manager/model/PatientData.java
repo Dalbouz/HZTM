@@ -3,8 +3,11 @@ package studiobox.jobs.hztm_patient_manager.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "patients")
 public class PatientData implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +26,16 @@ public class PatientData implements Serializable {
     private String timeOfSample;
     private String sampleReceipt;
     private String testRequirements;
-    @ManyToOne
-    @JoinColumn(name = "analizator_id")
-    private AnalizatorData analizator;
+
+    @OneToMany(mappedBy ="patient", cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<PatientAnalizatorLinkData> analizatorLinks = new ArrayList<>();
 
     public PatientData() {}
 
     public PatientData(Long Id, String Name, String Surname, String DataOfBirth, int mbo, int oib,
                        String Priority, String PriorityReason, String SampleNumber,
                        String DateOfSample, String TimeOfSample, String SampleReceipt,
-                       String TestRequirements, AnalizatorData Analizator) {
+                       String TestRequirements, List<PatientAnalizatorLinkData> analizatorLinks) {
         this.id = Id;
         this.name = Name;
         this.surname = Surname;
@@ -46,7 +49,15 @@ public class PatientData implements Serializable {
         this.timeOfSample = TimeOfSample;
         this.sampleReceipt = SampleReceipt;
         this.testRequirements = TestRequirements;
-        this.analizator = Analizator;
+        this.analizatorLinks = analizatorLinks;
+    }
+
+    public List<PatientAnalizatorLinkData> getAnalizatorLinks() {
+        return analizatorLinks;
+    }
+
+    public void setAnalizatorLinks(List<PatientAnalizatorLinkData> analizatorLinks) {
+        this.analizatorLinks = analizatorLinks;
     }
 
     public Long getId() {
@@ -151,13 +162,5 @@ public class PatientData implements Serializable {
 
     public void setTestRequirements(String TestRequirements) {
         this.testRequirements = TestRequirements;
-    }
-
-    public AnalizatorData getAnalizator() {
-        return analizator;
-    }
-
-    public void setAnalizator(AnalizatorData Analizator) {
-        this.analizator = Analizator;
     }
 }

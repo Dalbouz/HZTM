@@ -1,13 +1,13 @@
 package studiobox.jobs.hztm_patient_manager.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "analizators")
 public class AnalizatorData implements Serializable {
     private int sampleNumber;
     private String analizatorName;
@@ -27,6 +27,9 @@ public class AnalizatorData implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "analizator", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PatientAnalizatorLinkData> patientLinks = new ArrayList<>();
+
     public AnalizatorData() {}
 
     public AnalizatorData(
@@ -42,7 +45,8 @@ public class AnalizatorData implements Serializable {
             String InterpretationForEDelphyn,
             String TestMarkForEdelphyn,
             String Notes,
-            int AnalizatorOib
+            int AnalizatorOib,
+            List<PatientAnalizatorLinkData> patientLinks
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -57,6 +61,15 @@ public class AnalizatorData implements Serializable {
         this.testMarkForEdelphyn = TestMarkForEdelphyn;
         this.notes = Notes;
         this.analizatorOib = AnalizatorOib;
+        this.patientLinks = patientLinks;
+    }
+
+    public PatientAnalizatorLinkData getPatientAnalizatorLink() {
+        return patientLinks.get(0);
+    }
+
+    public void setPatientLinks(List<PatientAnalizatorLinkData> patientLinks) {
+        this.patientLinks = patientLinks;
     }
 
     public int getAnalizatorOib() {
