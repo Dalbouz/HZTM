@@ -22,4 +22,8 @@ public class AnalizatorService {
     public AnalizatorData getAnalizedDataById(Long id){
         return analizatorDataRepository.getAnalizatorDataById(id).orElseThrow(()->new DataNotFound("Analizator data not found"));
     }
+
+    public void deleteAnalizatorData(Long id){
+        analizatorDataRepository.deleteAnalizatorDataBy(id);
+    }
 }

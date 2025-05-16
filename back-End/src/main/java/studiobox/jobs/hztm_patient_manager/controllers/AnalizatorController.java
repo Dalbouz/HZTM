@@ -26,4 +26,10 @@ public class AnalizatorController {
         AnalizatorData analizator = analizatorService.getAnalizedDataById(id);
         return new ResponseEntity<>(analizator, HttpStatus.OK);
     }
+
+    @DeleteMapping("analizator/delete/{id}")
+    public ResponseEntity<AnalizatorData> deleteAnalizatorData(@PathVariable Long id){
+        analizatorService.deleteAnalizatorData(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

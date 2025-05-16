@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface AnalizatorDataRepository extends JpaRepository<AnalizatorData, Long> {
     Optional<AnalizatorData> getAnalizatorDataById(Long id);
+
+    void deleteAnalizatorDataBy(Long id);
 }
