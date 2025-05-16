@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class AnalizatorData implements Serializable {
     private int SampleNumber;
     private String AnalizatorName;
+    private int AnalizatorOib;
     private String TestMark;
     private String Lot;
     private String ExirationDateReagens;
@@ -40,7 +41,8 @@ public class AnalizatorData implements Serializable {
             String TimeOfReading,
             String InterpretationForEDelphyn,
             String TestMarkForEdelphyn,
-            String Notes
+            String Notes,
+            int AnalizatorOib
     ) {
         this.SampleNumber = SampleNumber;
         this.AnalizatorName = AnalizatorName;
@@ -54,6 +56,15 @@ public class AnalizatorData implements Serializable {
         this.InterpretationForEDelphyn = InterpretationForEDelphyn;
         this.TestMarkForEdelphyn = TestMarkForEdelphyn;
         this.Notes = Notes;
+        this.AnalizatorOib = AnalizatorOib;
+    }
+
+    public int getAnalizatorOib() {
+        return AnalizatorOib;
+    }
+
+    public void setAnalizatorOib(int AnalizatorOib) {
+        this.AnalizatorOib = AnalizatorOib;
     }
 
     public void setId(Long id) {

@@ -16,7 +16,11 @@ public class UserService {
     }
 
     public UserData addUser(UserData user){
-        return userDataRepository.save(user);
+        UserData checkUserData = getUserByUsername(user.getUserName());
+        if(checkUserData == null){
+            return userDataRepository.save(user);
+        }
+        return null;
     }
 
     private UserData getUserByUsername(String username){
