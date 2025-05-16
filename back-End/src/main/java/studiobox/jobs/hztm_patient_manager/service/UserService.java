@@ -16,19 +16,19 @@ public class UserService {
     }
 
     public UserData addUser(UserData user){
-        UserData checkUserData = getUserByUsername(user.getUserName());
+        UserData checkUserData = findUserByUsername(user.getUserName());
         if(checkUserData == null){
             return userDataRepository.save(user);
         }
         return null;
     }
 
-    private UserData getUserByUsername(String username){
-        return userDataRepository.getUserDataByUsername(username).orElseThrow(()->new DataNotFound("User data not found"));
+    private UserData findUserByUsername(String username){
+        return userDataRepository.findByUserName(username).orElseThrow(()->new DataNotFound("User data not found"));
     }
 
     public UserData checkUserCredentials(String username, String password){
-        UserData userData = getUserByUsername(username);
+        UserData userData = findUserByUsername(username);
 
         if(userData == null){
             return null;

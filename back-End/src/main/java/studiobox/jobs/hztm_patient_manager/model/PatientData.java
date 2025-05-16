@@ -9,155 +9,155 @@ public class PatientData implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    private Long Id;
+    private Long id;
 
-    private String Name;
-    private String Surname;
-    private String DataOfBirth;
-    private int MBO;
-    private int OIB;
-    private String Priority;
-    private String PriorityReason;
-    private String SampleNumber;
-    private String DateOfSample;
-    private String TimeOfSample;
-    private String SampleReceipt;
-    private String TestRequirements;
+    private String name;
+    private String surname;
+    private String dataOfBirth;
+    private int mbo;
+    private int oib;
+    private String priority;
+    private String priorityReason;
+    private String sampleNumber;
+    private String dateOfSample;
+    private String timeOfSample;
+    private String sampleReceipt;
+    private String testRequirements;
     @ManyToOne
     @JoinColumn(name = "analizator_id")
-    private AnalizatorData Analizator;
+    private AnalizatorData analizator;
 
     public PatientData() {}
 
-    public PatientData(Long Id, String Name, String Surname, String DataOfBirth, int MBO, int OIB,
+    public PatientData(Long Id, String Name, String Surname, String DataOfBirth, int mbo, int oib,
                        String Priority, String PriorityReason, String SampleNumber,
                        String DateOfSample, String TimeOfSample, String SampleReceipt,
                        String TestRequirements, AnalizatorData Analizator) {
-        this.Id = Id;
-        this.Name = Name;
-        this.Surname = Surname;
-        this.DataOfBirth = DataOfBirth;
-        this.MBO = MBO;
-        this.OIB = OIB;
-        this.Priority = Priority;
-        this.PriorityReason = PriorityReason;
-        this.SampleNumber = SampleNumber;
-        this.DateOfSample = DateOfSample;
-        this.TimeOfSample = TimeOfSample;
-        this.SampleReceipt = SampleReceipt;
-        this.TestRequirements = TestRequirements;
-        this.Analizator = Analizator;
+        this.id = Id;
+        this.name = Name;
+        this.surname = Surname;
+        this.dataOfBirth = DataOfBirth;
+        this.mbo = mbo;
+        this.oib = oib;
+        this.priority = Priority;
+        this.priorityReason = PriorityReason;
+        this.sampleNumber = SampleNumber;
+        this.dateOfSample = DateOfSample;
+        this.timeOfSample = TimeOfSample;
+        this.sampleReceipt = SampleReceipt;
+        this.testRequirements = TestRequirements;
+        this.analizator = Analizator;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long Id) {
-        this.Id = Id;
+        this.id = Id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String Name) {
-        this.Name = Name;
+        this.name = Name;
     }
 
     public String getSurname() {
-        return Surname;
+        return surname;
     }
 
     public void setSurname(String Surname) {
-        this.Surname = Surname;
+        this.surname = Surname;
     }
 
     public String getDataOfBirth() {
-        return DataOfBirth;
+        return dataOfBirth;
     }
 
     public void setDataOfBirth(String DataOfBirth) {
-        this.DataOfBirth = DataOfBirth;
+        this.dataOfBirth = DataOfBirth;
     }
 
-    public int getMBO() {
-        return MBO;
+    public int getMbo() {
+        return mbo;
     }
 
-    public void setMBO(int MBO) {
-        this.MBO = MBO;
+    public void setMbo(int MBO) {
+        this.mbo = MBO;
     }
 
-    public int getOIB() {
-        return OIB;
+    public int getOib() {
+        return oib;
     }
 
-    public void setOIB(int OIB) {
-        this.OIB = OIB;
+    public void setOib(int OIB) {
+        this.oib = OIB;
     }
 
     public String getPriority() {
-        return Priority;
+        return priority;
     }
 
     public void setPriority(String Priority) {
-        this.Priority = Priority;
+        this.priority = Priority;
     }
 
     public String getPriorityReason() {
-        return PriorityReason;
+        return priorityReason;
     }
 
     public void setPriorityReason(String PriorityReason) {
-        this.PriorityReason = PriorityReason;
+        this.priorityReason = PriorityReason;
     }
 
     public String getSampleNumber() {
-        return SampleNumber;
+        return sampleNumber;
     }
 
     public void setSampleNumber(String SampleNumber) {
-        this.SampleNumber = SampleNumber;
+        this.sampleNumber = SampleNumber;
     }
 
     public String getDateOfSample() {
-        return DateOfSample;
+        return dateOfSample;
     }
 
     public void setDateOfSample(String DateOfSample) {
-        this.DateOfSample = DateOfSample;
+        this.dateOfSample = DateOfSample;
     }
 
     public String getTimeOfSample() {
-        return TimeOfSample;
+        return timeOfSample;
     }
 
     public void setTimeOfSample(String TimeOfSample) {
-        this.TimeOfSample = TimeOfSample;
+        this.timeOfSample = TimeOfSample;
     }
 
     public String getSampleReceipt() {
-        return SampleReceipt;
+        return sampleReceipt;
     }
 
     public void setSampleReceipt(String SampleReceipt) {
-        this.SampleReceipt = SampleReceipt;
+        this.sampleReceipt = SampleReceipt;
     }
 
     public String getTestRequirements() {
-        return TestRequirements;
+        return testRequirements;
     }
 
     public void setTestRequirements(String TestRequirements) {
-        this.TestRequirements = TestRequirements;
+        this.testRequirements = TestRequirements;
     }
 
     public AnalizatorData getAnalizator() {
-        return Analizator;
+        return analizator;
     }
 
     public void setAnalizator(AnalizatorData Analizator) {
-        this.Analizator = Analizator;
+        this.analizator = Analizator;
     }
 }

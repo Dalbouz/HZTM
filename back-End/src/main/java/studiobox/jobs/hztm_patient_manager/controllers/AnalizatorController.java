@@ -16,19 +16,19 @@ public class AnalizatorController {
 
     @PutMapping("/analizator/update")
     public ResponseEntity<AnalizatorData> saveAnalizatorData(@RequestBody AnalizatorData analizatorData){
-        AnalizatorData analizator = analizatorService.saveAnalizationData(analizatorData);
+        AnalizatorData analizator = analizatorService.saveAnalizatorData(analizatorData);
         return new ResponseEntity<>(analizator, HttpStatus.OK);
     }
 
     @GetMapping("/analizator/find/{id}")
     public ResponseEntity<AnalizatorData> findAnalizatorDataById(@PathVariable Long id){
-        AnalizatorData analizator = analizatorService.getAnalizedDataById(id);
+        AnalizatorData analizator = analizatorService.findAnalizatorDataById(id);
         return new ResponseEntity<>(analizator, HttpStatus.OK);
     }
 
     @GetMapping("/analizator/find/{analizatorName}/{analizatorOib}")
     public ResponseEntity<AnalizatorData> findAnalizatorDataByNameAndOib(@PathVariable String analizatorName, @PathVariable int analizatorOib){
-        AnalizatorData analizator = analizatorService.getAnalizatorDataByOib(analizatorOib);
+        AnalizatorData analizator = analizatorService.findByAnalizatorOib(analizatorOib);
         if(analizator != null){
             if(analizator.getAnalizatorName().equals(analizatorName) && analizator.getAnalizatorOib() == analizatorOib){
                 return new ResponseEntity<>(analizator, HttpStatus.OK);
@@ -38,8 +38,8 @@ public class AnalizatorController {
     }
 
     @DeleteMapping("analizator/delete/{id}")
-    public ResponseEntity<AnalizatorData> deleteAnalizatorData(@PathVariable Long id){
-        analizatorService.deleteAnalizatorData(id);
+    public ResponseEntity<AnalizatorData> deleteAnalizatorDataById(@PathVariable Long id){
+        analizatorService.deleteAnalizatorDataById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

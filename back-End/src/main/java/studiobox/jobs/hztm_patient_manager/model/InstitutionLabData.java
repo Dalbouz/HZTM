@@ -6,41 +6,41 @@ import java.io.Serializable;
 
 @Entity
 public class InstitutionLabData implements Serializable {
-    private String Name;
-    private String Adress;
+    private String name;
+    private String adress;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    private Long Id;
+    private Long id;
 
     public InstitutionLabData() {}
 
     public InstitutionLabData(String Name, String Adress) {
-        this.Name = Name;
-        this.Adress = Adress;
+        this.name = Name;
+        this.adress = Adress;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public String getAdress() {
-        return Adress;
+        return adress;
     }
 
     public void setAdress(String adress) {
-        this.Adress = adress;
+        this.adress = adress;
     }
 }

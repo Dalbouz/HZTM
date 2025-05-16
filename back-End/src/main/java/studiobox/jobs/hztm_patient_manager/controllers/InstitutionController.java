@@ -22,7 +22,7 @@ public class InstitutionController {
 
     @GetMapping("/institution/find/{name}")
     public ResponseEntity<InstitutionLabData> findInstitution(@PathVariable String name){
-        InstitutionLabData institution = institutionService.getInstitutionByName(name);
+        InstitutionLabData institution = institutionService.findInstitutionByName(name);
         return new ResponseEntity<>(institution, HttpStatus.OK);
     }
 }

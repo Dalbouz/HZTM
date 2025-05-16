@@ -9,23 +9,23 @@ import java.io.Serializable;
 
 @Entity
 public class AnalizatorData implements Serializable {
-    private int SampleNumber;
-    private String AnalizatorName;
-    private int AnalizatorOib;
-    private String TestMark;
-    private String Lot;
-    private String ExirationDateReagens;
-    private String InterpretedResult;
-    private int NumericValueFromAnalizator;
-    private String DateOfReading;
-    private String TimeOfReading;
-    private String InterpretationForEDelphyn;
-    private String TestMarkForEdelphyn;
-    private String Notes;
+    private int sampleNumber;
+    private String analizatorName;
+    private int analizatorOib;
+    private String testMark;
+    private String lot;
+    private String expirationDateReagens;
+    private String interpretedResult;
+    private int numericValueFromAnalizator;
+    private String dateOfReading;
+    private String timeOfReading;
+    private String interpretationForEDelphyn;
+    private String testMarkForEdelphyn;
+    private String notes;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
     public AnalizatorData() {}
 
@@ -34,7 +34,7 @@ public class AnalizatorData implements Serializable {
             String AnalizatorName,
             String TestMark,
             String Lot,
-            String ExirationDateReagens,
+            String expirationDateReagens,
             String InterpretedResult,
             int NumericValueFromAnalizator,
             String DateOfReading,
@@ -44,130 +44,130 @@ public class AnalizatorData implements Serializable {
             String Notes,
             int AnalizatorOib
     ) {
-        this.SampleNumber = SampleNumber;
-        this.AnalizatorName = AnalizatorName;
-        this.TestMark = TestMark;
-        this.Lot = Lot;
-        this.ExirationDateReagens = ExirationDateReagens;
-        this.InterpretedResult = InterpretedResult;
-        this.NumericValueFromAnalizator = NumericValueFromAnalizator;
-        this.DateOfReading = DateOfReading;
-        this.TimeOfReading = TimeOfReading;
-        this.InterpretationForEDelphyn = InterpretationForEDelphyn;
-        this.TestMarkForEdelphyn = TestMarkForEdelphyn;
-        this.Notes = Notes;
-        this.AnalizatorOib = AnalizatorOib;
+        this.sampleNumber = SampleNumber;
+        this.analizatorName = AnalizatorName;
+        this.testMark = TestMark;
+        this.lot = Lot;
+        this.expirationDateReagens = expirationDateReagens;
+        this.interpretedResult = InterpretedResult;
+        this.numericValueFromAnalizator = NumericValueFromAnalizator;
+        this.dateOfReading = DateOfReading;
+        this.timeOfReading = TimeOfReading;
+        this.interpretationForEDelphyn = InterpretationForEDelphyn;
+        this.testMarkForEdelphyn = TestMarkForEdelphyn;
+        this.notes = Notes;
+        this.analizatorOib = AnalizatorOib;
     }
 
     public int getAnalizatorOib() {
-        return AnalizatorOib;
+        return analizatorOib;
     }
 
     public void setAnalizatorOib(int AnalizatorOib) {
-        this.AnalizatorOib = AnalizatorOib;
+        this.analizatorOib = AnalizatorOib;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.Id = id;
     }
 
     public Long getId() {
-        return id;
+        return Id;
     }
 
     public int getSampleNumber() {
-        return SampleNumber;
+        return sampleNumber;
     }
 
     public void setSampleNumber(int sampleNumber) {
-        this.SampleNumber = sampleNumber;
+        this.sampleNumber = sampleNumber;
     }
 
     public String getAnalizatorName() {
-        return AnalizatorName;
+        return analizatorName;
     }
 
     public void setAnalizatorName(String analizatorName) {
-        this.AnalizatorName = analizatorName;
+        this.analizatorName = analizatorName;
     }
 
     public String getTestMark() {
-        return TestMark;
+        return testMark;
     }
 
     public void setTestMark(String testMark) {
-        this.TestMark = testMark;
+        this.testMark = testMark;
     }
 
     public String getLot() {
-        return Lot;
+        return lot;
     }
 
     public void setLot(String lot) {
-        this.Lot = lot;
+        this.lot = lot;
     }
 
-    public String getExirationDateReagens() {
-        return ExirationDateReagens;
+    public String getExpirationDateReagens() {
+        return expirationDateReagens;
     }
 
-    public void setExirationDateReagens(String exirationDateReagens) {
-        this.ExirationDateReagens = exirationDateReagens;
+    public void setExpirationDateReagens(String expirationDateReagens) {
+        this.expirationDateReagens = expirationDateReagens;
     }
 
     public String getInterpretedResult() {
-        return InterpretedResult;
+        return interpretedResult;
     }
 
     public void setInterpretedResult(String interpretedResult) {
-        this.InterpretedResult = interpretedResult;
+        this.interpretedResult = interpretedResult;
     }
 
     public int getNumericValueFromAnalizator() {
-        return NumericValueFromAnalizator;
+        return numericValueFromAnalizator;
     }
 
     public void setNumericValueFromAnalizator(int numericValueFromAnalizator) {
-        this.NumericValueFromAnalizator = numericValueFromAnalizator;
+        this.numericValueFromAnalizator = numericValueFromAnalizator;
     }
 
     public String getDateOfReading() {
-        return DateOfReading;
+        return dateOfReading;
     }
 
     public void setDateOfReading(String dateOfReading) {
-        this.DateOfReading = dateOfReading;
+        this.dateOfReading = dateOfReading;
     }
 
     public String getTimeOfReading() {
-        return TimeOfReading;
+        return timeOfReading;
     }
 
     public void setTimeOfReading(String timeOfReading) {
-        this.TimeOfReading = timeOfReading;
+        this.timeOfReading = timeOfReading;
     }
 
     public String getInterpretationForEDelphyn() {
-        return InterpretationForEDelphyn;
+        return interpretationForEDelphyn;
     }
 
     public void setInterpretationForEDelphyn(String interpretationForEDelphyn) {
-        this.InterpretationForEDelphyn = interpretationForEDelphyn;
+        this.interpretationForEDelphyn = interpretationForEDelphyn;
     }
 
     public String getTestMarkForEdelphyn() {
-        return TestMarkForEdelphyn;
+        return testMarkForEdelphyn;
     }
 
     public void setTestMarkForEdelphyn(String testMarkForEdelphyn) {
-        this.TestMarkForEdelphyn = testMarkForEdelphyn;
+        this.testMarkForEdelphyn = testMarkForEdelphyn;
     }
 
     public String getNotes() {
-        return Notes;
+        return notes;
     }
 
     public void setNotes(String notes) {
-        this.Notes = notes;
+        this.notes = notes;
     }
 }

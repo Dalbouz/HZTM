@@ -36,7 +36,7 @@ public ResponseEntity<List<PatientData>> getAllPatients(){
 
     @GetMapping("/patients/find/{oib}")
     public ResponseEntity<PatientData> findPatientByOIB(@PathVariable int oib){
-        PatientData patient = patientService.findPatientByOIB(oib);
+        PatientData patient = patientService.findPatientByOib(oib);
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 }

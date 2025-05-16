@@ -10,69 +10,77 @@ public class UserData implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    private Long Id;
+    private Long id;
 
-    private String FullName;
-    private String Password;
-    private String UserName;
-    private int PasswordTimeout;
-    private boolean ActiveStatus;
-    private String SecurityLevelStatus;
+    private String fullName;
+    private String password;
+    private String userName;
+    private int passwordTimeout;
+    private boolean activeStatus;
+    private String securityLevelStatus;
 
     public UserData() {}
 
     public UserData(String FullName, String Password, String UserName, int PasswordTimeout, boolean ActiveStatus, String SecurityLevelStatus) {
-        this.FullName = FullName;
-        this.Password = Password;
-        this.UserName = UserName;
-        this.PasswordTimeout = PasswordTimeout;
-        this.ActiveStatus = false;
+        this.fullName = FullName;
+        this.password = Password;
+        this.userName = UserName;
+        this.passwordTimeout = PasswordTimeout;
+        this.activeStatus = false;
+    }
+
+    public int getPasswordTimeout(){
+        return passwordTimeout;
+    }
+
+    public void setPasswordTimeout(int PasswordTimeout){
+        this.passwordTimeout = PasswordTimeout;
     }
 
     public String getSecurityLevelStatus() {
-        return SecurityLevelStatus;
+        return securityLevelStatus;
     }
 
     public void setSecurityLevelStatus(String SecurityLevelStatus) {
-        this.SecurityLevelStatus = SecurityLevelStatus;
+        this.securityLevelStatus = SecurityLevelStatus;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public String getFullName() {
-        return FullName;
+        return fullName;
     }
 
     public void setFullName(String fullName) {
-        FullName = fullName;
+        this.fullName = fullName;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
     public void setUserName(String userName) {
-        UserName = userName;
+        this.userName = userName;
     }
 
     public boolean isActiveStatus() {
-        return ActiveStatus;
+        return activeStatus;
     }
 
     public void setActiveStatus(boolean activeStatus) {
-        ActiveStatus = activeStatus;
+        this.activeStatus = activeStatus;
     }
 }

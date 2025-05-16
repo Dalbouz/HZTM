@@ -14,9 +14,9 @@ public class UserController {
         this.userService = userService;
     }
 
-        @GetMapping("/user/find/{username}/{password}")
-        public ResponseEntity<UserData> checkAndGetUser(@PathVariable("username") String username, @PathVariable("password") String password){
-            UserData checkUser = userService.checkUserCredentials(username, password);
+        @GetMapping("/user/find/{userName}/{password}")
+        public ResponseEntity<UserData> checkAndGetUser(@PathVariable("userName") String userName, @PathVariable("password") String password){
+            UserData checkUser = userService.checkUserCredentials(userName, password);
             if(checkUser!=null){
                 return new ResponseEntity<>(checkUser, HttpStatus.OK);
         }

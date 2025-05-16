@@ -6,8 +6,6 @@ import studiobox.jobs.hztm_patient_manager.exception.DataNotFound;
 import studiobox.jobs.hztm_patient_manager.model.InstitutionLabData;
 import studiobox.jobs.hztm_patient_manager.repositorys.InstitutionDataRepository;
 
-import java.util.List;
-
 @Service
 public class InstitutionService {
     private final InstitutionDataRepository institutionDataRepository;
@@ -21,7 +19,7 @@ public class InstitutionService {
         return institutionDataRepository.save(institution);
     }
 
-    public InstitutionLabData getInstitutionByName(String name){
-        return institutionDataRepository.getInstitutionLabDataByName(name).orElseThrow(()->new DataNotFound("Institution data not found"));
+    public InstitutionLabData findInstitutionByName(String name){
+        return institutionDataRepository.findInstitutionByName(name).orElseThrow(()->new DataNotFound("Institution data not found"));
     }
 }

@@ -15,19 +15,19 @@ public class AnalizatorService {
         this.analizatorDataRepository = analizatorDataRepository;
     }
 
-    public AnalizatorData saveAnalizationData(AnalizatorData anlizedData){
-        return analizatorDataRepository.save(anlizedData);
+    public AnalizatorData saveAnalizatorData(AnalizatorData analizatorData){
+        return analizatorDataRepository.save(analizatorData);
     }
 
-    public AnalizatorData getAnalizedDataById(Long id){
-        return analizatorDataRepository.getAnalizatorDataById(id).orElseThrow(()->new DataNotFound("Analizator data not found"));
+    public AnalizatorData findAnalizatorDataById(Long id){
+        return analizatorDataRepository.findAnalizatorDataById(id).orElseThrow(()->new DataNotFound("Analizator data not found"));
     }
 
-    public void deleteAnalizatorData(Long id){
-        analizatorDataRepository.deleteAnalizatorDataBy(id);
+    public void deleteAnalizatorDataById(Long id){
+        analizatorDataRepository.deleteById(id);
     }
 
-    public AnalizatorData getAnalizatorDataByOib(int analizatorOib){
-        return analizatorDataRepository.getAnalizatorDataByOib(analizatorOib).orElseThrow(()->new DataNotFound("Analizator data not found"));
+    public AnalizatorData findByAnalizatorOib(int analizatorOib){
+        return analizatorDataRepository.findByAnalizatorOib(analizatorOib).orElseThrow(()->new DataNotFound("Analizator data not found"));
     }
 }
