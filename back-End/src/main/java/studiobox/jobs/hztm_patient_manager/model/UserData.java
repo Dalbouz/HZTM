@@ -17,15 +17,24 @@ public class UserData implements Serializable {
     private String UserName;
     private int PasswordTimeout;
     private boolean ActiveStatus;
+    private String SecurityLevelStatus;
 
     public UserData() {}
 
-    public UserData(String FullName, String Password, String UserName, int PasswordTimeout, boolean ActiveStatus) {
+    public UserData(String FullName, String Password, String UserName, int PasswordTimeout, boolean ActiveStatus, String SecurityLevelStatus) {
         this.FullName = FullName;
         this.Password = Password;
         this.UserName = UserName;
         this.PasswordTimeout = PasswordTimeout;
         this.ActiveStatus = false;
+    }
+
+    public String getSecurityLevelStatus() {
+        return SecurityLevelStatus;
+    }
+
+    public void setSecurityLevelStatus(String SecurityLevelStatus) {
+        this.SecurityLevelStatus = SecurityLevelStatus;
     }
 
     public Long getId() {

@@ -1,0 +1,29 @@
+package studiobox.jobs.hztm_patient_manager.controllers;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import studiobox.jobs.hztm_patient_manager.exception.DataNotFound;
+import studiobox.jobs.hztm_patient_manager.model.AnalizatorData;
+import studiobox.jobs.hztm_patient_manager.service.AnalizatorService;
+
+@RestController
+public class AnalizatorController {
+    private final AnalizatorService analizatorService;
+
+    public AnalizatorController(AnalizatorService analizatorService) {
+        this.analizatorService = analizatorService;
+    }
+
+    @PutMapping("/analizator/update")
+    public ResponseEntity<AnalizatorData> saveAnalizatorData(@RequestBody AnalizatorData analizatorData){
+        AnalizatorData analizator = analizatorService.saveAnalizationData(analizatorData);
+        return new ResponseEntity<>(analizator, HttpStatus.OK);
+    }
+
+    @GetMapping("/analizator/find/{id}")
+    public ResponseEntity<AnalizatorData> findAnalizatorData(@PathVariable Long id){
+        AnalizatorData analizator = analizatorService.getAnalizedDataById(id);
+        return new ResponseEntity<>(analizator, HttpStatus.OK);
+    }
+}

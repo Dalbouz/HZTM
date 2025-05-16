@@ -1,4 +1,3 @@
-
 export interface UserData {
     id:number;
     fullName: string;
@@ -6,4 +5,5 @@ export interface UserData {
     username:string;
     passwordTimeout:number;
     activeStatus: boolean;
+    securityLevelStatus: string;
 }
