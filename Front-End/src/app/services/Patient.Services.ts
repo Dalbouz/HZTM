@@ -1,7 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, ObservableNotification } from "rxjs";
-import { UserData } from "../dataStructure/UserData";
 import { PatientData } from "../dataStructure/PatientData";
 
 @Injectable({
