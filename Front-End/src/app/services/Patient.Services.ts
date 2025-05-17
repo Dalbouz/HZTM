@@ -13,12 +13,16 @@ export class PatientService{
     constructor(private http: HttpClient){}
  
     public getPatients(): Observable<PatientData[]>{
-        return this.http.get<PatientData[]>(`${this.apiServerUrl}/patients/all`);
+        return this.http.get<PatientData[]>(`${this.apiServerUrl}/patients/find/all`);
     }
 
 
     public updatePatient(patient: PatientData):Observable<PatientData>{
-        return this.http.put<PatientData>(`${this.apiServerUrl}/patients/update`, patient)
+        return this.http.put<PatientData>(`${this.apiServerUrl}/patients/update`, patient);
+    }
+
+    public addPatient(patient:PatientData):Observable<PatientData>{
+        return this.http.post<PatientData>(`${this.apiServerUrl}/patients/add`, patient);
     }
 
     public getPatientById(id: number): Observable<PatientData>{
