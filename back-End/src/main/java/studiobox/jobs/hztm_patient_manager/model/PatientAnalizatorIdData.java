@@ -1,3 +1,4 @@
+/*
 package studiobox.jobs.hztm_patient_manager.model;
 
 
@@ -48,3 +49,4 @@ public class PatientAnalizatorIdData implements Serializable {
         return Objects.hash(patientId, analizatorId);
     }
 }
+*/

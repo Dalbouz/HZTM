@@ -1,3 +1,4 @@
+/*
 package studiobox.jobs.hztm_patient_manager.controllers;
 
 import org.springframework.http.HttpStatus;
@@ -82,4 +83,4 @@ public class PatientAnalizatorLinkController {
         }
     }
 }
-
+*/

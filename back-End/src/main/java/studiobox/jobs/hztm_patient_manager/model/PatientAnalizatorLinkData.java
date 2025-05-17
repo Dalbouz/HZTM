@@ -1,3 +1,4 @@
+/*
 package studiobox.jobs.hztm_patient_manager.model;
 
 import jakarta.persistence.*;
@@ -53,3 +54,4 @@ public class PatientAnalizatorLinkData implements Serializable {
         this.id = id;
     }
 }
+*/
