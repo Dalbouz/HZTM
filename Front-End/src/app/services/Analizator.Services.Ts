@@ -17,7 +17,11 @@ export class AnalizatorServices{
     //     return this.http.get<AnalizatorData>(`${this.apiServerUrl}/analizators/find/${analizatorName}/${analizatorOib}`);
     // }
 
-    public GetAnalizatorById(id: number): Observable<AnalizatorData>{
+    public getAllAnalizators(): Observable<AnalizatorData[]>{
+       return this.http.get<AnalizatorData[]>(`${this.apiServerUrl}/analizators/find/all`);
+    }
+
+    public getAnalizatorById(id: number): Observable<AnalizatorData>{
         return this.http.get<AnalizatorData>(`${this.apiServerUrl}/analizators/find/${id}`);
     }
 

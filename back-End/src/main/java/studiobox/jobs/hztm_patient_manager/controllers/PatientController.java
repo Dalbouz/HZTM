@@ -3,6 +3,7 @@ package studiobox.jobs.hztm_patient_manager.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import studiobox.jobs.hztm_patient_manager.exception.DataNotFound;
 import studiobox.jobs.hztm_patient_manager.model.PatientData;
 import studiobox.jobs.hztm_patient_manager.service.PatientService;
 
@@ -23,14 +24,23 @@ public ResponseEntity<List<PatientData>> getAllPatients(){
     return new ResponseEntity<>(patientDataList, HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<PatientData> updatePatient(@RequestBody PatientData patientData){
-    PatientData patient = patientService.savePatient(patientData);
-    return new ResponseEntity<>(patient, HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<PatientData> updatePatient(@PathVariable Long id, @RequestBody PatientData patientData){
+        try {
+            PatientData updated = patientService.updatePatient(id, patientData);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (DataNotFound e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/add")
     public ResponseEntity<PatientData> addPatient(@RequestBody PatientData patientData){
+        PatientData existingPatient = patientService.findPatientByOib(patientData.getOib());
+        if (existingPatient != null) {
+            // Patient with this OIB already exists
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        }
         PatientData patient = patientService.savePatient(patientData);
         return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }

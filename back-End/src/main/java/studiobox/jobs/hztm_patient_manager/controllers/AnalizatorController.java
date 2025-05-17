@@ -36,12 +36,16 @@ public class AnalizatorController {
         }
     }
 
-
-
     @PostMapping("/add")
     public ResponseEntity<AnalizatorData> addAnalizator(@RequestBody AnalizatorData analizatorData) {
         AnalizatorData analizator =  analizatorService.saveAnalizatorData(analizatorData);
         return new ResponseEntity<>(analizator, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/find/all")
+    public ResponseEntity<List<AnalizatorData>> getAllAnalizators(){
+        List<AnalizatorData> analizatorDataList = analizatorService.findAllAnalizators();
+        return new ResponseEntity<>(analizatorDataList, HttpStatus.OK);
     }
 
     // 2. Get analizator data by ID

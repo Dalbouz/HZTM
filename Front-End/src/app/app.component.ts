@@ -7,6 +7,9 @@ import { filter } from 'rxjs';
 import { UserService } from './services/User.Services';
 import { UserData } from './dataStructure/UserData';
 import { PatientData } from './dataStructure/PatientData';
+import { PatientService } from './services/Patient.Services';
+import { AnalizatorServices } from './services/Analizator.Services';
+import { AnalizatorData } from './dataStructure/AnalizatorData';
 
 @Component({
   selector: 'app-root',
@@ -21,11 +24,19 @@ export class AppComponent implements OnInit{
   title = 'hztm_pacient_management';
 
   public patients: PatientData[] = [];
+  public analizatorDatas: AnalizatorData[] = [];
 
   public showLoginWindow: boolean = true;
   public showLogin: boolean = true;
   public showRegister:boolean = false;
   public showPatientPanel:boolean = false;
+  public showAnalizatorPanel:boolean = false;
+  public adminUserExist: boolean = false;
+
+  public adminUserName:string = "";
+  public adminPassword:string ="";
+  public adminUserNameChecker:string = "";
+  public adminPasswordChecker:string ="";
 
   public currentUser: UserData = {
     fullName: '',
@@ -45,12 +56,28 @@ export class AppComponent implements OnInit{
     securityLevelStatus: ''
   };
 
-  constructor(private userService: UserService){}
+  constructor(
+    private userService: UserService,
+    private patientService: PatientService,
+    private analizatorService: AnalizatorServices
+  ){}
+
 
   ngOnInit(): void {
-    
-  }
+    this.getPatients();
 
+    this.userService.getUserById(1).subscribe(
+        (response: UserData) => {
+          if(response == null){
+            this.adminUserExist = false;
+          }
+          else{
+            this.adminUserExist = true;
+            this.adminUserName = response.userName;
+            this.adminPassword = response.password;
+          }
+        })
+  }
 
   public login():void{
     if(this.currentUser.userName == "" || this.currentUser.password == ""){
@@ -61,6 +88,7 @@ export class AppComponent implements OnInit{
       (response: UserData)=>{
         this.currentUser = response;
         if(this.currentUser != null){
+          this.currentUser.activeStatus = true; //ovo je samo lokalno, ne pusha se na server na serveru ne pise koji se user aktivan
           this.switchBetweenLoginPatientPanel();
         }
         else{
@@ -79,20 +107,52 @@ export class AppComponent implements OnInit{
       || this.registerdUser.securityLevelStatus==""){
       return;
     }
-    
-        this.userService.addUser(this.registerdUser).subscribe(
-        (response: UserData) => {
-          if (response !== null) {
-            this.switchBetweenLoginRegister();
-            this.clearRegisterdUser();
-          } else {
-            alert("Username already exists!"); // Handle existing user
-          }
+    if(this.registerdUser.securityLevelStatus=="HIGH" && this.adminUserExist){
+      if(this.adminUserName == this.adminUserNameChecker && this.adminPassword == this.adminPasswordChecker){
+          this.addUser();
+      }
+      else{
+        alert("Wrong admin Credentials!");
+      }
+    }
+    else{
+      this.addUser();
+    }
+  }
+
+
+    public getPatients():void{
+      this.patientService.getPatients().subscribe(
+        (response: PatientData[]) =>{
+          this.patients = response;
         },
         (error: HttpErrorResponse) => {
-          alert(`Error: ${error.error.message || error.message}`);
-        }
-      );
+        alert(error.message + "\nNEMA PACIJENATA!");
+      }
+      )
+    }
+
+    public getAnalizatorDatas():void{
+      this.analizatorService.getAllAnalizators().subscribe(
+        (response: AnalizatorData[]) =>{
+          this.analizatorDatas = response;
+        },
+        (error: HttpErrorResponse) => {
+        alert(error.message + "\nNEMA ANALIZATOR PODATAKA!");
+      }
+      )
+    }
+
+    public showHideAnalizatorData():void{
+      if(!this.showAnalizatorPanel){
+        this.getAnalizatorDatas();
+      }
+        this.switchBetweenAnalizatorPatientPanel();
+    }
+
+    public logout():void{
+      this.switchBetweenLoginPatientPanel();
+      this.clearCurrentUser();
     }
 
   public switchBetweenLoginRegister(): void{
@@ -103,6 +163,11 @@ export class AppComponent implements OnInit{
   public switchBetweenLoginPatientPanel():void{
     this.showLoginWindow = !this.showLoginWindow;
     this.showPatientPanel = !this.showPatientPanel;
+  }
+
+   public switchBetweenAnalizatorPatientPanel():void{
+    this.showPatientPanel = !this.showPatientPanel;
+    this.showAnalizatorPanel = !this.showAnalizatorPanel;
   }
     private clearRegisterdUser():void{
       this.registerdUser.fullName = '';
@@ -120,6 +185,25 @@ export class AppComponent implements OnInit{
       this.currentUser.passwordTimeout = 0;
       this.currentUser.activeStatus = false;
       this.currentUser.securityLevelStatus = '';
+    }
+
+    
+    private addUser():void{
+      this.userService.addUser(this.registerdUser).subscribe(
+        (response: UserData) => {
+          if (response !== null) {
+            this.switchBetweenLoginRegister();
+            this.clearRegisterdUser();
+            this.adminPasswordChecker ="";
+            this.adminUserNameChecker = "";
+          } else {
+            alert("Username already exists!"); // Handle existing user
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
+        }
+      );
     }
 
 }

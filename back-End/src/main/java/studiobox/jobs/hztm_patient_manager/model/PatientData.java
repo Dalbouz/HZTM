@@ -17,7 +17,7 @@ public class PatientData implements Serializable {
 
     private String name;
     private String surname;
-    private String dataOfBirth;
+    private String dateOfBirth;
     private int mbo;
     private Long oib;
     private String priority;
@@ -34,14 +34,14 @@ public class PatientData implements Serializable {
 
     public PatientData() {}
 
-    public PatientData(Long Id, String Name, String Surname, String DataOfBirth, int mbo, Long oib,
+    public PatientData(Long Id, String Name, String Surname, String dateOfBirth, int mbo, Long oib,
                        String Priority, String PriorityReason, String SampleNumber,
                        String DateOfSample, String TimeOfSample, String SampleReceipt,
                        String TestRequirements, List<AnalizatorData> analizatorDataList) {
         this.id = Id;
         this.name = Name;
         this.surname = Surname;
-        this.dataOfBirth = DataOfBirth;
+        this.dateOfBirth = dateOfBirth;
         this.mbo = mbo;
         this.oib = oib;
         this.priority = Priority;
@@ -86,12 +86,12 @@ public class PatientData implements Serializable {
         this.surname = Surname;
     }
 
-    public String getDataOfBirth() {
-        return dataOfBirth;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDataOfBirth(String DataOfBirth) {
-        this.dataOfBirth = DataOfBirth;
+    public void setDateOfBirth(String DataOfBirth) {
+        this.dateOfBirth = DataOfBirth;
     }
 
     public int getMbo() {

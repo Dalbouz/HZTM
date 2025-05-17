@@ -2,7 +2,7 @@
 {
   "name":"Ivan" ,
   "surname":"Ivicia",
-  "dataOfBirth":"10.05.1996" ,
+  "dateOfBirth":"10.05.1996" ,
   "mbo":192385839 ,
   "oib":48930238448,
   "priority": "High",

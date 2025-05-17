@@ -17,6 +17,10 @@ export class UserService{
         return this.http.get<UserData>(`${this.apiServerUrl}/users/find/${userName}/${passwrod}`);
     }
 
+    public getUserById(id: number): Observable<UserData>{
+        return this.http.get<UserData>(`${this.apiServerUrl}/users/find/${id}`);
+    }
+
     public addUser(newUser: UserData): Observable<UserData>{
         return this.http.post<UserData>(`${this.apiServerUrl}/users/add`, newUser);
     }

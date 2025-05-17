@@ -4,7 +4,7 @@ export interface PatientData{
     id: number;
     name:string;
     surname:string;
-    dateOfBirh:string;
+    dateOfBirth:string;
     mbo: number;
     oib: number;
     priority:string;

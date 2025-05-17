@@ -1,0 +1,258 @@
+/*CSS for Login Screen*/
+.loginWindow {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #f0f4f8 0%, #d9e7fa 100%);
+}
+
+.login, .register {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(60, 60, 120, 0.11);
+  width: 340px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  animation: fadeIn 0.7s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  color: #2d3a4a;
+  letter-spacing: 1px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 0.3rem;
+  color: #3b4a5a;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+input, select {
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1.1rem;
+  border: 1px solid #c7d0dd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.2s;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #6c8df5;
+  box-shadow: 0 0 0 2px #e2e9fa;
+}
+
+button {
+  padding: 0.7rem 0;
+  margin-bottom: 0.7rem;
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+}
+button:last-child {
+  margin-bottom: 0;
+  background: linear-gradient(90deg, #f5a76c 0%, #fa5a7d 100%);
+}
+button:hover {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+button:last-child:hover {
+  background: linear-gradient(90deg, #fa7d5a 0%, #f55a7d 100%);
+}
+
+
+
+/*CSS for patient screen*/
+.patient-container {
+  position: relative;
+  min-height: 300px; /* Just to ensure you see the container */
+  padding-top: 3.5rem; /* So content doesn't go under the buttons */
+}
+
+h1 {
+  text-align: left;
+  color: #2d3a4a;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.patient-card {
+  background: #f7fafd;
+  border: 1px solid #e3eaf3;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  margin-top:20px;
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(120, 150, 200, 0.09);
+  transition: box-shadow 0.2s;
+}
+
+.patient-card:hover {
+  box-shadow: 0 6px 24px rgba(120, 150, 200, 0.16);
+}
+
+.patient-header {
+  display: flex;
+  gap: 1.2rem;
+  align-items: baseline;
+  margin-bottom: 1.1rem;
+}
+
+.patient-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #3763a2;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.patient-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.patient-fields label {
+  font-size: 1rem;
+  color: #3b4a5a;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.patient-fields input[type="text"] {
+  flex: 1;
+  padding: 0.38rem 0.65rem;
+  border: 1px solid #b7c4d4;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fafdff;
+  transition: border 0.2s;
+}
+
+.patient-fields input[type="text"]:focus {
+  border-color: #6c8df5;
+  outline: none;
+  background: #f0f6ff;
+}
+
+.analizator-count {
+  margin-top: 0.5rem;
+  font-size: 1.02rem;
+  color: #4b5a6a;
+  background: #eaf2fb;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+/*CCS for top right buttons*/
+.top-right-buttons {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.8rem;
+  z-index: 10;
+}
+
+.top-right-buttons button {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.55rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.09);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.top-right-buttons button:hover {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+
+
+
+
+
+
+
+
+/*CCS for analizators*/
+.analizator-cards {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.5rem 0;
+}
+
+.analizator-card {
+  background: #f4faff;
+  border: 1px solid #d3e5f5;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(120, 150, 200, 0.07);
+}
+
+.analizator-card h2 {
+  margin-top: 0;
+  color: #3763a2;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.analizator-card label {
+  display: block;
+  font-size: 1rem;
+  color: #3b4a5a;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.analizator-card input[type="text"],
+.analizator-card input[type="number"] {
+  width: 100%;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #b7c4d4;
+  border-radius: 5px;
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+  background: #fafdff;
+  transition: border 0.2s;
+}
+
+.analizator-card input:focus {
+  border-color: #6c8df5;
+  outline: none;
+  background: #f0f6ff;
+}

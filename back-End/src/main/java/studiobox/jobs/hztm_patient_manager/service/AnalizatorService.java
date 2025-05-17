@@ -20,6 +20,10 @@ public class AnalizatorService {
         this.patientService = patientService;
     }
 
+    public List<AnalizatorData> findAllAnalizators(){
+        return analizatorDataRepository.findAll();
+    }
+
     public AnalizatorData saveAnalizatorData(AnalizatorData analizatorData){
         return analizatorDataRepository.save(analizatorData);
     }

@@ -21,6 +21,12 @@ public class PatientService {
         return patientDataRepository.save(patient);
     }
 
+    public PatientData updatePatient(Long id, PatientData updatedPatient) {
+        PatientData existingPatient = patientDataRepository.findById(id)
+                .orElseThrow(() -> new DataNotFound("Patient not found with id: " + id));
+        return patientDataRepository.save(updatedPatient);
+    }
+
     public List<PatientData> findAllPatients(){
         return patientDataRepository.findAll();
     }
