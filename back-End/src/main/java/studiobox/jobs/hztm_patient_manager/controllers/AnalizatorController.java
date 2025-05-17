@@ -112,7 +112,7 @@ public class AnalizatorController {
     }
 
     // Link existing analizator data to a patient
-    @PutMapping("/link/{analizatorId}/patient/{patientId}")
+    @PutMapping("/link/{analizatorId}/{patientId}")
     public ResponseEntity<AnalizatorData> linkAnalizatorToPatient(
             @PathVariable Long analizatorId,
             @PathVariable Long patientId) {
