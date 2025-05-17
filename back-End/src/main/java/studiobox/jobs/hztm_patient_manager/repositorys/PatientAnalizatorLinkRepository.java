@@ -1,3 +1,4 @@
+/*
 package studiobox.jobs.hztm_patient_manager.repositorys;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,3 +15,5 @@ public interface PatientAnalizatorLinkRepository extends JpaRepository<PatientAn
     @Query("SELECT l FROM PatientAnalizatorLinkData l WHERE l.id.patientId = :patientId")
     List<PatientAnalizatorLinkData> findByPatientId(@Param("patientId") Long patientId);
 }
+
+ */

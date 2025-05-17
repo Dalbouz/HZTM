@@ -1,3 +1,4 @@
+/*
 package studiobox.jobs.hztm_patient_manager.service;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -61,3 +62,4 @@ public class PatientAnalizatorLinkService {
                 .toList();
     }
 }
+*/
