@@ -26,7 +26,8 @@ public class UserData implements Serializable {
         this.password = Password;
         this.userName = UserName;
         this.passwordTimeout = PasswordTimeout;
-        this.activeStatus = false;
+        this.activeStatus = ActiveStatus;
+        this.securityLevelStatus = securityLevelStatus;
     }
 
     public int getPasswordTimeout(){

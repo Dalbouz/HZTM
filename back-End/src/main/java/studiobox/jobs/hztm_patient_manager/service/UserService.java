@@ -16,11 +16,15 @@ public class UserService {
     }
 
     public UserData addUser(UserData user){
-        UserData checkUserData = findUserByUsername(user.getUserName());
-        if(checkUserData == null){
+        try {
+            // Check if user exists (may throw DataNotFound)
+            UserData checkUserData = findUserByUsername(user.getUserName());
+            // If user exists, return null or throw a conflict exception
+            return null;
+        } catch (DataNotFound ex) {
+            // User doesn't exist; proceed to save
             return userDataRepository.save(user);
         }
-        return null;
     }
 
     private UserData findUserByUsername(String username){

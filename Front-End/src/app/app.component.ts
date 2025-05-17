@@ -4,6 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
+import { UserService } from './services/User.Services';
+import { UserData } from './dataStructure/UserData';
+import { PatientData } from './dataStructure/PatientData';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +20,106 @@ import { filter } from 'rxjs';
 export class AppComponent implements OnInit{
   title = 'hztm_pacient_management';
 
+  public patients: PatientData[] = [];
+
+  public showLoginWindow: boolean = true;
+  public showLogin: boolean = true;
+  public showRegister:boolean = false;
+  public showPatientPanel:boolean = false;
+
+  public currentUser: UserData = {
+    fullName: '',
+    password: '',
+    userName: '',
+    passwordTimeout: 0,
+    activeStatus: false,
+    securityLevelStatus: ''
+  };
+
+  public registerdUser: UserData  = {
+    fullName: '',
+    password: '',
+    userName: '',
+    passwordTimeout: 0,
+    activeStatus: false,
+    securityLevelStatus: ''
+  };
+
+  constructor(private userService: UserService){}
+
   ngOnInit(): void {
     
   }
+
+
+  public login():void{
+    if(this.currentUser.userName == "" || this.currentUser.password == ""){
+      return;
+    }
+
+    this.userService.getUser(this.currentUser.userName, this.currentUser.password).subscribe(
+      (response: UserData)=>{
+        this.currentUser = response;
+        if(this.currentUser != null){
+          this.switchBetweenLoginPatientPanel();
+        }
+        else{
+          alert("wrong credentials!");
+          this.clearCurrentUser();
+        }
+      },
+      (error: HttpErrorResponse)=>{
+        alert(error.message + "\nWRONG CREDENTIALS!")
+      }
+    )
+  }
+
+  public register():void{
+    if(this.registerdUser.fullName =="" || this.registerdUser.password=="" || this.registerdUser.userName == "" 
+      || this.registerdUser.securityLevelStatus==""){
+      return;
+    }
+    
+        this.userService.addUser(this.registerdUser).subscribe(
+        (response: UserData) => {
+          if (response !== null) {
+            this.switchBetweenLoginRegister();
+            this.clearRegisterdUser();
+          } else {
+            alert("Username already exists!"); // Handle existing user
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
+        }
+      );
+    }
+
+  public switchBetweenLoginRegister(): void{
+    this.showLogin = !this.showLogin;
+    this.showRegister = !this.showRegister;
+  }
+
+  public switchBetweenLoginPatientPanel():void{
+    this.showLoginWindow = !this.showLoginWindow;
+    this.showPatientPanel = !this.showPatientPanel;
+  }
+    private clearRegisterdUser():void{
+      this.registerdUser.fullName = '';
+      this.registerdUser.password = '';
+      this.registerdUser.userName = '';
+      this.registerdUser.passwordTimeout = 0;
+      this.registerdUser.activeStatus = false;
+      this.registerdUser.securityLevelStatus = '';
+    }
+
+    private clearCurrentUser():void{
+      this.currentUser.fullName = '';
+      this.currentUser.password = '';
+      this.currentUser.userName = '';
+      this.currentUser.passwordTimeout = 0;
+      this.currentUser.activeStatus = false;
+      this.currentUser.securityLevelStatus = '';
+    }
+
 }

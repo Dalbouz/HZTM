@@ -2,13 +2,14 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, ObservableNotification } from "rxjs";
 import { PatientData } from "../dataStructure/PatientData";
+import { environment } from '../environments/environment';
 
 @Injectable({
     providedIn:'root'
 })
 
 export class PatientService{
-    private apiServerUrl = '';
+    private apiServerUrl = environment.apiBaseUrl;
 
     constructor(private http: HttpClient){}
  
