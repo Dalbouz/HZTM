@@ -1,3 +1,5 @@
+import { PatientData } from "../dataStructure/PatientData";
+
 export interface AnalizatorData{
     sampleNumber:number;
     analizatorName:string;
@@ -13,4 +15,5 @@ export interface AnalizatorData{
     testMarkForEDelphyn:string;
     notes:string;
     id: number;
+    patient: PatientData;
 }
