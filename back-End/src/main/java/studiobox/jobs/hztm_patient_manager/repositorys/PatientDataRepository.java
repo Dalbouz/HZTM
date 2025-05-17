@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PatientDataRepository extends JpaRepository<PatientData, Long> {
-    Optional<PatientData> findByOib(int oib);
+    Optional<PatientData> findByOib(Long oib);
 }

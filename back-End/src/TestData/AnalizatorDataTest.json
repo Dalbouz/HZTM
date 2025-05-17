@@ -1,0 +1,17 @@
+[
+    {
+        "sampleNumber": 1,
+        "analizatorName": "Ivan",
+        "analizatorOib": 48930238448,
+        "testMark": "Oznaka Testa",
+        "lot": "lot 1",
+        "expirationDateReagens": "10/2026",
+        "interpretedResult": "interpretirani rezultat",
+        "numericValueFromAnalizator": 2245,
+        "dateOfReading": "15.5.2025",
+        "timeOfReading": "15:44:24",
+        "interpretationForEDelphyn": "Interpretacija za EDelphyn",
+        "testMarkForEdelphyn": "Test oznaka za EDelphyn",
+        "notes": "Treba jos jednom napraviti nalaz"
+    }
+]

@@ -13,6 +13,7 @@ import studiobox.jobs.hztm_patient_manager.service.PatientService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/analizatorPatientLinks")
 public class PatientAnalizatorLinkController {
 
     private final PatientAnalizatorLinkService patientAnalizatorLinkService;
@@ -27,7 +28,7 @@ public class PatientAnalizatorLinkController {
         this.analizatorService = analizatorService;
     }
 
-    @PostMapping("/analizatorPatientLink/link/{patientId}/{analizatorId}")
+    @PostMapping("/link/{patientId}/{analizatorId}")
     public ResponseEntity<PatientAnalizatorLinkData> linkAnalizatorToPatient(
             @PathVariable Long patientId,
             @PathVariable Long analizatorId) {
@@ -41,7 +42,7 @@ public class PatientAnalizatorLinkController {
         }
     }
 
-    @DeleteMapping("/analizatorPatientLink/unlink/{patientId}/{analizatorId}")
+    @DeleteMapping("/unlink/{patientId}/{analizatorId}")
     public ResponseEntity<Void> unlinkAnalizatorFromPatient(
             @PathVariable Long patientId,
             @PathVariable Long analizatorId) {
@@ -55,7 +56,7 @@ public class PatientAnalizatorLinkController {
         }
     }
 
-    @GetMapping("/analizatorPatientLink/find/analizators/{patientId}")
+    @GetMapping("/find/analizators/{patientId}")
     public ResponseEntity<List<AnalizatorData>> getPatientAnalizators(
             @PathVariable Long patientId) {
         try {
@@ -67,7 +68,7 @@ public class PatientAnalizatorLinkController {
         }
     }
 
-    @PutMapping("/analizatorPatientLink/update")
+    @PutMapping("/update")
     public ResponseEntity<PatientAnalizatorLinkData> updateAnalizatorLink(
             @RequestBody PatientAnalizatorLinkData linkData) {
         try {

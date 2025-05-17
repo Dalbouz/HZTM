@@ -29,7 +29,7 @@ public class PatientService {
         return patientDataRepository.findById(id).get();
     }
 
-    public PatientData findPatientByOib(int oib){
+    public PatientData findPatientByOib(Long oib){
         return patientDataRepository.findByOib(oib).orElseThrow(()->new DataNotFound("Patient with the OIB:" + oib + "not Found!"));
     }
 }

@@ -1,0 +1,46 @@
+[
+{
+  "name":"Ivan" ,
+  "surname":"Ivicia",
+  "dataOfBirth":"10.05.1996" ,
+  "mbo":192385839 ,
+  "oib":48930238448,
+  "priority": "High",
+  "priorityReason":"Zbog upale" ,
+  "sampleNumber":"123" ,
+  "dateOfSample": "10.05.2025",
+  "timeOfSample": "10:30",
+  "sampleReceipt":"321" ,
+  "testRequirements": "Treba na analizu"
+},
+
+{
+  "name":"Mario",
+  "surname":"Marica",
+  "dataOfBirth":"12.05.1995",
+  "mbo":162384839,
+  "oib":58930253448,
+  "priority": "Low",
+  "priorityReason":"Zbog noge",
+  "sampleNumber":"234",
+  "dateOfSample": "12.05.2025",
+  "timeOfSample": "11:30",
+  "sampleReceipt":"432" ,
+  "testRequirements": "Treba na vidjeti još"
+},
+
+{
+  "name":"Luka",
+  "surname":"Lukica",
+  "dataOfBirth":"13.05.1994",
+  "mbo":162384839,
+  "oib":58930283238,
+  "priority": "Middle",
+  "priorityReason":"Zbog bolova",
+  "sampleNumber":"456",
+  "dateOfSample": "13.05.2025",
+  "timeOfSample": "12:30",
+  "sampleReceipt":"543" ,
+  "testRequirements": "Ljecenje"
+}
+]

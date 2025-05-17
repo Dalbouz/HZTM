@@ -1,5 +1,6 @@
 package studiobox.jobs.hztm_patient_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ public class PatientData implements Serializable {
     private String surname;
     private String dataOfBirth;
     private int mbo;
-    private int oib;
+    private Long oib;
     private String priority;
     private String priorityReason;
     private String sampleNumber;
@@ -28,14 +29,15 @@ public class PatientData implements Serializable {
     private String testRequirements;
 
     @OneToMany(mappedBy ="patient", cascade=CascadeType.ALL, orphanRemoval = true)
-    private List<PatientAnalizatorLinkData> analizatorLinks = new ArrayList<>();
+    @JsonManagedReference
+    private List<AnalizatorData> analizatorDataList = new ArrayList<>();
 
     public PatientData() {}
 
-    public PatientData(Long Id, String Name, String Surname, String DataOfBirth, int mbo, int oib,
+    public PatientData(Long Id, String Name, String Surname, String DataOfBirth, int mbo, Long oib,
                        String Priority, String PriorityReason, String SampleNumber,
                        String DateOfSample, String TimeOfSample, String SampleReceipt,
-                       String TestRequirements, List<PatientAnalizatorLinkData> analizatorLinks) {
+                       String TestRequirements, List<AnalizatorData> analizatorDataList) {
         this.id = Id;
         this.name = Name;
         this.surname = Surname;
@@ -49,15 +51,15 @@ public class PatientData implements Serializable {
         this.timeOfSample = TimeOfSample;
         this.sampleReceipt = SampleReceipt;
         this.testRequirements = TestRequirements;
-        this.analizatorLinks = analizatorLinks;
+        this.analizatorDataList = analizatorDataList;
     }
 
-    public List<PatientAnalizatorLinkData> getAnalizatorLinks() {
-        return analizatorLinks;
+    public List<AnalizatorData> getAnalizatorDataList() {
+        return analizatorDataList;
     }
 
-    public void setAnalizatorLinks(List<PatientAnalizatorLinkData> analizatorLinks) {
-        this.analizatorLinks = analizatorLinks;
+    public void setAnalizatorDataList(List<AnalizatorData> analizatorLinks) {
+        this.analizatorDataList = analizatorLinks;
     }
 
     public Long getId() {
@@ -100,11 +102,11 @@ public class PatientData implements Serializable {
         this.mbo = MBO;
     }
 
-    public int getOib() {
+    public Long getOib() {
         return oib;
     }
 
-    public void setOib(int OIB) {
+    public void setOib(Long OIB) {
         this.oib = OIB;
     }
 

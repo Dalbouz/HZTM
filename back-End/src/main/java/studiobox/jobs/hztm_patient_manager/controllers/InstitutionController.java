@@ -7,6 +7,7 @@ import studiobox.jobs.hztm_patient_manager.model.InstitutionLabData;
 import studiobox.jobs.hztm_patient_manager.service.InstitutionService;
 
 @RestController
+@RequestMapping("/institutions")
 public class InstitutionController {
     private final InstitutionService institutionService;
 
@@ -14,13 +15,13 @@ public class InstitutionController {
         this.institutionService = institutionService;
     }
 
-    @PostMapping("/institutions/add")
+    @PostMapping("/add")
     public ResponseEntity<InstitutionLabData> addInstitution(@RequestBody InstitutionLabData institutionLabData){
         InstitutionLabData newInstitutionLabData = institutionService.addInstitution(institutionLabData);
         return new ResponseEntity<>(newInstitutionLabData, HttpStatus.CREATED);
     }
 
-    @GetMapping("/institutions/find/{name}")
+    @GetMapping("/find/{name}")
     public ResponseEntity<InstitutionLabData> findInstitution(@PathVariable String name){
         InstitutionLabData institution = institutionService.findInstitutionByName(name);
         return new ResponseEntity<>(institution, HttpStatus.OK);

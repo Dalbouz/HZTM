@@ -1,5 +1,6 @@
 package studiobox.jobs.hztm_patient_manager.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.List;
 public class AnalizatorData implements Serializable {
     private int sampleNumber;
     private String analizatorName;
-    private int analizatorOib;
+    private Long analizatorOib;
     private String testMark;
     private String lot;
     private String expirationDateReagens;
@@ -27,8 +28,10 @@ public class AnalizatorData implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "analizator", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PatientAnalizatorLinkData> patientLinks = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    @JsonBackReference
+    private PatientData patient;
 
     public AnalizatorData() {}
 
@@ -45,8 +48,8 @@ public class AnalizatorData implements Serializable {
             String InterpretationForEDelphyn,
             String TestMarkForEdelphyn,
             String Notes,
-            int AnalizatorOib,
-            List<PatientAnalizatorLinkData> patientLinks
+            Long AnalizatorOib,
+            PatientData patient
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -61,22 +64,22 @@ public class AnalizatorData implements Serializable {
         this.testMarkForEdelphyn = TestMarkForEdelphyn;
         this.notes = Notes;
         this.analizatorOib = AnalizatorOib;
-        this.patientLinks = patientLinks;
+        this.patient = patient;
     }
 
-    public PatientAnalizatorLinkData getPatientAnalizatorLink() {
-        return patientLinks.get(0);
+    public PatientData getPatient() {
+        return patient;
     }
 
-    public void setPatientLinks(List<PatientAnalizatorLinkData> patientLinks) {
-        this.patientLinks = patientLinks;
+    public void setPatient(PatientData patient) {
+        this.patient = patient;
     }
 
-    public int getAnalizatorOib() {
+    public Long getAnalizatorOib() {
         return analizatorOib;
     }
 
-    public void setAnalizatorOib(int AnalizatorOib) {
+    public void setAnalizatorOib(Long AnalizatorOib) {
         this.analizatorOib = AnalizatorOib;
     }
 

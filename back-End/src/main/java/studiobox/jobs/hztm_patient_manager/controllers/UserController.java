@@ -7,6 +7,7 @@ import studiobox.jobs.hztm_patient_manager.model.UserData;
 import studiobox.jobs.hztm_patient_manager.service.UserService;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -14,7 +15,7 @@ public class UserController {
         this.userService = userService;
     }
 
-        @GetMapping("/users/find/{userName}/{password}")
+        @GetMapping("/find/{userName}/{password}")
         public ResponseEntity<UserData> checkAndGetUser(@PathVariable("userName") String userName, @PathVariable("password") String password){
             UserData checkUser = userService.checkUserCredentials(userName, password);
             if(checkUser!=null){
@@ -23,7 +24,7 @@ public class UserController {
             return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/users/add")
+    @PostMapping("/add")
     public ResponseEntity<UserData> addUser(@RequestBody UserData user){
         UserData newUser = userService.addUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
