@@ -14,5 +14,5 @@ export interface PatientData{
     timeOfSample:string;
     sampleReceipt:string;
     testRequirements:string;
-    analizator: AnalizatorData;
+    analizator: AnalizatorData[];
 }
