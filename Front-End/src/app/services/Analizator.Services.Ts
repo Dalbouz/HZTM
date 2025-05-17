@@ -2,13 +2,14 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { AnalizatorData } from "../dataStructure/AnalizatorData";
+import { environment } from '../environments/environment';
 
 @Injectable({
     providedIn:'root'
 })
 
 export class AnalizatorServices{
-    private apiServerUrl = '';
+    private apiServerUrl = environment.apiBaseUrl;
 
     constructor(private http: HttpClient){}
  
