@@ -10,14 +10,14 @@ import java.util.List;
 @Entity
 @Table(name = "analizators")
 public class AnalizatorData implements Serializable {
-    private int sampleNumber;
+    private Integer sampleNumber;
     private String analizatorName;
     private Long analizatorOib;
     private String testMark;
     private String lot;
     private String expirationDateReagens;
     private String interpretedResult;
-    private int numericValueFromAnalizator;
+    private String numericValueFromAnalizator;
     private String dateOfReading;
     private String timeOfReading;
     private String interpretationForEDelphyn;
@@ -36,13 +36,13 @@ public class AnalizatorData implements Serializable {
     public AnalizatorData() {}
 
     public AnalizatorData(
-            int SampleNumber,
+            Integer SampleNumber,
             String AnalizatorName,
             String TestMark,
             String Lot,
             String expirationDateReagens,
             String InterpretedResult,
-            int NumericValueFromAnalizator,
+            String NumericValueFromAnalizator,
             String DateOfReading,
             String TimeOfReading,
             String InterpretationForEDelphyn,
@@ -91,11 +91,11 @@ public class AnalizatorData implements Serializable {
         return id;
     }
 
-    public int getSampleNumber() {
+    public Integer getSampleNumber() {
         return sampleNumber;
     }
 
-    public void setSampleNumber(int sampleNumber) {
+    public void setSampleNumber(Integer sampleNumber) {
         this.sampleNumber = sampleNumber;
     }
 
@@ -139,11 +139,11 @@ public class AnalizatorData implements Serializable {
         this.interpretedResult = interpretedResult;
     }
 
-    public int getNumericValueFromAnalizator() {
+    public String getNumericValueFromAnalizator() {
         return numericValueFromAnalizator;
     }
 
-    public void setNumericValueFromAnalizator(int numericValueFromAnalizator) {
+    public void setNumericValueFromAnalizator(String numericValueFromAnalizator) {
         this.numericValueFromAnalizator = numericValueFromAnalizator;
     }
 

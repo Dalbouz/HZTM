@@ -29,8 +29,8 @@ public class M implements Serializable {
     @Column(name = "InventoryContainerIdentifier")
     private String InventoryContainerIdentifier;
 
-    @Column(name = "ExpirationDataTime")
-    private String ExpirationDataTime;
+    @Column(name = "ExpirationDateTime")
+    private String ExpirationDateTime;
 
     @Column(name = "CalibrationDateTime")
     private String CalibrationDateTime;
@@ -44,15 +44,15 @@ public class M implements Serializable {
     public M() {
     }
 
-    public M(int Id, String SequenceNumber, String RecordType,String RecordTypeSubID,String SubstanceIdentifier, String SubstanceType,
-             String InventoryContainerIdentifie,String ExpirationDataTime, String CalibrationDateTime,String LotNumber,int IdOcitanja) {
+    public M(int Id, String SequenceNumber, String RecordType, String RecordTypeSubID, String SubstanceIdentifier, String SubstanceType,
+             String InventoryContainerIdentifie, String ExpirationDateTime, String CalibrationDateTime, String LotNumber, int IdOcitanja) {
         this.SequenceNumber = SequenceNumber;
         this.RecordType = RecordType;
         this.RecordTypeSubID = RecordTypeSubID;
         this.SubstanceIdentifier = SubstanceIdentifier;
         this.SubstanceType = SubstanceType;
         this.InventoryContainerIdentifier = InventoryContainerIdentifier;
-        this.ExpirationDataTime = ExpirationDataTime;
+        this.ExpirationDateTime = ExpirationDateTime;
         this.CalibrationDateTime = CalibrationDateTime;
         this.LotNumber = LotNumber;
         this.IdOcitanja = IdOcitanja;
@@ -103,11 +103,11 @@ public class M implements Serializable {
         this.InventoryContainerIdentifier = InventoryContainerIdentifier;
 
     }
-    public String getExpirationDataTime() {
-        return ExpirationDataTime;
+    public String getExpirationDateTime() {
+        return ExpirationDateTime;
     }
-    public void setExpirationDataTime(String ExpirationDataTime) {
-        this.ExpirationDataTime = ExpirationDataTime;
+    public void setExpirationDateTime(String ExpirationDataTime) {
+        this.ExpirationDateTime = ExpirationDataTime;
     }
     public String getCalibrationDateTime() {
         return CalibrationDateTime;

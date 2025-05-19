@@ -19,8 +19,8 @@ public class HztmPatientManagerApplication {
 	@Bean
 	public CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		config.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Angular dev server
+		//config.setAllowCredentials(true);
+		config.setAllowedOrigins(Arrays.asList("http://localhost:4200","http://192.168.1.161:50020", "*")); // Angular dev server ("http://localhost:4200","http://192.168.100.24")
 		config.setAllowedHeaders(Arrays.asList("*"));
 		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 

@@ -8,7 +8,7 @@ export interface AnalizatorData{
     lot:string;
     expirationDateReagens:string;
     interpretedResult:string;
-    numericValueFromAnalizator:number;
+    numericValueFromAnalizator:string;
     dateOfReading:string;
     timeOfReading:string;
     interpretationForEDelphyn:string;
