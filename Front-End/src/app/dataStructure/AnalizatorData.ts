@@ -16,4 +16,6 @@ export interface AnalizatorData{
     notes:string;
     id: number;
     patient: PatientData;
+    validated: Boolean;
+    testStatus: String;
 }

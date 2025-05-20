@@ -23,6 +23,8 @@ public class AnalizatorData implements Serializable {
     private String interpretationForEDelphyn;
     private String testMarkForEdelphyn;
     private String notes;
+    private Boolean validated;
+    private String testStatus;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +51,9 @@ public class AnalizatorData implements Serializable {
             String TestMarkForEdelphyn,
             String Notes,
             Long AnalizatorOib,
-            PatientData patient
+            PatientData patient,
+            Boolean validated,
+            String testStatus
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -65,6 +69,23 @@ public class AnalizatorData implements Serializable {
         this.notes = Notes;
         this.analizatorOib = AnalizatorOib;
         this.patient = patient;
+        this.validated = validated;
+        this.testStatus = testStatus;
+
+    }
+
+    public String getTestStatus() {
+        return testStatus;
+    }
+    public void setTestStatus(String testStatus) {
+        this.testStatus = testStatus;
+    }
+
+    public Boolean getValidated() {
+        return validated;
+    }
+    public void setValidated(boolean validated) {
+        this.validated = validated;
     }
 
     public PatientData getPatient() {

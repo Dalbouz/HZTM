@@ -1,0 +1,85 @@
+/*CSS for Login Screen*/
+.loginWindow {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #f0f4f8 0%, #d9e7fa 100%);
+}
+
+.login, .register {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(60, 60, 120, 0.11);
+  width: 340px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  animation: fadeIn 0.7s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  color: #2d3a4a;
+  letter-spacing: 1px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 0.3rem;
+  color: #3b4a5a;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+input, select {
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1.1rem;
+  border: 1px solid #c7d0dd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.2s;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #6c8df5;
+  box-shadow: 0 0 0 2px #e2e9fa;
+}
+
+button {
+  padding: 0.7rem 0;
+  margin-bottom: 0.7rem;
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+}
+button:last-child {
+  margin-bottom: 0;
+  background: linear-gradient(90deg, #f5a76c 0%, #fa5a7d 100%);
+}
+button:hover {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+button:last-child:hover {
+  background: linear-gradient(90deg, #fa7d5a 0%, #f55a7d 100%);
+}
