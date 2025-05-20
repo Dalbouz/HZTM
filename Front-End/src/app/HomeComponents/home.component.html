@@ -1,1 +1,25 @@
-<h1>HOME</h1>
+<div class="logout-container">
+  <button class="logout-btn" (click)="logout()">Logout</button>
+</div>
+
+<div class="homepage-nav">
+  <h1>Dobrodošli {{mainDataService.currentUser.fullName}}</h1>
+  <div class="nav-boxes">
+    <button class="nav-box" (click)="navigateTo('patients')">
+      <span class="nav-title">Patients</span>
+      <span class="nav-desc">View and manage patient records</span>
+    </button>
+    <button class="nav-box" (click)="navigateTo('analizators')">
+      <span class="nav-title">Analizators</span>
+      <span class="nav-desc">Access analizator data and controls</span>
+    </button>
+    <button class="nav-box" (click)="navigateTo('reports')">
+      <span class="nav-title">Reports</span>
+      <span class="nav-desc">Generate and review reports</span>
+    </button>
+    <button class="nav-box" (click)="navigateTo('settings')">
+      <span class="nav-title">Settings</span>
+      <span class="nav-desc">Configure application settings</span>
+    </button>
+  </div>
+</div>

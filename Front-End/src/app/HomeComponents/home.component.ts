@@ -19,4 +19,21 @@ import { UserData } from '../dataStructure/UserData';
 })
 export class HomeComponent {
     title = 'hztm_pacient_management';
+
+    constructor(
+        public mainDataService: MainDataService,
+        private userService: UserService,
+        private router: Router,
+    ){}
+
+    navigateTo(route: string) {
+    this.router.navigate([`/${route}`]);
+  }
+
+  logout() {
+  // Add your logout logic here (e.g., clear tokens, redirect to login)
+  this.router.navigate(['/login']);
+  this.mainDataService.isLoggedIn = false;
+  this.mainDataService.clearCurrentUser();
+}
 }
