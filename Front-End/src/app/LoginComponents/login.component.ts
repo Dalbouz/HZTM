@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit{
 
     ngOnInit(): void {
       this.mainDataService.isLoggedIn = false;
+      this.mainDataService.clearCurrentUser();
     }
 
     public login():void{

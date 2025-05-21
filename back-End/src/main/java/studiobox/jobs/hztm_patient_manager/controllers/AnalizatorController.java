@@ -21,26 +21,6 @@ public class AnalizatorController {
         this.patientService = patientService;
     }
 
-    // 1. Add analizator data and link to a patient
-    @PostMapping("/add/patient/{patientId}")
-    public ResponseEntity<AnalizatorData> addAnalizatorToPatient(
-            @PathVariable Long patientId,
-            @RequestBody AnalizatorData analizatorData) {
-        try {
-            PatientData patient = patientService.findPatientById(patientId);
-            analizatorData.setPatient(patient);
-            AnalizatorData saved = analizatorService.saveAnalizatorData(analizatorData);
-            return new ResponseEntity<>(saved, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<AnalizatorData> addAnalizator(@RequestBody AnalizatorData analizatorData) {
-        AnalizatorData analizator =  analizatorService.saveAnalizatorData(analizatorData);
-        return new ResponseEntity<>(analizator, HttpStatus.CREATED);
-    }
 
     @GetMapping("/find/all")
     public ResponseEntity<List<AnalizatorData>> getAllAnalizators(){
@@ -57,6 +37,7 @@ public class AnalizatorController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    //find Analizator by patient ID
     @GetMapping("/find/patient/{patientId}")
     public ResponseEntity<List<AnalizatorData>> getAnalizatorsForPatient(@PathVariable Long patientId) {
         try {
@@ -90,6 +71,49 @@ public class AnalizatorController {
         }
     }
 
+    // Link existing analizator data to a patient
+    @PutMapping("/link/{analizatorId}/{patientId}")
+    public ResponseEntity<AnalizatorData> linkAnalizatorToPatient(
+            @PathVariable Long analizatorId,
+            @PathVariable Long patientId) {
+        try {
+            AnalizatorData analizator = analizatorService.findByAnalizatorOib(analizatorId);
+            PatientData patient = patientService.findPatientById(patientId);
+            if (analizator == null || patient == null) { // ✅ Explicit check
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            analizator.setPatient(patient);
+            AnalizatorData saved = analizatorService.saveAnalizatorData(analizator);
+            return new ResponseEntity<>(saved, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // 1. Add analizator data and link to a patient
+    @PostMapping("/add/patient/{patientId}")
+    public ResponseEntity<AnalizatorData> addAnalizatorToPatient(
+            @PathVariable Long patientId,
+            @RequestBody AnalizatorData analizatorData) {
+        try {
+            PatientData patient = patientService.findPatientById(patientId);
+            analizatorData.setPatient(patient);
+            AnalizatorData saved = analizatorService.saveAnalizatorData(analizatorData);
+            return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /*
+
+
+
+    @PostMapping("/add")
+    public ResponseEntity<AnalizatorData> addAnalizator(@RequestBody AnalizatorData analizatorData) {
+        AnalizatorData analizator =  analizatorService.saveAnalizatorData(analizatorData);
+        return new ResponseEntity<>(analizator, HttpStatus.CREATED);
+    }
 
     // 5. Delete analizator data (permanently)
     @DeleteMapping("/delete/{id}")
@@ -114,24 +138,7 @@ public class AnalizatorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+ */
 
-    // Link existing analizator data to a patient
-    @PutMapping("/link/{analizatorId}/{patientId}")
-    public ResponseEntity<AnalizatorData> linkAnalizatorToPatient(
-            @PathVariable Long analizatorId,
-            @PathVariable Long patientId) {
-        try {
-            AnalizatorData analizator = analizatorService.findByAnalizatorOib(analizatorId);
-            PatientData patient = patientService.findPatientById(patientId);
-            if (analizator == null || patient == null) { // ✅ Explicit check
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            analizator.setPatient(patient);
-            AnalizatorData saved = analizatorService.saveAnalizatorData(analizator);
-            return new ResponseEntity<>(saved, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 
 }

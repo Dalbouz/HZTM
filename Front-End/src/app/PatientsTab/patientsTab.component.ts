@@ -6,15 +6,15 @@ import { filter } from 'rxjs';
 import { MainDataService } from '../services/MainData.Services';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-patientsTab',
   standalone: true,
   imports: [RouterOutlet,
     CommonModule,
     FormsModule],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './patientsTab.component.html',
+  styleUrls: ['./PatientsTab.component.css']
 })
-export class HomeComponent {
+export class PatientsTabComponent {
     title = 'hztm_pacient_management';
 
     constructor(
@@ -22,14 +22,7 @@ export class HomeComponent {
         private router: Router,
     ){}
 
-    navigateTo(route: string) {
-    this.router.navigate([`/${route}`]);
+    goBack() {
+    this.router.navigate([`/home`]);
   }
-
-    logout() {
-    // Add your logout logic here (e.g., clear tokens, redirect to login)
-    this.router.navigate(['/login']);
-    this.mainDataService.isLoggedIn = false;
-    this.mainDataService.clearCurrentUser();
-    }
 }

@@ -1,0 +1,43 @@
+    <button class="back-btn" (click)="goBack()" title="Back">
+  <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
+  <span class="back-text">Back</span>
+</button>
+    
+    <div class="table-wrapper">
+      <table class="patient-table">
+        <thead>
+          <tr>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>MBO</th>
+            <th>OIB</th>
+            <th>Datum rođenja</th>
+            <th>Prioritet</th>
+            <th>Razlog prioriteta</th>
+            <th>Broj uzorka</th>
+            <th>Datum uzorka</th>
+            <th>Vrijeme uzorka</th>
+            <th>Zaprimanje uzorka</th>
+            <th>Zahtjevi testa</th>
+            <th>Analizator podaci</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patient of mainDataService.patients">
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.surname }}</td>
+            <td>{{ patient.mbo }}</td>
+            <td>{{ patient.oib }}</td>
+            <td>{{ patient.dateOfBirth }}</td>
+            <td>{{ patient.priority }}</td>
+            <td>{{ patient.priorityReason }}</td>
+            <td>{{ patient.sampleNumber }}</td>
+            <td>{{ patient.dateOfSample }}</td>
+            <td>{{ patient.timeOfSample }}</td>
+            <td>{{ patient.sampleReceipt }}</td>
+            <td>{{ patient.testRequirements }}</td>
+            <td>{{ patient.analizator?.length || 0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>

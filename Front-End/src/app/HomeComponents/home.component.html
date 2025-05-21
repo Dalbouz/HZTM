@@ -5,21 +5,31 @@
 <div class="homepage-nav">
   <h1>Dobrodošli {{mainDataService.currentUser.fullName}}</h1>
   <div class="nav-boxes">
-    <button class="nav-box" (click)="navigateTo('patients')">
-      <span class="nav-title">Patients</span>
-      <span class="nav-desc">View and manage patient records</span>
+    <button class="nav-box" (click)="navigateTo('patientsTab')">
+      <span class="nav-title">Pacijenti</span>
+      <span class="nav-desc">Pregled testova</span>
     </button>
     <button class="nav-box" (click)="navigateTo('analizators')">
       <span class="nav-title">Analizators</span>
       <span class="nav-desc">Access analizator data and controls</span>
     </button>
     <button class="nav-box" (click)="navigateTo('reports')">
-      <span class="nav-title">Reports</span>
-      <span class="nav-desc">Generate and review reports</span>
+      <span class="nav-title">Arhiva</span>
+      <span class="nav-desc">Svi validirani testovi</span>
     </button>
     <button class="nav-box" (click)="navigateTo('settings')">
-      <span class="nav-title">Settings</span>
-      <span class="nav-desc">Configure application settings</span>
+      <span class="nav-title">Liste</span>
+      <span class="nav-desc">
+        Lista ponavljača,
+        Lista pacijenata koji su bili pozitivni/slabo pozitivni,
+        Lista uzorka prema testu
+      </span>
+    </button>
+    <button class="nav-box" (click)="navigateTo('settings')">
+      <span class="nav-title">Registar pozitivnih<br>Davatelja</span>
+      <span class="nav-desc">
+        DDK koji je pozitivan na jedan od biljega
+      </span>
     </button>
   </div>
 </div>
