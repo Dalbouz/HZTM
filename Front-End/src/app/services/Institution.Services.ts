@@ -20,4 +20,8 @@ export class InstitutionService{
     public addInstitution(newInstitution: InstitutionLabData): Observable<InstitutionLabData>{
         return this.http.post<InstitutionLabData>(`${this.apiServerUrl}/institutions/add`, newInstitution);
     }
+
+     public getInstitutions(): Observable<InstitutionLabData[]>{
+        return this.http.get<InstitutionLabData[]>(`${this.apiServerUrl}/institutions/find/all`);
+    }
 }

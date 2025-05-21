@@ -7,6 +7,8 @@ import { filter } from 'rxjs';
 import { UserService } from '../services/User.Services';
 import { MainDataService } from '../services/MainData.Services';
 import { UserData } from '../dataStructure/UserData';
+import { InstitutionService } from '../services/Institution.Services';
+import { InstitutionLabData } from '../dataStructure/InstitutionLabData';
 
 @Component({
   selector: 'app-login',
@@ -23,9 +25,11 @@ export class LoginComponent implements OnInit{
     public showLoginWindow: boolean = true;
     public showLogin: boolean = true;
     public showRegister:boolean = false;
+    public showCreateInstitution: boolean = false;
     
     public userNameTemp:string ="";
     public passwordTemp:string ="";
+    public selectedInstitution: string = "";
     
     public adminUserNameChecker:string = "";
     public adminPasswordChecker:string ="";
@@ -38,20 +42,31 @@ export class LoginComponent implements OnInit{
         activeStatus: false,
         securityLevelStatus: ''
     };
+
+    public institutionTemp: InstitutionLabData  = {
+        name: '',
+        adress:'',
+    };
     
      constructor(
         public mainDataService: MainDataService,
         private userService: UserService,
         private router: Router,
+        private institutionService: InstitutionService
     ){}
 
     ngOnInit(): void {
       this.mainDataService.isLoggedIn = false;
       this.mainDataService.clearCurrentUser();
+      this.mainDataService.clearCurrentInstitution();
+      this.selectedInstitution='';
     }
 
+    
+//#region Login
     public login():void{
-    if(this.userNameTemp == "" || this.passwordTemp == ""){
+    if(this.userNameTemp == "" || this.passwordTemp == "" || this.selectedInstitution==""){
+      
       return;
     }
 
@@ -62,6 +77,7 @@ export class LoginComponent implements OnInit{
             this.mainDataService.currentUser.activeStatus = true; //ovo je samo lokalno, ne pusha se na server na serveru ne pise koji se user aktivan
             this.mainDataService.isLoggedIn = true; 
             this.loginSuccess();
+            this.getInstitutionByName();
         }
         else{
           alert("wrong credentials!");
@@ -70,9 +86,11 @@ export class LoginComponent implements OnInit{
       (error: HttpErrorResponse)=>{
         alert(error.message + "\nWRONG CREDENTIALS!")
       }
-    )
+    );
   }
+//#endregion
 
+//#region RegisterUser
   public register():void{
     if(this.registerdUserTemp.fullName =="" || this.registerdUserTemp.password=="" || this.registerdUserTemp.userName == "" 
       || this.registerdUserTemp.securityLevelStatus==""){
@@ -81,6 +99,9 @@ export class LoginComponent implements OnInit{
     if(this.registerdUserTemp.securityLevelStatus=="HIGH" && this.mainDataService.adminUserExist){
       if(this.mainDataService.adminUserName == this.adminUserNameChecker && this.mainDataService.adminPassword == this.adminPasswordChecker){
           this.addUser();
+           this.clearAdminChecker();
+           this.clearRegisterdUserTemp();
+           this.clearUserCredentialsTemp();
       }
       else{
         alert("Wrong admin Credentials!");
@@ -96,9 +117,6 @@ export class LoginComponent implements OnInit{
         (response: UserData) => {
           if (response != null) {
             this.switchBetweenLoginRegister();
-            // this.clearRegisterdUser();
-            this.adminPasswordChecker ="";
-            this.adminUserNameChecker = "";
           }
           else {
             alert("Username already exists!"); // Handle existing user
@@ -109,20 +127,102 @@ export class LoginComponent implements OnInit{
         }
       );
     }
+//#endregion
 
+//#region RegisterInstitution
+    private addInstitution():void{
+            this.institutionService.addInstitution(this.institutionTemp).subscribe(
+          (response: InstitutionLabData) => {
+          if (response != null) {
+            this.mainDataService.getInstitutions();
+            this.clearInstitutionTemp();
+          }
+          else {
+            alert("Institution error!"); // Handle existing user
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
+        }
+      );
+    }
+
+    public registerInstitution():void{
+        if(this.institutionTemp.name =="" || this.institutionTemp.adress==""){
+          return;
+    }
+    
+      if(this.mainDataService.adminUserName == this.adminUserNameChecker && this.mainDataService.adminPassword == this.adminPasswordChecker){
+          this.addInstitution();
+          this.switchBetweenLoginCreateInstitution();
+          this.clearAdminChecker();
+          this.clearUserCredentialsTemp();
+      }
+      else{
+        alert("Wrong admin Credentials!");
+      }
+    }
+//#endregion
+
+    private getInstitutionByName():void{
+      this.institutionService.getInstitution(this.selectedInstitution).subscribe(
+        (response: InstitutionLabData)=>{
+          if(response!=null){
+            this.mainDataService.currentInstitution = response;
+          }
+          else{
+          alert("Select an Institution");
+        }
+      },
+      (error: HttpErrorResponse)=>{
+        alert(error.message + "\nNo Institution")
+      }
+      );
+    }
+//#region SwitchPanelMethods
     public switchBetweenLoginRegister(): void{
-    this.showLogin = !this.showLogin;
-    this.showRegister = !this.showRegister;
+      this.showLogin = !this.showLogin;
+      this.showRegister = !this.showRegister;
+      this.clearAdminChecker();
+      this.clearRegisterdUserTemp();
+      this.clearUserCredentialsTemp();
   }
 
-  private clearRegisterdUser():void{
-      this.registerdUserTemp.fullName = '';
+  public switchBetweenLoginCreateInstitution(): void{
+    this.showLogin = !this.showLogin;
+    this.showCreateInstitution = !this.showCreateInstitution;
+     this.clearUserCredentialsTemp();
+     this.clearInstitutionTemp();
+     this.clearAdminChecker();
+  }
+  //#endregion
+
+//#region ClearMethods
+    private clearAdminChecker():void{
+        this.adminPasswordChecker ="";
+        this.adminUserNameChecker = "";
+    }
+  
+    private clearUserCredentialsTemp():void{
+      this.userNameTemp="";
+      this.passwordTemp="";
+    }
+
+    private clearInstitutionTemp():void{
+      this.institutionTemp.name='';
+      this.institutionTemp.adress='';
+    }
+
+  private clearRegisterdUserTemp():void{
+    
+    this.registerdUserTemp.fullName = '';
       this.registerdUserTemp.password = '';
       this.registerdUserTemp.userName = '';
       this.registerdUserTemp.passwordTimeout = 0;
       this.registerdUserTemp.activeStatus = false;
       this.registerdUserTemp.securityLevelStatus = '';
     }
+//#endregion
 
   private loginSuccess(): void{
     this.router.navigate(['/home']);

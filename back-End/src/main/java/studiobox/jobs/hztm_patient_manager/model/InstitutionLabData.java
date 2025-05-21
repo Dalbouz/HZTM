@@ -15,7 +15,7 @@ public class InstitutionLabData implements Serializable {
 
     public InstitutionLabData() {}
 
-    public InstitutionLabData(String Name, String Adress) {
+    public  InstitutionLabData(String Name, String Adress) {
         this.name = Name;
         this.adress = Adress;
     }

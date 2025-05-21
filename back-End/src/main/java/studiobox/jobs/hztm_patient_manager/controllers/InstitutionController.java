@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import studiobox.jobs.hztm_patient_manager.model.InstitutionLabData;
 import studiobox.jobs.hztm_patient_manager.service.InstitutionService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/institutions")
 public class InstitutionController {
@@ -16,14 +18,20 @@ public class InstitutionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<InstitutionLabData> addInstitution(@RequestBody InstitutionLabData institutionLabData){
-        InstitutionLabData newInstitutionLabData = institutionService.addInstitution(institutionLabData);
-        return new ResponseEntity<>(newInstitutionLabData, HttpStatus.CREATED);
+    public ResponseEntity<InstitutionLabData> addInstitution(@RequestBody InstitutionLabData institution){
+        InstitutionLabData institutionLabData = institutionService.addInstitution(institution);
+        return new ResponseEntity<>(institution, HttpStatus.CREATED);
     }
 
     @GetMapping("/find/{name}")
     public ResponseEntity<InstitutionLabData> findInstitution(@PathVariable String name){
         InstitutionLabData institution = institutionService.findInstitutionByName(name);
         return new ResponseEntity<>(institution, HttpStatus.OK);
+    }
+
+    @GetMapping("/find/all")
+    public ResponseEntity<List<InstitutionLabData>> getAllInstitutions(){
+        List<InstitutionLabData> institutionLabData = institutionService.findAllInstitutions();
+        return new ResponseEntity<>(institutionLabData, HttpStatus.OK);
     }
 }

@@ -8,10 +8,21 @@
           <label for="password">Password</label>
           <input type="password" id="password" name="password"  [(ngModel)]="passwordTemp" required>
 
-          <button type="submit" (click)="login()">Login</button>
-          <button type="register" (click)="switchBetweenLoginRegister()">Register</button>
+           <label for="institutionData">Institution</label>
+          <select [(ngModel)]="selectedInstitution" name="institution">
+          <option *ngFor="let institutionData of mainDataService.institutions" [value]="institutionData.name">
+          {{ institutionData.name }}
+          </option>
+          </select>
+           
+
+          <button type="login" (click)="login()">Login</button>
+          <button type="switch" (click)="switchBetweenLoginRegister()">Register</button>
+           <button type="createInstitution" (click)="switchBetweenLoginCreateInstitution()">Add Institution</button>
         </form>
       </div>
+
+      <!--REGISTER-->
   <div *ngIf="showRegister" class="register">
     <h2>Register</h2>
         <form>
@@ -41,8 +52,28 @@
             <input type="password" id="highPriorityPassword" [(ngModel)]="adminPasswordChecker" name="highPriorityPassword" required>
           </div>
 
-          <button type="submit" (click)="register()">Register</button>
-           <button type="login" (click)="switchBetweenLoginRegister()">Login</button>
+          <button type="register" (click)="register()">Register</button>
+           <button type="switch" (click)="switchBetweenLoginRegister()">Login</button>
+        </form>
+  </div>
+
+  <div *ngIf="showCreateInstitution" class="registerInstitution">
+    <h2>Register Institution</h2>
+        <form>
+          <label for="name">Institution name</label>
+          <input type="text" id="name" name="name" [(ngModel)]="institutionTemp.name" required>
+
+          <label for="adress">Institution adress</label>
+          <input type="text" id="adress" name="adress" [(ngModel)]="institutionTemp.adress" required>
+
+            <label for="highPriorityUser">Admin Username (ID 1)</label>
+            <input type="text" id="highPriorityUser" [(ngModel)]="adminUserNameChecker" name="highPriorityUser" required>
+            <br>
+            <label for="highPriorityPassword">Admin Password (ID 1)</label>
+            <input type="password" id="highPriorityPassword" [(ngModel)]="adminPasswordChecker" name="highPriorityPassword" required>
+
+          <button type="register" (click)="registerInstitution()">Register Institution</button>
+           <button type="switch" (click)="switchBetweenLoginCreateInstitution()">Login</button>
         </form>
   </div>
 </div>

@@ -11,6 +11,8 @@ import { PatientService } from './services/Patient.Services';
 import { AnalizatorServices } from './services/Analizator.Services';
 import { AnalizatorData } from './dataStructure/AnalizatorData';
 import { MainDataService } from './services/MainData.Services';
+import { InstitutionLabData } from './dataStructure/InstitutionLabData';
+import { InstitutionService } from './services/Institution.Services';
 
 @Component({
   selector: 'app-root',
@@ -61,13 +63,15 @@ export class AppComponent implements OnInit{
     private userService: UserService,
     private patientService: PatientService,
     private analizatorService: AnalizatorServices,
-    private mainDataService: MainDataService
+    private mainDataService: MainDataService,
+    private institutionServices: InstitutionService
   ){}
 
 
   //Pokrece se samo jednom sve dok ne osvjezimo stranicu 
   ngOnInit(): void {
     this.getPatients();
+    this.mainDataService.getInstitutions();
 
     this.userService.getUserById(1).subscribe(
         (response: UserData) => {
@@ -123,6 +127,8 @@ export class AppComponent implements OnInit{
   //   }
   // }
 
+
+  
 
     public getPatients():PatientData[]{
       this.patientService.getPatients().subscribe(
