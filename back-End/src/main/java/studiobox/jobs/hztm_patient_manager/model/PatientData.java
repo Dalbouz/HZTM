@@ -15,6 +15,8 @@ public class PatientData implements Serializable {
     @Column(nullable = false, updatable = false)
     private Long id;
 
+    private String specimentID;
+
     private String name;
     private String surname;
     private String dateOfBirth;
@@ -37,7 +39,7 @@ public class PatientData implements Serializable {
     public PatientData(Long Id, String Name, String Surname, String dateOfBirth, int mbo, Long oib,
                        String Priority, String PriorityReason, String SampleNumber,
                        String DateOfSample, String TimeOfSample, String SampleReceipt,
-                       String TestRequirements, List<AnalizatorData> analizatorDataList) {
+                       String TestRequirements, List<AnalizatorData> analizatorDataList, String SpecimentID) {
         this.id = Id;
         this.name = Name;
         this.surname = Surname;
@@ -52,6 +54,14 @@ public class PatientData implements Serializable {
         this.sampleReceipt = SampleReceipt;
         this.testRequirements = TestRequirements;
         this.analizatorDataList = analizatorDataList;
+        this.specimentID = specimentID;
+    }
+
+    public String getSpecimentID() {
+        return specimentID;
+    }
+    public void setSpecimentID(String specimentID) {
+        this.specimentID = specimentID;
     }
 
     public List<AnalizatorData> getAnalizatorDataList() {

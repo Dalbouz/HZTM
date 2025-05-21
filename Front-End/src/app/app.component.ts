@@ -25,7 +25,6 @@ import { MainDataService } from './services/MainData.Services';
 export class AppComponent implements OnInit{
   title = 'hztm_pacient_management';
 
-  public patients: PatientData[] = [];  
   public analizatorDatas: AnalizatorData[] = []; 
   
   // public showLoginWindow: boolean = true;
@@ -66,8 +65,9 @@ export class AppComponent implements OnInit{
   ){}
 
 
+  //Pokrece se samo jednom sve dok ne osvjezimo stranicu 
   ngOnInit(): void {
-    this.patients = this.getPatients();
+    this.getPatients();
 
     this.userService.getUserById(1).subscribe(
         (response: UserData) => {
@@ -127,8 +127,12 @@ export class AppComponent implements OnInit{
     public getPatients():PatientData[]{
       this.patientService.getPatients().subscribe(
         (response: PatientData[]) =>{
+          if(response.length == 0){
+            return alert("NEMA PACIJENATA!");
+          }
           this.mainDataService.patients = response;
-          return response;
+          this.setAnalizatorDataForPatients();
+          return this.mainDataService.patients;
         },
         (error: HttpErrorResponse) => {
         alert(error.message + "\nNEMA PACIJENATA!");
@@ -148,17 +152,35 @@ export class AppComponent implements OnInit{
       )
     }
 
+      public setAnalizatorDataForPatients():void{
+        this.mainDataService.patients.forEach(patient => {
+          this.analizatorService.getAnalizatorDataBySpecimentID(patient.specimentID).subscribe(
+      (response: AnalizatorData[]) =>{
+        if(response == null || response.length == 0){
+          return alert("Za pacijenta" + patient.name + " " + patient.surname + "Nema Analizator Testova");
+        }
+        
+        patient.analizatorDatas = response;
+      },
+      (error: HttpErrorResponse) => {
+      alert(error.message + "\nNEMA ANALIZATOR PODATAKA!");
+    }
+    )
+    });
+    
+  }
+
     public showHideAnalizatorData():void{
       if(!this.showAnalizatorPanel){
         this.getAnalizatorDatas();
       }
-        this.switchBetweenAnalizatorPatientPanel();
+        // this.switchBetweenAnalizatorPatientPanel();
     }
 
-    public logout():void{
-      // this.switchBetweenLoginPatientPanel();
-      // this.clearCurrentUser();
-    }
+    // public logout():void{
+    //   // this.switchBetweenLoginPatientPanel();
+    //   // this.clearCurrentUser();
+    // }
 
   // public switchBetweenLoginRegister(): void{
   //   this.showLogin = !this.showLogin;
@@ -170,10 +192,10 @@ export class AppComponent implements OnInit{
   //   this.showPatientPanel = !this.showPatientPanel;
   // }
 
-   public switchBetweenAnalizatorPatientPanel():void{
-    this.showPatientPanel = !this.showPatientPanel;
-    this.showAnalizatorPanel = !this.showAnalizatorPanel;
-  }
+  //  public switchBetweenAnalizatorPatientPanel():void{
+  //   this.showPatientPanel = !this.showPatientPanel;
+  //   this.showAnalizatorPanel = !this.showAnalizatorPanel;
+  // }
     // private clearRegisterdUser():void{
     //   this.registerdUser.fullName = '';
     //   this.registerdUser.password = '';

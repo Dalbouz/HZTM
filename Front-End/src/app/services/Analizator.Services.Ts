@@ -52,4 +52,8 @@ export class AnalizatorServices{
     public linkAnalizatorDataToParent(analizatorId:number, patientId:number):Observable<AnalizatorData>{
         return this.http.put<AnalizatorData>(`${this.apiServerUrl}/analizators/link/${analizatorId}/${patientId}`, null);
     }
+
+    public getAnalizatorDataBySpecimentID(specimentID:string):Observable<AnalizatorData[]>{
+        return this.http.get<AnalizatorData[]>(`${this.apiServerUrl}/analizators/find/all/${specimentID}`);
+    }
 }

@@ -53,7 +53,11 @@ public class AnalizatorService {
         analizatorDataRepository.save(analizator);
     }
 
-    public List<AnalizatorData> findAnalizatorsByPatient(Long patientId){
+    public List<AnalizatorData> findAnalizatorsByPatientId(Long patientId){
         return analizatorDataRepository.findByPatientId(patientId);
+    }
+
+    public List<AnalizatorData>findAnalizatorsBySpecimentID(String specimentID){
+        return analizatorDataRepository.findBySpecimentID(specimentID);
     }
 }

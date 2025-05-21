@@ -14,4 +14,6 @@ public interface AnalizatorDataRepository extends JpaRepository<AnalizatorData, 
     Optional<AnalizatorData> findByAnalizatorOib(Long analizatorOib);
 
     List<AnalizatorData> findByPatientId(Long patientId);
+
+    List<AnalizatorData> findBySpecimentID(String specimentID);
 }

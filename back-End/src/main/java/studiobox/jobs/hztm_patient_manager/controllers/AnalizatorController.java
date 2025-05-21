@@ -45,12 +45,31 @@ public class AnalizatorController {
             if (patient == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            List<AnalizatorData> analizators = analizatorService.findAnalizatorsByPatient(patientId);
+            List<AnalizatorData> analizators = analizatorService.findAnalizatorsByPatientId(patientId);
             return !analizators.isEmpty() ?
                     new ResponseEntity<>(analizators, HttpStatus.OK) :
                     new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/find/all/{specimentID}")
+    public ResponseEntity<List<AnalizatorData>>getAnalizatorsForSpecimentID(@PathVariable String specimentID) {
+        try {
+            List<AnalizatorData> analizatorDataList = analizatorService.findAnalizatorsBySpecimentID(specimentID);
+            if (analizatorDataList.isEmpty()) {
+                // Return 404 if nothing found
+                return ResponseEntity.notFound().build();
+            }
+            // Return 200 OK with the list
+            return ResponseEntity.ok(analizatorDataList);
+        } catch (Exception e) {
+            // Log the exception (optional but recommended)
+            e.printStackTrace();
+            // Return 500 Internal Server Error with a message
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
     }
 

@@ -25,6 +25,7 @@ public class AnalizatorData implements Serializable {
     private String notes;
     private Boolean validated;
     private String testStatus;
+    private String specimentID;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +54,8 @@ public class AnalizatorData implements Serializable {
             Long AnalizatorOib,
             PatientData patient,
             Boolean validated,
-            String testStatus
+            String testStatus,
+            String specimentID
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -71,7 +73,16 @@ public class AnalizatorData implements Serializable {
         this.patient = patient;
         this.validated = validated;
         this.testStatus = testStatus;
+        this.specimentID = specimentID;
 
+    }
+
+    public String GetSpecimentID() {
+        return specimentID;
+    }
+
+    public void setSpecimentID(String specimentID) {
+        this.specimentID = specimentID;
     }
 
     public String getTestStatus() {

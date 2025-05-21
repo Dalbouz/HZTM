@@ -1,3 +1,5 @@
+// import { SampleData } from "./SampleData";
+
 import { AnalizatorData } from "./AnalizatorData";
 
 export interface PatientData{
@@ -9,10 +11,11 @@ export interface PatientData{
     oib: number;
     priority:string;
     priorityReason:string;
-    sampleNumber:string;
+    sampleNumber: number;
     dateOfSample:string;
     timeOfSample:string;
     sampleReceipt:string;
     testRequirements:string;
-    analizator: AnalizatorData[];
+    specimentID:string;
+    analizatorDatas:AnalizatorData[];
 }
