@@ -18,11 +18,11 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-@GetMapping("/find/all")
-public ResponseEntity<List<PatientData>> getAllPatients(){
-        List<PatientData> patientDataList = patientService.findAllPatients();
-    return new ResponseEntity<>(patientDataList, HttpStatus.OK);
-    }
+    @GetMapping("/find/all")
+    public ResponseEntity<List<PatientData>> getAllPatients(){
+            List<PatientData> patientDataList = patientService.findAllPatients();
+        return new ResponseEntity<>(patientDataList, HttpStatus.OK);
+        }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<PatientData> updatePatient(@PathVariable Long id, @RequestBody PatientData patientData){

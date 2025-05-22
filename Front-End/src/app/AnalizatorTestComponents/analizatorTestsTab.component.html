@@ -63,7 +63,7 @@
               </button>
               <!-- Validate Button -->
               <button class="icon-btn validate"
-                      [disabled]="mainDataService.currentUser.securityLevelStatus.trim() !== 'HIGH'"
+                      [disabled]="mainDataService.currentUser.securityLevelStatus.trim() == 'LOW'"
                       (click)="confirmValidate(analizator)">
                 <span title="Validate">&#9989;</span> <!-- Check mark icon -->
               </button>
