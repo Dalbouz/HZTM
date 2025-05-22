@@ -3,11 +3,13 @@ import { LoginComponent } from './LoginComponents/login.component';
 import { HomeComponent } from './HomeComponents/home.component';
 import { PatientsTabComponent } from './PatientsTab/patientsTab.component';
 import { AuthGuard } from './AuthGuard';
+import { AnalizatorTestsTabComponent } from './AnalizatorTestComponents/analizatorTestsTab.component';
 
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'patientsTab', component: PatientsTabComponent, canActivate: [AuthGuard] },
+  { path: 'patientsTab', component: PatientsTabComponent, canActivate: [AuthGuard]},
+  { path: 'analizatorTestsTab', component: AnalizatorTestsTabComponent, canActivate: [AuthGuard]},
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

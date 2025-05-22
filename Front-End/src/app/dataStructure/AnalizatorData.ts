@@ -1,7 +1,7 @@
 import { PatientData } from "../dataStructure/PatientData";
 
 export interface AnalizatorData{
-    sampleNumber:number;
+    sampleNumber:string;
     analizatorName:string;
     analizatorOib:number;
     testMark:string;
@@ -16,6 +16,9 @@ export interface AnalizatorData{
     notes:string;
     id: number;
     patient: PatientData;
-    validated: Boolean;
+    validated: string;
     testStatus: String;
+    assayName:String;
+    specimentID:string;
+    testWasValidatedBy:string;
 }

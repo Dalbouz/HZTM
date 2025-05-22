@@ -63,14 +63,14 @@ export class AppComponent implements OnInit{
     private userService: UserService,
     private patientService: PatientService,
     private analizatorService: AnalizatorServices,
-    private mainDataService: MainDataService,
-    private institutionServices: InstitutionService
+    private mainDataService: MainDataService
   ){}
 
 
   //Pokrece se samo jednom sve dok ne osvjezimo stranicu 
   ngOnInit(): void {
     this.getPatients();
+    this.getAnalizatorDatas();
     this.mainDataService.getInstitutions();
 
     this.userService.getUserById(1).subscribe(
@@ -85,50 +85,6 @@ export class AppComponent implements OnInit{
           }
         })
   }
-
-  // public login():void{
-  //   if(this.currentUser.userName == "" || this.currentUser.password == ""){
-  //     return;
-  //   }
-
-  //   this.userService.getUser(this.currentUser.userName, this.currentUser.password).subscribe(
-  //     (response: UserData)=>{
-  //       this.currentUser = response;
-  //       if(this.currentUser != null){
-  //         this.currentUser.activeStatus = true; //ovo je samo lokalno, ne pusha se na server na serveru ne pise koji se user aktivan
-  //         this.switchBetweenLoginPatientPanel();
-  //       }
-  //       else{
-  //         alert("wrong credentials!");
-  //         this.clearCurrentUser();
-  //       }
-  //     },
-  //     (error: HttpErrorResponse)=>{
-  //       alert(error.message + "\nWRONG CREDENTIALS!")
-  //     }
-  //   )
-  // }
-
-  // public register():void{
-  //   if(this.registerdUser.fullName =="" || this.registerdUser.password=="" || this.registerdUser.userName == "" 
-  //     || this.registerdUser.securityLevelStatus==""){
-  //     return;
-  //   }
-  //   if(this.registerdUser.securityLevelStatus=="HIGH" && this.adminUserExist){
-  //     if(this.adminUserName == this.adminUserNameChecker && this.adminPassword == this.adminPasswordChecker){
-  //         this.addUser();
-  //     }
-  //     else{
-  //       alert("Wrong admin Credentials!");
-  //     }
-  //   }
-  //   else{
-  //     this.addUser();
-  //   }
-  // }
-
-
-  
 
     public getPatients():PatientData[]{
       this.patientService.getPatients().subscribe(
@@ -147,7 +103,7 @@ export class AppComponent implements OnInit{
     return [];
     }
 
-    public getAnalizatorDatas():void{
+    private getAnalizatorDatas():void{
       this.analizatorService.getAllAnalizators().subscribe(
         (response: AnalizatorData[]) =>{
           this.mainDataService.analizatorDatas = response;
@@ -158,15 +114,25 @@ export class AppComponent implements OnInit{
       )
     }
 
-      public setAnalizatorDataForPatients():void{
+    //vidjeti jos kako ce ED slati listu uzoraka u bazu
+      private setAnalizatorDataForPatients():void{
         this.mainDataService.patients.forEach(patient => {
-          this.analizatorService.getAnalizatorDataBySpecimentID(patient.specimentID).subscribe(
+          this.analizatorService.getAnalizatorsDataBySpecimentID(patient.specimentID).subscribe(
       (response: AnalizatorData[]) =>{
         if(response == null || response.length == 0){
           return alert("Za pacijenta" + patient.name + " " + patient.surname + "Nema Analizator Testova");
         }
-        
+      
         patient.analizatorDatas = response;
+        
+        //dodaje broj uzorka iz analizator testa u array uzorka za pacijenta
+        patient.sampleNumbers = [];
+        patient.analizatorDatas.forEach(analizatorData => {
+        if (!patient.sampleNumbers.includes(analizatorData.sampleNumber)) {
+        patient.sampleNumbers.push(analizatorData.sampleNumber);
+      }
+      
+});
       },
       (error: HttpErrorResponse) => {
       alert(error.message + "\nNEMA ANALIZATOR PODATAKA!");
@@ -180,63 +146,5 @@ export class AppComponent implements OnInit{
       if(!this.showAnalizatorPanel){
         this.getAnalizatorDatas();
       }
-        // this.switchBetweenAnalizatorPatientPanel();
     }
-
-    // public logout():void{
-    //   // this.switchBetweenLoginPatientPanel();
-    //   // this.clearCurrentUser();
-    // }
-
-  // public switchBetweenLoginRegister(): void{
-  //   this.showLogin = !this.showLogin;
-  //   this.showRegister = !this.showRegister;
-  // }
-
-  // public switchBetweenLoginPatientPanel():void{
-  //   this.showLoginWindow = !this.showLoginWindow;
-  //   this.showPatientPanel = !this.showPatientPanel;
-  // }
-
-  //  public switchBetweenAnalizatorPatientPanel():void{
-  //   this.showPatientPanel = !this.showPatientPanel;
-  //   this.showAnalizatorPanel = !this.showAnalizatorPanel;
-  // }
-    // private clearRegisterdUser():void{
-    //   this.registerdUser.fullName = '';
-    //   this.registerdUser.password = '';
-    //   this.registerdUser.userName = '';
-    //   this.registerdUser.passwordTimeout = 0;
-    //   this.registerdUser.activeStatus = false;
-    //   this.registerdUser.securityLevelStatus = '';
-    // }
-
-    // private clearCurrentUser():void{
-    //   this.currentUser.fullName = '';
-    //   this.currentUser.password = '';
-    //   this.currentUser.userName = '';
-    //   this.currentUser.passwordTimeout = 0;
-    //   this.currentUser.activeStatus = false;
-    //   this.currentUser.securityLevelStatus = '';
-    // }
-
-    
-    // private addUser():void{
-    //   this.userService.addUser(this.registerdUser).subscribe(
-    //     (response: UserData) => {
-    //       if (response !== null) {
-    //         this.switchBetweenLoginRegister();
-    //         this.clearRegisterdUser();
-    //         this.adminPasswordChecker ="";
-    //         this.adminUserNameChecker = "";
-    //       } else {
-    //         alert("Username already exists!"); // Handle existing user
-    //       }
-    //     },
-    //     (error: HttpErrorResponse) => {
-    //       alert(`Error: ${error.error.message || error.message}`);
-    //     }
-    //   );
-    // }
-
 }

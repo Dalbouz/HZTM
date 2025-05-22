@@ -1,0 +1,75 @@
+    <button class="back-btn" (click)="goBack()" title="Back">
+  <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
+  <span class="back-text">Back</span>
+</button>
+    
+    <div class="table-wrapper">
+      <table class="analizators-table">
+        <thead>
+          <tr>
+            <th>Ime Analizatora</th>
+            <th>Testna oznaka</th>
+            <th>Broj uzorka</th>
+            <th>LOT</th>
+            <th>Datum isteka reagensa</th>
+            <th>Numerička vrijednost iz Analizatora</th>
+            <th>Datum očitavanja</th>
+            <th>Vrijeme očitavanja</th>
+            <th>Status testa</th>
+            <th>Naziv pretrage</th>
+            <th>ID pacijenta</th>
+            <th>Bilješke</th>
+            <th>Status validacije</th>
+            <th>Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let analizator of mainDataService.analizatorDatas; let i = index">
+          <tr *ngIf="analizator.testStatus == 'ARCHIVED' || analizator.testStatus == 'ACTIVE'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
+            <td>{{ analizator.analizatorName }}</td>
+            <td>{{ analizator.testMark }}</td>
+            <td>{{ analizator.sampleNumber }}</td>
+            <td>{{ analizator.lot }}</td>
+            <td>{{ analizator.expirationDateReagens }}</td>
+            <td>{{ analizator.numericValueFromAnalizator }}</td>
+            <td>{{ analizator.dateOfReading }}</td>
+            <td>{{ analizator.timeOfReading }}</td>
+            <td>{{ analizator.testStatus }}</td>
+            <td>{{ analizator.assayName }}</td>
+            <td>{{ analizator.specimentID }}</td>
+            <td>
+              <textarea
+                [(ngModel)]="analizator.notes"
+                [name]="'bilješke_' + i"
+                class="auto-resize-textarea"
+                rows="1"
+                (input)="autoResize($event)"
+              ></textarea>
+            </td>
+            <td>{{ analizator.validated }}</td>
+
+            <td class="action-buttons">
+              <!-- Delete Button -->
+              <button class="icon-btn delete" 
+                      [disabled]="mainDataService.currentUser.securityLevelStatus.trim() !== 'HIGH'"
+                      (click)="confirmDelete(analizator)">
+                <span title="Delete">🗑️</span>
+              </button>
+              <!-- Archive Button -->
+              <button class="icon-btn archive" 
+                      [disabled]="analizator.validated !== 'VALIDATED'"
+                      (click)="archiveAnalizator(analizator)">
+                <span title="Archive">🗃️</span>
+              </button>
+              <!-- Validate Button -->
+              <button class="icon-btn validate"
+                      [disabled]="mainDataService.currentUser.securityLevelStatus.trim() !== 'HIGH'"
+                      (click)="confirmValidate(analizator)">
+                <span title="Validate">&#9989;</span> <!-- Check mark icon -->
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+</tbody>
+      </table>
+    </div>

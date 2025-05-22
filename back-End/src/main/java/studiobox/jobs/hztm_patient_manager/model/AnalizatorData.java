@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "analizators")
@@ -23,9 +21,11 @@ public class AnalizatorData implements Serializable {
     private String interpretationForEDelphyn;
     private String testMarkForEdelphyn;
     private String notes;
-    private Boolean validated;
+    private String validated;
     private String testStatus;
     private String specimentID;
+    private String assayName;
+    private String TestWasValidatedBy;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,9 +53,11 @@ public class AnalizatorData implements Serializable {
             String Notes,
             Long AnalizatorOib,
             PatientData patient,
-            Boolean validated,
+            String validated,
             String testStatus,
-            String specimentID
+            String specimentID,
+            String AssayName,
+            String TestWasValidatedBy
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -74,7 +76,25 @@ public class AnalizatorData implements Serializable {
         this.validated = validated;
         this.testStatus = testStatus;
         this.specimentID = specimentID;
+        this.assayName = AssayName;
+        this.TestWasValidatedBy = TestWasValidatedBy;
 
+    }
+
+    public String GetTestWasValidatedBy() {
+        return TestWasValidatedBy;
+    }
+
+    public void setTestWasValidatedBy(String testWasValidatedBy) {
+        TestWasValidatedBy = testWasValidatedBy;
+    }
+
+    public String GetAssayName() {
+        return assayName;
+    }
+
+    public void setAssayName(String AssayName) {
+        this.assayName = AssayName;
     }
 
     public String GetSpecimentID() {
@@ -92,10 +112,10 @@ public class AnalizatorData implements Serializable {
         this.testStatus = testStatus;
     }
 
-    public Boolean getValidated() {
+    public String getValidated() {
         return validated;
     }
-    public void setValidated(boolean validated) {
+    public void setValidated(String validated) {
         this.validated = validated;
     }
 
