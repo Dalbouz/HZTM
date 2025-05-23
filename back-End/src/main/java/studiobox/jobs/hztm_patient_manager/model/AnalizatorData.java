@@ -23,7 +23,9 @@ public class AnalizatorData implements Serializable {
     private String notes;
     private String validated;
     private String testStatus;
-    private String specimentID;
+    @Column(name="SpecimenID")
+    private String specimenID;
+    @Column(name="AssayName")
     private String assayName;
     private String TestWasValidatedBy;
 
@@ -55,8 +57,8 @@ public class AnalizatorData implements Serializable {
             PatientData patient,
             String validated,
             String testStatus,
-            String specimentID,
-            String AssayName,
+            String specimenID,
+            String assayName,
             String TestWasValidatedBy
     ) {
         this.sampleNumber = SampleNumber;
@@ -75,13 +77,13 @@ public class AnalizatorData implements Serializable {
         this.patient = patient;
         this.validated = validated;
         this.testStatus = testStatus;
-        this.specimentID = specimentID;
-        this.assayName = AssayName;
+        this.specimenID = specimenID;
+        this.assayName = assayName;
         this.TestWasValidatedBy = TestWasValidatedBy;
 
     }
 
-    public String GetTestWasValidatedBy() {
+    public String getTestWasValidatedBy() {
         return TestWasValidatedBy;
     }
 
@@ -89,20 +91,20 @@ public class AnalizatorData implements Serializable {
         TestWasValidatedBy = testWasValidatedBy;
     }
 
-    public String GetAssayName() {
+    public String getAssayName() {
         return assayName;
     }
 
-    public void setAssayName(String AssayName) {
-        this.assayName = AssayName;
+    public void setAssayName(String assayName) {
+        this.assayName = assayName;
     }
 
-    public String GetSpecimentID() {
-        return specimentID;
+    public String getSpecimenID() {
+        return specimenID;
     }
 
-    public void setSpecimentID(String specimentID) {
-        this.specimentID = specimentID;
+    public void setSpecimenID(String specimenID) {
+        this.specimenID = specimenID;
     }
 
     public String getTestStatus() {

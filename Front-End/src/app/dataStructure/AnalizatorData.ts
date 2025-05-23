@@ -19,6 +19,6 @@ export interface AnalizatorData{
     validated: string;
     testStatus: String;
     assayName:String;
-    specimentID:string;
+    specimenID:string;
     testWasValidatedBy:string;
 }

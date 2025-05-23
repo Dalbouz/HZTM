@@ -9,6 +9,9 @@ import { SecurityLevel } from '../dataStructure/SecurityLevel';
 import { AnalizatorServices } from '../services/Analizator.Services';
 import { ValidationStatus } from '../dataStructure/ValidationStatus';
 import { TestStatusEnum } from '../dataStructure/TestStatusEnum';
+import { FiltersEnum } from '../dataStructure/FiltersEnum';
+import { GenericServices } from '../services/GenericMethods.Service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-analizatorTestsTab',
@@ -19,26 +22,52 @@ import { TestStatusEnum } from '../dataStructure/TestStatusEnum';
   templateUrl: './analizatorTestsTab.component.html',
   styleUrls: ['./analizatorTestsTab.component.css']
 })
-export class AnalizatorTestsTabComponent {
+export class AnalizatorTestsTabComponent implements OnInit{
     title = 'hztm_pacient_management';
+
+    filteredAnalizatorTests: AnalizatorData[] = [];
+
+    filters = [
+    { label: FiltersEnum.analizatorName, key: 'analizatorName', active: false, value: '' },
+    { label: FiltersEnum.assayName, key: 'assayTest', active: false, value: '' },
+    { label: FiltersEnum.dateOfReading, key: 'dateOfReading', active: false, value: '' },
+    { label: FiltersEnum.timeOfReading, key: 'timeOfReading', active: false, value: '' },
+    { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
+    
+    // Add more filters as needed
+  ];
+
+   ngOnInit():void{
+      this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+      alert(this.mainDataService.analizatorDatas[2].specimenID);
+  }
 
     constructor(
         public mainDataService: MainDataService,
         private router: Router,
-        private analizatorService:AnalizatorServices
+        private analizatorService:AnalizatorServices,
+        public genericMethods: GenericServices
     ){}
 
-    goBack() {
+    public goBack():void {
       this.router.navigate([`/home`]);
+      this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+      this.disableAllFilters();
     }
 
-  autoResize(event: Event): void {
+    public toggleFilter(filter: any) {
+    filter.active = !filter.active;
+    if (!filter.active) filter.value = '';
+  }
+
+  public autoResize(event: Event): void {
     const textarea = event.target as HTMLTextAreaElement;
     textarea.style.height = 'auto'; // Reset height
     textarea.style.height = textarea.scrollHeight + 'px'; // Set to scrollHeight
   }
 
-  confirmDelete(analizator: AnalizatorData) {
+  public confirmDelete(analizator: AnalizatorData):void {
+    alert(analizator.specimenID);
     if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
       return;
     }
@@ -50,45 +79,112 @@ export class AnalizatorTestsTabComponent {
     if (userName == this.mainDataService.currentUser.userName && this.mainDataService.currentUser.password == password &&
       userNameAdmin == this.mainDataService.adminUserName && this.mainDataService.adminPassword == passwordAdmin
     ) {
-      analizator.testStatus = 'DELETE';
+      analizator.testStatus = TestStatusEnum.Deleted;
       
       this.analizatorService.updateAnalizator(analizator, analizator.id);
-      
+
     } else {
       alert('Invalid credentials!');
     }
-}
+  }
 
-archiveAnalizator(analizator: AnalizatorData) {
-  if (analizator.validated == ValidationStatus.Validated && this.mainDataService.currentUser.securityLevelStatus == SecurityLevel.High) {
-    const isSure = window.confirm('Želite li arhivirati test za uzorak:' + " " + analizator.sampleNumber + " " + "za pacijenta:" + " " + analizator.specimentID +"?");
-    if (isSure) {
-      analizator.testStatus = TestStatusEnum.Active;
-      const now = new Date();
-      analizator.testWasValidatedBy = this.mainDataService.currentUser.fullName + " / " + now.toLocaleDateString() + " / " + now.toLocaleTimeString();
-      this.analizatorService.addAnalizatorData(analizator);//kreiraj novi analizator sa novim podacima
+  public archiveAnalizator(analizator: AnalizatorData):void {
+    if (analizator.validated == ValidationStatus.Validated && this.mainDataService.currentUser.securityLevelStatus == SecurityLevel.High) {
+      const isSure = window.confirm('Želite li arhivirati test za uzorak:' + " " + analizator.sampleNumber + " " + "za pacijenta:" + " " + analizator.specimenID +"?");
+      if (isSure) {
+        analizator.testStatus = TestStatusEnum.Archived;
+        const now = new Date();
+        analizator.testWasValidatedBy = this.mainDataService.currentUser.fullName + " / " + now.toLocaleDateString() + " / " + now.toLocaleTimeString();
+        this.addAnalizatorData(analizator);//kreiraj novi analizator sa novim podacima
+        
+        // this.mainDataService.analizatorDatas.push(analizator);
 
-      analizator.testWasValidatedBy="";
-      analizator.validated = ValidationStatus.NotValidated;
-      analizator.testStatus = TestStatusEnum.Deleted;
-      this.analizatorService.updateAnalizator(analizator, analizator.id); //updejtaj onaj stari tako da je deleted
+        // analizator.testWasValidatedBy="";
+        // analizator.validated = ValidationStatus.NotValidated;
+        // analizator.testStatus = TestStatusEnum.Deleted;
+        // this.analizatorService.updateAnalizator(analizator, analizator.id); //updejtaj onaj stari tako da je deleted
+        // this.mainDataService.analizatorDatas.push(analizator);
+      }
     }
   }
-}
 
-confirmValidate(analizator: AnalizatorData) {
-  if(this.mainDataService.currentUser.securityLevelStatus == SecurityLevel.Low){
-      return;
+  public confirmValidate(analizator: AnalizatorData):void {
+    if(this.mainDataService.currentUser.securityLevelStatus == SecurityLevel.Low){
+        return;
+      }
+      
+    const adminUser = prompt('Enter username:');
+    if(this.mainDataService.currentUser.userName == adminUser){
+
+      const adminPass = prompt('Enter password:');
+      if(this.mainDataService.currentUser.password == adminPass){
+        analizator.validated = ValidationStatus.Validated;
+        this.updateAnalizatorData(analizator, analizator.id);
+      }
+      else{
+        alert("Wrong Password");
+      }
     }
-    
-  const adminUser = prompt('Enter username:');
-  const adminPass = prompt('Enter password:');
+    else{
+      alert("Wrong UserName");
+    }
 
-  if (this.mainDataService.currentUser.userName == adminUser && this.mainDataService.currentUser.password == adminPass) {
-    analizator.validated = ValidationStatus.Validated;
-    this.analizatorService.updateAnalizator(analizator, analizator.id)
-  } else {
-    alert('Invalid credentials!');
+    // if (this.mainDataService.currentUser.userName == adminUser && this.mainDataService.currentUser.password == adminPass) {
+    //   analizator.validated = ValidationStatus.Validated;
+    //   this.updateAnalizatorData(analizator, analizator.id);
+    // } else {
+    //   alert('Invalid credentials!');
+    // }
   }
-}
+
+  public onSearch():void
+  {
+    const filtersObj: Record<string, string> = {};
+    this.filters.forEach(f => {
+      filtersObj[f.key] = f.active ? f.value : '';
+    });
+    this.filteredAnalizatorTests = this.genericMethods.searchByFilters(this.mainDataService.analizatorDatas, filtersObj);
+  }
+
+  public disableAllFilters() {
+    this.filters.forEach(f => {
+      f.active = false;
+      f.value = '';
+    });
+  }
+
+  public onRefresh(){
+    this.disableAllFilters();
+    this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+  }
+
+  private addAnalizatorData(analizator: AnalizatorData):void{
+      this.analizatorService.addAnalizatorData(analizator).subscribe(
+        (response: AnalizatorData) => {
+          if (response != null) {
+          }
+          else {
+            alert("Error wont add Analizator Test"); // Handle existing user
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
+        }
+      );
+    }
+
+    private updateAnalizatorData(analizator: AnalizatorData, id:number):void{
+      this.analizatorService.updateAnalizator(analizator, id).subscribe(
+        (response: AnalizatorData) => {
+          if (response != null) {
+          }
+          else {
+            alert("Error wont update Analizator Test"); // Handle existing user
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
+        }
+      );
+    }
 }

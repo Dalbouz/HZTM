@@ -57,7 +57,7 @@ public class AnalizatorService {
         return analizatorDataRepository.findByPatientId(patientId);
     }
 
-    public List<AnalizatorData>findAnalizatorsBySpecimentID(String specimentID){
-        return analizatorDataRepository.findBySpecimentID(specimentID);
+    public List<AnalizatorData> findAnalizatorsBySpecimenID(String specimenID){
+        return analizatorDataRepository.findBySpecimenID(specimenID);
     }
 }

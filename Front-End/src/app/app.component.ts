@@ -26,8 +26,6 @@ import { InstitutionService } from './services/Institution.Services';
 })
 export class AppComponent implements OnInit{
   title = 'hztm_pacient_management';
-
-  public analizatorDatas: AnalizatorData[] = []; 
   
   // public showLoginWindow: boolean = true;
   // public showLogin: boolean = true;
@@ -70,7 +68,7 @@ export class AppComponent implements OnInit{
   //Pokrece se samo jednom sve dok ne osvjezimo stranicu 
   ngOnInit(): void {
     this.getPatients();
-    this.getAnalizatorDatas();
+    
     this.mainDataService.getInstitutions();
 
     this.userService.getUserById(1).subscribe(
@@ -93,7 +91,8 @@ export class AppComponent implements OnInit{
             return alert("NEMA PACIJENATA!");
           }
           this.mainDataService.patients = response;
-          this.setAnalizatorDataForPatients();
+          this.getAnalizatorDatas();
+         
           return this.mainDataService.patients;
         },
         (error: HttpErrorResponse) => {
@@ -107,9 +106,10 @@ export class AppComponent implements OnInit{
       this.analizatorService.getAllAnalizators().subscribe(
         (response: AnalizatorData[]) =>{
           this.mainDataService.analizatorDatas = response;
+          this.setAnalizatorDataForPatients();
         },
         (error: HttpErrorResponse) => {
-        alert(error.message + "\nNEMA ANALIZATOR PODATAKA!");
+        alert(error.message + "\nPokusavam dohvatiti sve analizator testove ali nejde!");
       }
       )
     }
@@ -122,7 +122,6 @@ export class AppComponent implements OnInit{
         if(response == null || response.length == 0){
           return alert("Za pacijenta" + patient.name + " " + patient.surname + "Nema Analizator Testova");
         }
-      
         patient.analizatorDatas = response;
         
         //dodaje broj uzorka iz analizator testa u array uzorka za pacijenta
@@ -141,10 +140,4 @@ export class AppComponent implements OnInit{
     });
     
   }
-
-    public showHideAnalizatorData():void{
-      if(!this.showAnalizatorPanel){
-        this.getAnalizatorDatas();
-      }
-    }
 }

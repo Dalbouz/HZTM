@@ -54,10 +54,10 @@ public class AnalizatorController {
         }
     }
 
-    @GetMapping("/find/all/{specimentID}")
-    public ResponseEntity<List<AnalizatorData>>getAnalizatorsForSpecimentID(@PathVariable String specimentID) {
+    @GetMapping("/find/all/{specimenID}")
+    public ResponseEntity<List<AnalizatorData>> getAnalizatorsForSpecimenID(@PathVariable String specimenID) {
         try {
-            List<AnalizatorData> analizatorDataList = analizatorService.findAnalizatorsBySpecimentID(specimentID);
+            List<AnalizatorData> analizatorDataList = analizatorService.findAnalizatorsBySpecimenID(specimenID);
             if (analizatorDataList.isEmpty()) {
                 // Return 404 if nothing found
                 return ResponseEntity.notFound().build();
@@ -83,11 +83,19 @@ public class AnalizatorController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             // ... update all other fields ...
-            AnalizatorData updated = analizatorService.saveAnalizatorData(existing); //
+
+
+            AnalizatorData updated = analizatorService.saveAnalizatorData(analizatorData);
             return new ResponseEntity<>(updated, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<AnalizatorData> addAnalizatorData(@RequestBody AnalizatorData analizatorData){
+        AnalizatorData newAnalizatorData = analizatorService.saveAnalizatorData(analizatorData);
+        return new ResponseEntity<>(newAnalizatorData, HttpStatus.CREATED);
     }
 
     // Link existing analizator data to a patient
@@ -123,6 +131,8 @@ public class AnalizatorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
 
     /*
 

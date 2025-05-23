@@ -2,6 +2,39 @@
   <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
   <span class="back-text">Back</span>
 </button>
+
+<div class="search-container">
+  <div class="filter-buttons-vertical">
+    <ng-container *ngFor="let filter of filters">
+      <div class="filter-row">
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="filter.active"
+        (click)="toggleFilter(filter)"
+      >
+        {{ filter.label }}
+      </button>
+      <input
+        *ngIf="filter.active"
+        type="text"
+        class="filter-input"
+        [(ngModel)]="filter.value"
+        [placeholder]="'Upišite ' + filter.label"
+      />
+    </div>
+    </ng-container>
+    <div class="search-actions-row">
+      <button class="search-btn" (click)="onSearch()" title="Start Search">
+        <span class="search-icon">🔍</span>
+      </button>
+      <button class="refresh-btn" (click)="onRefresh()" title="Refresh">
+        <span class="refresh-icon">&#x21bb;</span>
+      </button>
+    </div>
+  </div>
+</div>
+
     
     <div class="table-wrapper">
       <table class="analizators-table">
@@ -24,8 +57,8 @@
           </tr>
         </thead>
         <tbody>
-        <ng-container *ngFor="let analizator of mainDataService.analizatorDatas; let i = index">
-          <tr *ngIf="analizator.testStatus == 'ARCHIVED' || analizator.testStatus == 'ACTIVE'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
+        <ng-container *ngFor="let analizator of filteredAnalizatorTests; let i = index">
+          <tr *ngIf="analizator.testStatus == 'ACTIVE'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
             <td>{{ analizator.analizatorName }}</td>
             <td>{{ analizator.testMark }}</td>
             <td>{{ analizator.sampleNumber }}</td>
@@ -36,7 +69,7 @@
             <td>{{ analizator.timeOfReading }}</td>
             <td>{{ analizator.testStatus }}</td>
             <td>{{ analizator.assayName }}</td>
-            <td>{{ analizator.specimentID }}</td>
+            <td>{{ analizator.specimenID }}</td>
             <td>
               <textarea
                 [(ngModel)]="analizator.notes"
