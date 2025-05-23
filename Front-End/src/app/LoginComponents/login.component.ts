@@ -102,6 +102,7 @@ export class LoginComponent implements OnInit{
            this.clearAdminChecker();
            this.clearRegisterdUserTemp();
            this.clearUserCredentialsTemp();
+           this.selectedInstitution='';
       }
       else{
         alert("Wrong admin Credentials!");
@@ -186,6 +187,7 @@ export class LoginComponent implements OnInit{
       this.clearAdminChecker();
       this.clearRegisterdUserTemp();
       this.clearUserCredentialsTemp();
+      this.selectedInstitution='';
   }
 
   public switchBetweenLoginCreateInstitution(): void{
@@ -194,6 +196,7 @@ export class LoginComponent implements OnInit{
      this.clearUserCredentialsTemp();
      this.clearInstitutionTemp();
      this.clearAdminChecker();
+     this.selectedInstitution='';
   }
   //#endregion
 
