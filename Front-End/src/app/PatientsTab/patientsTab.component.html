@@ -23,7 +23,7 @@
           </tr>
         </thead>
         <tbody>
-  <ng-container *ngFor="let patient of mainDataService.patients">
+  <ng-container *ngFor="let patient of patientDatasTemp">
     <!-- Patient Row -->
     <tr>
       <td>{{ patient.name }}</td>
@@ -46,7 +46,7 @@
       <td>{{ patient.analizatorDatas?.length || 0 }}</td>
     </tr>
     <!-- Analizator Data Row (conditionally shown) -->
-    <tr *ngIf="selectedSampleNumber">
+    <tr *ngIf="patient.selectedSampleNumber">
       <td colspan="13">
         <div class="analizator-table-wrapper">
           <table class="analizator-table">

@@ -16,15 +16,21 @@ import { AnalizatorData } from '../dataStructure/AnalizatorData';
   templateUrl: './patientsTab.component.html',
   styleUrls: ['./patientsTab.component.css']
 })
-export class PatientsTabComponent {
+export class PatientsTabComponent implements OnInit{
     title = 'hztm_pacient_management';
 
     public selectedSampleNumber:string | undefined;
+
+    public patientDatasTemp: PatientData[] = [];
 
     constructor(
         public mainDataService: MainDataService,
         private router: Router,
     ){}
+
+    public ngOnInit(): void {
+      this.patientDatasTemp = this.mainDataService.patients;
+    }
 
     goBack() {
     this.router.navigate([`/home`]);
@@ -32,8 +38,14 @@ export class PatientsTabComponent {
 
   public getFilteredAnalizatorDataBySampleNumber(patient: PatientData): AnalizatorData[] {
     if (!patient.analizatorDatas) return [];
-      return patient.analizatorDatas.filter(
-        a => a.sampleNumber === patient.selectedSampleNumber
-    );
+  
+    console.log('Selected sample number:', patient.selectedSampleNumber);
+    console.log('All analizator datas:', patient.analizatorDatas);
+    
+    return patient.analizatorDatas.filter(a => {
+      const match = String(a.sampleNumber).trim() === String(patient.selectedSampleNumber).trim();
+      console.log(`SampleNumber: ${a.sampleNumber} | Match: ${match}`);
+      return match;
+    });
   }
 }
