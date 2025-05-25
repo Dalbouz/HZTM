@@ -1,8 +1,43 @@
+    <!--BACK BUTTON PART-->
     <button class="back-btn" (click)="goBack()" title="Back">
   <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
   <span class="back-text">Back</span>
 </button>
-    
+
+    <!--SEARCH PART-->
+<div class="search-container">
+  <div class="filter-buttons-vertical">
+    <ng-container *ngFor="let filter of filters">
+      <div class="filter-row">
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="filter.active"
+        (click)="toggleFilter(filter)"
+      >
+        {{ filter.label }}
+      </button>
+      <input
+        *ngIf="filter.active"
+        type="text"
+        class="filter-input"
+        [(ngModel)]="filter.value"
+        [placeholder]="'Upišite ' + filter.label"
+      />
+    </div>
+    </ng-container>
+    <div class="search-actions-row">
+      <button class="search-btn" (click)="onSearch()" title="Start Search">
+        <span class="search-icon">🔍</span>
+      </button>
+      <button class="refresh-btn" (click)="onRefresh()" title="Refresh">
+        <span class="refresh-icon">&#x21bb;</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!--PATIENT TABLE PART-->
     <div class="table-wrapper">
       <table class="patient-table">
         <thead>
@@ -69,6 +104,7 @@
               <td>{{ data.numericValueFromAnalizator }}</td>
               <td>{{ data.dateOfReading }}</td>
               <td>{{ data.timeOfReading }}</td>
+              <!-- Add more columns as needed -->
             </tr>
             <tr *ngIf="getFilteredAnalizatorDataBySampleNumber(patient).length === 0">
               <td colspan="6" style="text-align:center;">Nema podataka za odabrani uzorak.</td>

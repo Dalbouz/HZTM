@@ -6,6 +6,8 @@ import { filter } from 'rxjs';
 import { MainDataService } from '../services/MainData.Services';
 import { PatientData } from '../dataStructure/PatientData';
 import { AnalizatorData } from '../dataStructure/AnalizatorData';
+import { FiltersEnum } from '../dataStructure/FiltersEnum';
+import { GenericServices } from '../services/GenericMethods.Service';
 
 @Component({
   selector: 'app-patientsTab',
@@ -23,9 +25,17 @@ export class PatientsTabComponent implements OnInit{
 
     public patientDatasTemp: PatientData[] = [];
 
+    filters = [
+        { label: FiltersEnum.specimenID, key: 'specimenID', active: false, value: '' },
+        { label: FiltersEnum.oib, key: 'oib', active: false, value: '' }
+        
+        // Add more filters as needed
+    ]
+
     constructor(
         public mainDataService: MainDataService,
         private router: Router,
+        public genericMethodService: GenericServices
     ){}
 
     public ngOnInit(): void {
@@ -47,5 +57,23 @@ export class PatientsTabComponent implements OnInit{
       console.log(`SampleNumber: ${a.sampleNumber} | Match: ${match}`);
       return match;
     });
+  }
+
+     public toggleFilter(filter: any) {
+    this.genericMethodService.toggleFilter(filter);
+  }
+
+    public onSearch():void
+  {
+    this.patientDatasTemp = this.genericMethodService.getFilteredArrayOnSearch(this.filters, this.mainDataService.patients)
+  }
+
+  public disableAllFilters() {
+      this.genericMethodService.disableAllFilters(this.filters);
+  }
+
+  public onRefresh(){
+    this.disableAllFilters();
+    this.patientDatasTemp = this.mainDataService.patients;
   }
 }

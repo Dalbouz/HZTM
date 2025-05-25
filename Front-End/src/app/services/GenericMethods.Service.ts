@@ -56,4 +56,9 @@ export class GenericServices{
     });
     return filters;
   }
+
+  public toggleFilter(filter: any) {
+    filter.active = !filter.active;
+    if (!filter.active) filter.value = '';
+  }
 }

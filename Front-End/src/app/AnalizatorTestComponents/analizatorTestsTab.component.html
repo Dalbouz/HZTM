@@ -1,8 +1,10 @@
-    <button class="back-btn" (click)="goBack()" title="Back">
+   <!--BACK BUTTON PART-->
+   <button class="back-btn" (click)="goBack()" title="Back">
   <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
   <span class="back-text">Back</span>
 </button>
 
+<!--SEARCH PART-->
 <div class="search-container">
   <div class="filter-buttons-vertical">
     <ng-container *ngFor="let filter of filters">
@@ -35,7 +37,7 @@
   </div>
 </div>
 
-    
+    <!--TABLE OF ANALIZATORS PART-->
     <div class="table-wrapper">
       <table class="analizators-table">
         <thead>

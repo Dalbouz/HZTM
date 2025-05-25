@@ -4,5 +4,6 @@ export enum FiltersEnum{
     timeOfReading = "vrijeme očitavanja",
     analizatorName = "naziv analizatora",
     assayName = "naziv pretrage",
-
+    specimenID ="ID pacijenta",
+    oib ="Oib pacijenta",
 }

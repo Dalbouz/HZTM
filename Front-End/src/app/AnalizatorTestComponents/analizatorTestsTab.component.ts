@@ -55,8 +55,7 @@ export class AnalizatorTestsTabComponent implements OnInit{
     }
 
     public toggleFilter(filter: any) {
-    filter.active = !filter.active;
-    if (!filter.active) filter.value = '';
+    this.genericMethods.toggleFilter(filter);
   }
 
   public autoResize(event: Event): void {
