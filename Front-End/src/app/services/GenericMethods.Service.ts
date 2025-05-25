@@ -13,7 +13,7 @@ export class GenericServices{
      * @param filters An object where keys are property names and values are filter strings.
      * @returns Filtered array of objects matching all non-empty filters (case-insensitive, substring match).
      */
-    searchByFilters<T extends Record<string, any>>(array: T[], filters: Record<string, string>): T[] {
+    private searchByFilters<T extends Record<string, any>>(array: T[], filters: Record<string, string>): T[] {
     return array.filter(item =>
         Object.entries(filters).every(([key, filterValue]) => {
         if (!filterValue) return true; // Ignore empty filters
@@ -25,4 +25,35 @@ export class GenericServices{
     );
     }
 
+    public getFilteredArrayOnSearch(filters: any[], searchIn: any[]):any[]
+  {
+    const filtersObj: Record<string, string> = {};
+    filters.forEach(f => {
+      filtersObj[f.key] = f.active ? f.value : '';
+    });
+    return this.searchByFilters(searchIn, filtersObj);
+  }
+
+  public replaceObjectById<T extends { id: string | number }>(
+    array: T[],
+    newObject: T
+  ): T[] {
+    const index = array.findIndex(item => item.id === newObject.id);
+    if (index === -1){
+      return array; // Not found  
+    } 
+    return [
+      ...array.slice(0, index),
+      newObject,
+      ...array.slice(index + 1)
+    ];
+  }
+
+    public disableAllFilters(filters: any[]): any[] {
+      filters.forEach(f => {
+      f.active = false;
+      f.value = '';
+    });
+    return filters;
+  }
 }

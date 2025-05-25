@@ -39,7 +39,6 @@ export class AnalizatorTestsTabComponent implements OnInit{
 
    ngOnInit():void{
       this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
-      alert(this.mainDataService.analizatorDatas[2].specimenID);
   }
 
     constructor(
@@ -73,18 +72,32 @@ export class AnalizatorTestsTabComponent implements OnInit{
     }
 
     const userName = prompt('Enter username:');
-    const password = prompt('Enter password:');
-    const userNameAdmin = prompt('Enter admin username:');
-    const passwordAdmin = prompt('Enter admin password:');
-    if (userName == this.mainDataService.currentUser.userName && this.mainDataService.currentUser.password == password &&
-      userNameAdmin == this.mainDataService.adminUserName && this.mainDataService.adminPassword == passwordAdmin
-    ) {
-      analizator.testStatus = TestStatusEnum.Deleted;
-      
-      this.analizatorService.updateAnalizator(analizator, analizator.id);
+    if(userName == this.mainDataService.currentUser.userName){
+      const password = prompt('Enter password:');
+      if(password == this.mainDataService.currentUser.password ){
+        const userNameAdmin = prompt('Enter admin username:');
+        if(userNameAdmin == this.mainDataService.adminUserName){
+          const passwordAdmin = prompt('Enter admin password:');
+          if(this.mainDataService.adminPassword == passwordAdmin){
 
-    } else {
-      alert('Invalid credentials!');
+            analizator.testStatus = TestStatusEnum.Deleted;
+      
+            this.analizatorService.updateAnalizator(analizator, analizator.id);
+          }
+          else{
+            alert("Admin password je netočan!");
+          }
+        }
+        else{
+          alert("Admin username je netočan!");
+        }
+      }
+      else{
+        alert("Password je netočan!");
+      }
+    }
+    else{
+      alert("Username je netočan!");
     }
   }
 
@@ -96,14 +109,6 @@ export class AnalizatorTestsTabComponent implements OnInit{
         const now = new Date();
         analizator.testWasValidatedBy = this.mainDataService.currentUser.fullName + " / " + now.toLocaleDateString() + " / " + now.toLocaleTimeString();
         this.addAnalizatorData(analizator);//kreiraj novi analizator sa novim podacima
-        
-        // this.mainDataService.analizatorDatas.push(analizator);
-
-        // analizator.testWasValidatedBy="";
-        // analizator.validated = ValidationStatus.NotValidated;
-        // analizator.testStatus = TestStatusEnum.Deleted;
-        // this.analizatorService.updateAnalizator(analizator, analizator.id); //updejtaj onaj stari tako da je deleted
-        // this.mainDataService.analizatorDatas.push(analizator);
       }
     }
   }
@@ -122,46 +127,33 @@ export class AnalizatorTestsTabComponent implements OnInit{
         this.updateAnalizatorData(analizator, analizator.id);
       }
       else{
-        alert("Wrong Password");
+        alert("Password je netočan!");
       }
     }
     else{
-      alert("Wrong UserName");
+      alert("Username je netočan!");
     }
-
-    // if (this.mainDataService.currentUser.userName == adminUser && this.mainDataService.currentUser.password == adminPass) {
-    //   analizator.validated = ValidationStatus.Validated;
-    //   this.updateAnalizatorData(analizator, analizator.id);
-    // } else {
-    //   alert('Invalid credentials!');
-    // }
   }
 
   public onSearch():void
   {
-    const filtersObj: Record<string, string> = {};
-    this.filters.forEach(f => {
-      filtersObj[f.key] = f.active ? f.value : '';
-    });
-    this.filteredAnalizatorTests = this.genericMethods.searchByFilters(this.mainDataService.analizatorDatas, filtersObj);
+    this.filteredAnalizatorTests = this.genericMethods.getFilteredArrayOnSearch(this.filters, this.mainDataService.analizatorDatas)
   }
 
   public disableAllFilters() {
-    this.filters.forEach(f => {
-      f.active = false;
-      f.value = '';
-    });
+      this.genericMethods.disableAllFilters(this.filters);
   }
 
   public onRefresh(){
     this.disableAllFilters();
     this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
   }
-
+//#region CallersToBackend
   private addAnalizatorData(analizator: AnalizatorData):void{
       this.analizatorService.addAnalizatorData(analizator).subscribe(
         (response: AnalizatorData) => {
           if (response != null) {
+            this.mainDataService.analizatorDatas.push(response);
           }
           else {
             alert("Error wont add Analizator Test"); // Handle existing user
@@ -177,6 +169,7 @@ export class AnalizatorTestsTabComponent implements OnInit{
       this.analizatorService.updateAnalizator(analizator, id).subscribe(
         (response: AnalizatorData) => {
           if (response != null) {
+            this.mainDataService.analizatorDatas = this.genericMethods.replaceObjectById(this.mainDataService.analizatorDatas, response);
           }
           else {
             alert("Error wont update Analizator Test"); // Handle existing user
@@ -187,4 +180,5 @@ export class AnalizatorTestsTabComponent implements OnInit{
         }
       );
     }
+  //#endregion
 }

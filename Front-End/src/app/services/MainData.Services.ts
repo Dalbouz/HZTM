@@ -2,7 +2,6 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { InstitutionLabData } from "../dataStructure/InstitutionLabData";
-import { environment } from '../environments/environment';
 import { PatientData } from "../dataStructure/PatientData";
 import { AnalizatorData } from "../dataStructure/AnalizatorData";
 import { UserData } from "../dataStructure/UserData";
