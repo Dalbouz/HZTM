@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
@@ -18,7 +18,7 @@ import { GenericServices } from '../services/GenericMethods.Service';
   templateUrl: './patientsTab.component.html',
   styleUrls: ['./patientsTab.component.css']
 })
-export class PatientsTabComponent implements OnInit{
+export class PatientsTabComponent implements OnInit, OnDestroy{
     title = 'hztm_pacient_management';
 
     public selectedSampleNumber:string | undefined;
@@ -38,12 +38,17 @@ export class PatientsTabComponent implements OnInit{
         public genericMethodService: GenericServices
     ){}
 
+    ngOnDestroy(): void {
+      this.patientDatasTemp = this.mainDataService.patients;
+    }
+
     public ngOnInit(): void {
       this.patientDatasTemp = this.mainDataService.patients;
     }
 
     goBack() {
     this.router.navigate([`/home`]);
+    this.patientDatasTemp = this.mainDataService.patients;
   }
 
   public getFilteredAnalizatorDataBySampleNumber(patient: PatientData): AnalizatorData[] {

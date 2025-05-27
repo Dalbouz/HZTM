@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
@@ -22,8 +22,11 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './analizatorTestsTab.component.html',
   styleUrls: ['./analizatorTestsTab.component.css']
 })
-export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
+export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDestroy{
     title = 'hztm_pacient_management';
+
+    public newTestTemplate: AnalizatorData | undefined;
+    public addingIndex: number = -1;
 
     filteredAnalizatorTests: AnalizatorData[] = [];
     @ViewChildren('TextareaNotes') textareaRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
@@ -37,16 +40,23 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
     // Add more filters as needed
   ];
 
+  ngOnDestroy(): void {
+    this.clearAddedTestIfNotConfirmed();
+    this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+  }
+
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.textareaRefs.forEach(ref => {
         this.autoResize({ target: ref.nativeElement } as any as Event);
       });
     });
+    this.clearAddedTestIfNotConfirmed();
   }
 
    ngOnInit():void{
       this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+       this.clearAddedTestIfNotConfirmed();
   }
 
     constructor(
@@ -60,6 +70,7 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
       this.router.navigate([`/home`]);
       this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
       this.disableAllFilters();
+       this.clearAddedTestIfNotConfirmed();
     }
 
     public toggleFilter(filter: any) {
@@ -73,7 +84,6 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
   }
 
   public confirmDelete(analizator: AnalizatorData):void {
-    alert(analizator.specimenID);
     if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
       return;
     }
@@ -88,8 +98,8 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
           if(this.mainDataService.adminPassword == passwordAdmin){
 
             analizator.testStatus = TestStatusEnum.Deleted;
-      
-            this.analizatorService.updateAnalizator(analizator, analizator.id);
+            if(analizator.id != undefined)
+              this.analizatorService.updateAnalizator(analizator, analizator.id);
           }
           else{
             alert("Admin password je netočan!");
@@ -115,7 +125,7 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
         analizator.testStatus = TestStatusEnum.Archived;
         const now = new Date();
         analizator.testWasValidatedBy = this.mainDataService.currentUser.fullName + " / " + now.toLocaleDateString() + " / " + now.toLocaleTimeString();
-        this.addAnalizatorData(analizator);//kreiraj novi analizator sa novim podacima
+        this.mainDataService.analizatorDatas.push(this.addAnalizatorData(analizator));//kreiraj novi analizator sa novim podacima
       }
     }
   }
@@ -131,7 +141,8 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
       const adminPass = prompt('Enter password:');
       if(this.mainDataService.currentUser.password == adminPass){
         analizator.validated = ValidationStatus.Validated;
-        this.updateAnalizatorData(analizator, analizator.id);
+        if(analizator.id != undefined)
+          this.updateAnalizatorData(analizator, analizator.id);
       }
       else{
         alert("Password je netočan!");
@@ -154,22 +165,82 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
   public onRefresh(){
     this.disableAllFilters();
     this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+    this.clearAddedTestIfNotConfirmed();
+  }
+
+  public addTest(baseTest: AnalizatorData){
+     
+  // Create a copy of the base test with default values
+  const newTest: AnalizatorData = {
+    ...baseTest,
+    analizatorName: '', // You can override or set new values below
+    testMark: '',
+    interpretedResult: '',
+    interpretationForEDelphyn: '',
+    testMarkForEDelphyn: '',
+    testWasValidatedBy: '',
+    lot: '',
+    expirationDateReagens: '',
+    assayName: '',
+    isNew: true,
+    validated: ValidationStatus.NotValidated,
+    testStatus: TestStatusEnum.Active,
+    dateOfReading: new Date().toISOString().split('T')[0],
+    timeOfReading: new Date().toLocaleTimeString(),
+    notes: ''
+  };
+
+  // Find the index of the base test and insert below it
+  const index = this.filteredAnalizatorTests.indexOf(baseTest);
+  this.filteredAnalizatorTests.splice(index + 1, 0, newTest);
+  this.addingIndex = index + 1;
+  }
+
+  public confirmAdd(test: AnalizatorData) {
+    // Validate required fields
+    // if (!test.testMark || !test.lot || !test.expirationDateReagens) {
+    //   alert('Please fill all required fields');
+    //   return;
+    // }
+    test.isNew = false;
+    this.addingIndex = -1;
+    delete test.id;
+    const test1:AnalizatorData = this.addAnalizatorData(test);
+    this.mainDataService.patients.forEach(patient =>{
+      if(patient.specimentID == test1.specimenID){
+        patient.analizatorDatas.push(test1);
+        return;
+      }
+    })
+  }
+
+  public cancelAdd(test: AnalizatorData){
+    this.clearAddedTestIfNotConfirmed();
+  }
+
+  private clearAddedTestIfNotConfirmed(){
+    if(this.addingIndex > 0){
+      this.filteredAnalizatorTests.splice(this.addingIndex, 1);
+      this.addingIndex = -1;
+    }
   }
 //#region CallersToBackend
-  private addAnalizatorData(analizator: AnalizatorData):void{
+  private addAnalizatorData(analizator: AnalizatorData):AnalizatorData{
       this.analizatorService.addAnalizatorData(analizator).subscribe(
         (response: AnalizatorData) => {
           if (response != null) {
-            this.mainDataService.analizatorDatas.push(response);
+             return response;
           }
           else {
             alert("Error wont add Analizator Test"); // Handle existing user
+            return null;
           }
         },
         (error: HttpErrorResponse) => {
           alert(`Error: ${error.error.message || error.message}`);
         }
       );
+      return analizator;
     }
 
     private updateAnalizatorData(analizator: AnalizatorData, id:number):void{

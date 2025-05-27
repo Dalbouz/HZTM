@@ -34,7 +34,7 @@ export class GenericServices{
     return this.searchByFilters(searchIn, filtersObj);
   }
 
-  public replaceObjectById<T extends { id: string | number }>(
+  public replaceObjectById<T extends { id?: string | number }>(
     array: T[],
     newObject: T
   ): T[] {

@@ -1,6 +1,6 @@
 import { PatientData } from "../dataStructure/PatientData";
 
-export interface AnalizatorData{
+export interface AnalizatorDataTempNoId{
     sampleNumber:string;
     analizatorName:string;
     analizatorOib:number;
@@ -14,7 +14,6 @@ export interface AnalizatorData{
     interpretationForEDelphyn:string;
     testMarkForEDelphyn:string;
     notes:string;
-    id?: number;
     patient: PatientData;
     validated: string;
     testStatus: String;

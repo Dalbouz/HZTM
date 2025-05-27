@@ -60,7 +60,8 @@
         </thead>
         <tbody>
         <ng-container *ngFor="let analizator of filteredAnalizatorTests; let i = index">
-          <tr *ngIf="analizator.testStatus == 'ACTIVE'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
+          <tr [class.editing-test]="analizator.isNew" 
+          *ngIf="analizator.testStatus == 'ACTIVE'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
             <td>{{ analizator.analizatorName }}</td>
             <td>{{ analizator.testMark }}</td>
             <td>{{ analizator.sampleNumber }}</td>
@@ -70,7 +71,10 @@
             <td>{{ analizator.dateOfReading }}</td>
             <td>{{ analizator.timeOfReading }}</td>
             <td>{{ analizator.testStatus }}</td>
-            <td>{{ analizator.assayName }}</td>
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.assayName" required>
+              <span *ngIf="!analizator.isNew">{{ analizator.assayName }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
+            </td>
             <td>{{ analizator.specimenID }}</td>
             <td>
               <textarea
@@ -85,24 +89,43 @@
             <td>{{ analizator.validated }}</td>
 
             <td class="action-buttons">
-              <!-- Delete Button -->
-              <button class="icon-btn delete" 
-                      [disabled]="mainDataService.currentUser.securityLevelStatus.trim() !== 'HIGH'"
-                      (click)="confirmDelete(analizator)">
-                <span title="Delete">🗑️</span>
-              </button>
-              <!-- Archive Button -->
-              <button class="icon-btn archive" 
-                      [disabled]="analizator.validated !== 'VALIDATED'"
-                      (click)="archiveAnalizator(analizator)">
-                <span title="Archive">🗃️</span>
-              </button>
-              <!-- Validate Button -->
-              <button class="icon-btn validate"
-                      [disabled]="mainDataService.currentUser.securityLevelStatus.trim() == 'LOW'"
-                      (click)="confirmValidate(analizator)">
-                <span title="Validate">&#9989;</span> <!-- Check mark icon -->
-              </button>
+
+              <!-- Action buttons -->
+            <td class="action-buttons">
+              <ng-container *ngIf="analizator.isNew; else existingButtons">
+                <button class="icon-btn confirm" (click)="confirmAdd(analizator)" title="Confirm">
+                  <span>✔️</span>
+                </button>
+                <button class="icon-btn cancel" (click)="cancelAdd(analizator)" title="Cancel">
+                  <span>❌</span>
+                </button>
+              </ng-container>
+
+              <ng-template #existingButtons>
+                <!-- Original buttons -->
+                <!-- Delete Button -->
+                      <button class="icon-btn delete" 
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() !== 'HIGH'"
+                              (click)="confirmDelete(analizator)">
+                        <span title="Delete">🗑️</span>
+                      </button>
+                      <!-- Archive Button -->
+                      <button class="icon-btn archive" 
+                              [disabled]="analizator.validated !== 'VALIDATED'"
+                              (click)="archiveAnalizator(analizator)">
+                        <span title="Archive">🗃️</span>
+                      </button>
+                      <!-- Validate Button -->
+                      <button class="icon-btn validate"
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() == 'LOW'"
+                              (click)="confirmValidate(analizator)">
+                        <span title="Validate">&#9989;</span> <!-- Check mark icon -->
+                      </button>
+                      <button class="icon-btn create"
+                              (click)="addTest(analizator)">
+                        <span title="Validate">➕</span> <!-- Check mark icon -->
+                      </button>
+              </ng-template>
             </td>
           </tr>
         </ng-container>

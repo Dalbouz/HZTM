@@ -303,3 +303,12 @@
   transition: transform 0.3s;
 }
 
+/* CSS FOR NEWLY CREATED TESTS*/
+tr.editing-test {
+  background-color: #dde933 !important;  /* Light gray background */
+  border-left: 3px solid #6c8df5;        /* Accent border */
+}
+
+tr.editing-test:hover {
+  background-color: #d9e255 !important;  /* Slightly darker on hover */
+}

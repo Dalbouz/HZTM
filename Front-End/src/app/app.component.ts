@@ -127,8 +127,9 @@ export class AppComponent implements OnInit{
         //dodaje broj uzorka iz analizator testa u array uzorka za pacijenta
         patient.sampleNumbers = [];
         patient.analizatorDatas.forEach(analizatorData => {
-        if (!patient.sampleNumbers.includes(analizatorData.sampleNumber)) {
-        patient.sampleNumbers.push(analizatorData.sampleNumber);
+          analizatorData.isNew = false;
+          if (!patient.sampleNumbers.includes(analizatorData.sampleNumber)) {
+          patient.sampleNumbers.push(analizatorData.sampleNumber);
       }
       
 });
