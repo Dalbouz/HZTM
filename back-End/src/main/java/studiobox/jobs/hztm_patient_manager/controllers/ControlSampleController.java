@@ -23,9 +23,21 @@ public class ControlSampleController {
         List<ControlSampleData> controlSampleDataList = controlSampleService.findAllControlSampleData();
         return new ResponseEntity<>(controlSampleDataList, HttpStatus.OK);
     }
-    @GetMapping("/find/{startDate}/{endDate}")
-    public ResponseEntity <List<ControlSampleData>> findWithingGivenDates(@PathVariable Integer startDate, @PathVariable Integer endDate){
-        List<ControlSampleData> controlSampleDataList = controlSampleService.findAllControlSampleDataWithingDateRange(startDate,endDate);
+    @GetMapping("/find/date/{startDate}/{endDate}")
+    public ResponseEntity <List<ControlSampleData>> findWithingGivenDates(@PathVariable String startDate, @PathVariable String endDate){
+        List<ControlSampleData> controlSampleDataList = controlSampleService.findAllControlSampleDataWithinDateRange(startDate,endDate);
+        return new ResponseEntity<>(controlSampleDataList, HttpStatus.OK);
+    }
+
+    @GetMapping("/find/lot/{lot}")
+    public ResponseEntity<List<ControlSampleData>> findByLot(@PathVariable String lot){
+        List<ControlSampleData> controlSampleDataList = controlSampleService.findAllByLot(lot);
+        return new ResponseEntity<>(controlSampleDataList, HttpStatus.OK);
+    }
+
+    @GetMapping("/find/testName/{testName}")
+    public ResponseEntity<List<ControlSampleData>> findByTestName(@PathVariable String testName){
+        List<ControlSampleData> controlSampleDataList = controlSampleService.findAllByTestName(testName);
         return new ResponseEntity<>(controlSampleDataList, HttpStatus.OK);
     }
 }

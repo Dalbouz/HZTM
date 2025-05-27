@@ -23,7 +23,7 @@ public class ControlSampleData implements Serializable {
     private String analizatorResult;
     private String analizatorUnit;
     private String interpretationFromAnalizator;
-    private Integer sampleDate;
+    private String sampleDate;
 
     public ControlSampleData(){
 
@@ -31,7 +31,7 @@ public class ControlSampleData implements Serializable {
 
     public ControlSampleData(String AnalizatorName, String ControlSampleName, String TestName,
                              String LotTest, String ExpirationDateTest, String LotControlSamples, String ExpirationDateControlSamples,
-                             String SampleNumber, String AnalizatorResult, String AnalizatorUnit, String InterpretationFromAnalizator, Integer SampleDate) {
+                             String SampleNumber, String AnalizatorResult, String AnalizatorUnit, String InterpretationFromAnalizator, String SampleDate) {
         this.analizatorName = AnalizatorName;
         this.controlSampleName = ControlSampleName;
         this.testName = TestName;
@@ -46,11 +46,11 @@ public class ControlSampleData implements Serializable {
         this.sampleDate = sampleDate;
     }
 
-    public Integer  getSampleDate() {
+    public String  getSampleDate() {
         return sampleDate;
     }
 
-    public void setSampleDate(Integer sampleDate) {
+    public void setSampleDate(String sampleDate) {
         this.sampleDate = sampleDate;
     }
 

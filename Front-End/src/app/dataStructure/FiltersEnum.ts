@@ -6,4 +6,7 @@ export enum FiltersEnum{
     assayName = "naziv pretrage",
     specimenID ="ID pacijenta",
     oib ="Oib pacijenta",
+    controlSampleLot = "Lot kontrolnog uzorka",
+    controlSampleTestName="Ime kontrolnog testa",
+    controlSampleDate ="Datum kontrolnog testa"
 }

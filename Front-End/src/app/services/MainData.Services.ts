@@ -6,6 +6,7 @@ import { PatientData } from "../dataStructure/PatientData";
 import { AnalizatorData } from "../dataStructure/AnalizatorData";
 import { UserData } from "../dataStructure/UserData";
 import { InstitutionService } from "./Institution.Services";
+import { ControlSampleData } from "../dataStructure/ControlSampleData";
 
 @Injectable({
     providedIn:'root'
@@ -16,6 +17,7 @@ export class MainDataService{
     public patients: PatientData[] = [];
     public analizatorDatas: AnalizatorData[] = [];
     public institutions: InstitutionLabData[] = [];
+    public controlSamples: ControlSampleData[] = [];
 
     public adminUserExist: boolean = false;
     public adminUserName:string = "";

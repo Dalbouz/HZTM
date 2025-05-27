@@ -1,0 +1,122 @@
+   <!--BACK BUTTON PART-->
+   <button class="back-btn" (click)="goBack()" title="Back">
+  <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
+  <span class="back-text">Back</span>
+</button>
+
+<!--SEARCH PART-->
+<div class="search-container">
+  <div class="filter-buttons-vertical">
+    <ng-container *ngFor="let filter of filters">
+      <div class="filter-row">
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="filter.active"
+          (click)="toggleFilter(filter)"
+        >
+          {{ filter.label }}
+        </button>
+        <ng-container *ngIf="filter.active">
+          <ng-container *ngIf="filter.key === 'sampleDate'; else singleInput">
+            <div style="display: flex; flex-direction: column; margin-right: 1rem;">
+              <input
+                type="date"
+                class="filter-input"
+                [(ngModel)]="sampleDateStart"
+                placeholder="Početni datum"
+              />
+              <span style="font-size: 0.93em; color: #555; margin-top: 2px;">Početni datum</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <input
+                type="date"
+                class="filter-input"
+                [(ngModel)]="sampleDateEnd"
+                placeholder="Završni datum"
+              />
+              <span style="font-size: 0.93em; color: #555; margin-top: 2px;">Završni datum</span>
+            </div>
+          </ng-container>
+          <ng-template #singleInput>
+            <input
+              type="text"
+              class="filter-input"
+              [(ngModel)]="filter.value"
+              [placeholder]="'Upišite ' + filter.label"
+            />
+          </ng-template>
+        </ng-container>
+      </div>
+    </ng-container>
+    <div class="search-actions-row">
+      <button class="search-btn" (click)="onSearch()" title="Start Search">
+        <span class="search-icon">🔍</span>
+      </button>
+      <button class="refresh-btn" (click)="onRefresh()" title="Refresh">
+        <span class="refresh-icon">&#x21bb;</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!--TABLE OF CONTROL SAMPLES PART-->
+    <div class="table-wrapper">
+      <table class="controlSample-table" *ngIf="showTable">
+        <thead>
+          <tr>
+            <th>Ime analizatora</th>
+            <th>Ime kontrolnog uzorka</th>
+            <th>Ime Testa</th>
+            <th>Lot test</th>
+            <th>Datum isteka testa</th>
+            <th>Lot kontrolnih uzoraka</th>
+            <th>Datum isteka kontrolnih uzoraka</th>
+            <th>Broj uzorka</th>
+            <th>Analizator rezultat</th>
+            <th>Analizator - mjerna jedinica</th>
+            <th>Interpretacija iz analizatora</th>
+            <th>Datum uzorka</th>
+          </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let controlSamples of mainDataService.controlSamples; let i = index">
+          <tr >
+            <td>{{ controlSamples.analizatorName }}</td>
+            <td>{{ controlSamples.controlSampleName}}</td>
+            <td>{{ controlSamples.testName }}</td>
+            <td>{{ controlSamples.lotTest }}</td>
+            <td>{{ controlSamples.expirationDateTest }}</td>
+            <td>{{ controlSamples.lotControlSamples }}</td>
+            <td>{{ controlSamples.expirationDateControlSamples }}</td>
+            <td>{{ controlSamples.sampleNumber }}</td>
+            <td>{{ controlSamples.analizatorResult }}</td>
+            <td>{{ controlSamples.analizatorUnit }}</td>
+            <td>{{ controlSamples.interpretationFromAnalizator }}</td>
+            <td>{{ controlSamples.sampleDate }}</td>
+          </tr>
+        </ng-container>
+</tbody>
+      </table>
+    </div>
+
+
+<!--GRAFIKON-->    
+<div class="container">
+  <h1>Levey-Jennings Quality Control Chart</h1>
+  
+  <div class="controls">
+    <div class="form-row">
+      <label>Start Date: <input type="date" id="startDate"></label>
+      <label>End Date: <input type="date" id="endDate"></label>
+      <label>Control Lot: <input type="text" id="lot"></label>
+    </div>
+    <button onclick="generateReport()">Generate Report</button>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="ljChart"></canvas>
+  </div>
+  
+  <div id="rulesViolations"></div>
+</div>
