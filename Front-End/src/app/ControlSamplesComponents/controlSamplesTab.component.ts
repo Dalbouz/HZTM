@@ -90,6 +90,8 @@ export class ControlSamplesTabComponent {
       if (isSure) {
         switch (this.activeFilter) {
           case FiltersEnum.controlSampleDate:
+            this.sampleDateEnd = this.formatDateToDDMMYYYY(this.sampleDateEnd);
+            this.sampleDateStart = this.formatDateToDDMMYYYY(this.sampleDateStart);
             this.getByDate();
             break;
           case FiltersEnum.controlSampleLot:
@@ -114,6 +116,12 @@ export class ControlSamplesTabComponent {
     this.disableAllFilters();
     
   }
+
+  private formatDateToDDMMYYYY(dateString: string): string {
+  if (!dateString) return '';
+  const [year, month, day] = dateString.split('-');
+  return `${day}.${month}.${year}`;
+}
 //#region CallersToBackend
     private getByDate():void{
           this.controlSampleService.getControlSamplesWithingDate(this.sampleDateStart,this.sampleDateEnd).subscribe(

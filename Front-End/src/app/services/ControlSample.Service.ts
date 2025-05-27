@@ -14,18 +14,18 @@ export class ControlSampleServices{
     constructor(private http: HttpClient){}
 
     public getAllControlSamples(): Observable<ControlSampleData[]>{
-       return this.http.get<ControlSampleData[]>(`${this.apiServerUrl}/controlSamples/find/all`);
+       return this.http.get<ControlSampleData[]>(`${this.apiServerUrl}/controlsamples/find/all`);
     }
 
     public getControlSamplesWithingDate(startDate: string, endDate:string): Observable<ControlSampleData[]>{
-        return this.http.get<ControlSampleData[]>(`${this.apiServerUrl}/controlSamples/find/date/${startDate}/${endDate}`);
+        return this.http.get<ControlSampleData[]>(`${this.apiServerUrl}/controlsamples/find/date/${startDate}/${endDate}`);
     }
 
     public getControlSamplesByLot(lot:string): Observable<ControlSampleData[]>{
-        return this.http.get<ControlSampleData[]>(`${this.apiServerUrl}/controlSamples/find/lot/${lot}`);
+        return this.http.get<ControlSampleData[]>(`${this.apiServerUrl}/controlsamples/find/lot/${lot}`);
     }
 
     public getControlSamplesByTestName(testName:string): Observable<ControlSampleData[]>{
-        return this.http.get<ControlSampleData[]>(`${this.apiServerUrl}/controlSamples/find/testName/${testName}`);
+        return this.http.get<ControlSampleData[]>(`${this.apiServerUrl}/controlsamples/find/testName/${testName}`);
     }
 }
