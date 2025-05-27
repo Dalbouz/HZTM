@@ -8,12 +8,14 @@
           <label for="password">Password</label>
           <input type="password" id="password" name="password"  [(ngModel)]="passwordTemp" required>
 
-           <label for="institutionData">Institution</label>
+           <!-- SELECT INSTITUTION
+          <label for="institutionData">Institution</label>
           <select [(ngModel)]="selectedInstitution" name="institution">
           <option *ngFor="let institutionData of mainDataService.institutions" [value]="institutionData.name">
           {{ institutionData.name }}
           </option>
           </select>
+        -->
            
 
           <button type="login" (click)="login()">Login</button>

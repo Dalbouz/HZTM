@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit{
     
     public userNameTemp:string ="";
     public passwordTemp:string ="";
-    public selectedInstitution: string = "";
+    //public selectedInstitution: string = "";
     
     public adminUserNameChecker:string = "";
     public adminPasswordChecker:string ="";
@@ -58,14 +58,14 @@ export class LoginComponent implements OnInit{
     ngOnInit(): void {
       this.mainDataService.isLoggedIn = false;
       this.mainDataService.clearCurrentUser();
-      this.mainDataService.clearCurrentInstitution();
-      this.selectedInstitution='';
+      //this.mainDataService.clearCurrentInstitution();
+      //this.selectedInstitution='';
     }
 
     
 //#region Login
     public login():void{
-    if(this.userNameTemp == "" || this.passwordTemp == "" || this.selectedInstitution==""){
+    if(this.userNameTemp == "" || this.passwordTemp == "" /*|| this.selectedInstitution==""*/){
       
       return;
     }
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit{
             this.mainDataService.currentUser.activeStatus = true; //ovo je samo lokalno, ne pusha se na server na serveru ne pise koji se user aktivan
             this.mainDataService.isLoggedIn = true; 
             this.loginSuccess();
-            this.getInstitutionByName();
+            //this.getInstitutionByName();
         }
         else{
           alert("wrong credentials!");
@@ -102,7 +102,7 @@ export class LoginComponent implements OnInit{
            this.clearAdminChecker();
            this.clearRegisterdUserTemp();
            this.clearUserCredentialsTemp();
-           this.selectedInstitution='';
+           //this.selectedInstitution='';
       }
       else{
         alert("Wrong admin Credentials!");
@@ -165,21 +165,22 @@ export class LoginComponent implements OnInit{
     }
 //#endregion
 
-    private getInstitutionByName():void{
-      this.institutionService.getInstitution(this.selectedInstitution).subscribe(
-        (response: InstitutionLabData)=>{
-          if(response!=null){
-            this.mainDataService.currentInstitution = response;
-          }
-          else{
-          alert("Select an Institution");
-        }
-      },
-      (error: HttpErrorResponse)=>{
-        alert(error.message + "\nNo Institution")
-      }
-      );
-    }
+    // private getInstitutionByName():void{
+    //   this.institutionService.getInstitution(this.selectedInstitution).subscribe(
+    //     (response: InstitutionLabData)=>{
+    //       if(response!=null){
+    //         this.mainDataService.currentInstitution = response;
+    //       }
+    //       else{
+    //       alert("Select an Institution");
+    //     }
+    //   },
+    //   (error: HttpErrorResponse)=>{
+    //     alert(error.message + "\nNo Institution")
+    //   }
+    //   );
+    // }
+
 //#region SwitchPanelMethods
     public switchBetweenLoginRegister(): void{
       this.showLogin = !this.showLogin;
@@ -187,7 +188,7 @@ export class LoginComponent implements OnInit{
       this.clearAdminChecker();
       this.clearRegisterdUserTemp();
       this.clearUserCredentialsTemp();
-      this.selectedInstitution='';
+      //this.selectedInstitution='';
   }
 
   public switchBetweenLoginCreateInstitution(): void{
@@ -196,7 +197,7 @@ export class LoginComponent implements OnInit{
      this.clearUserCredentialsTemp();
      this.clearInstitutionTemp();
      this.clearAdminChecker();
-     this.selectedInstitution='';
+     //this.selectedInstitution='';
   }
   //#endregion
 
