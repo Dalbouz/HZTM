@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
@@ -22,11 +22,11 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './analizatorTestsTab.component.html',
   styleUrls: ['./analizatorTestsTab.component.css']
 })
-export class AnalizatorTestsTabComponent implements OnInit{
+export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit{
     title = 'hztm_pacient_management';
 
     filteredAnalizatorTests: AnalizatorData[] = [];
-
+    @ViewChildren('TextareaNotes') textareaRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
     filters = [
     { label: FiltersEnum.analizatorName, key: 'analizatorName', active: false, value: '' },
     { label: FiltersEnum.assayName, key: 'assayTest', active: false, value: '' },
@@ -36,6 +36,14 @@ export class AnalizatorTestsTabComponent implements OnInit{
     
     // Add more filters as needed
   ];
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.textareaRefs.forEach(ref => {
+        this.autoResize({ target: ref.nativeElement } as any as Event);
+      });
+    });
+  }
 
    ngOnInit():void{
       this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;

@@ -74,6 +74,7 @@
             <td>{{ analizator.specimenID }}</td>
             <td>
               <textarea
+                #TextareaNotes
                 [(ngModel)]="analizator.notes"
                 [name]="'bilješke_' + i"
                 class="auto-resize-textarea"
