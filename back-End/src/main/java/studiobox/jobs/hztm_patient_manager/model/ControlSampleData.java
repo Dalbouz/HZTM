@@ -1,0 +1,145 @@
+package studiobox.jobs.hztm_patient_manager.model;
+
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+
+@Entity
+@Table(name ="controlSamples")
+public class ControlSampleData implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String analizatorName;
+    private String controlSampleName;
+    private String testName;
+    private String lotTest;
+    private String expirationDateTest;
+    private String lotControlSamples;
+    private String expirationDateControlSamples;
+    private String sampleNumber;
+    private String analizatorResult;
+    private String analizatorUnit;
+    private String interpretationFromAnalizator;
+    private Integer sampleDate;
+
+    public ControlSampleData(){
+
+    }
+
+    public ControlSampleData(String AnalizatorName, String ControlSampleName, String TestName,
+                             String LotTest, String ExpirationDateTest, String LotControlSamples, String ExpirationDateControlSamples,
+                             String SampleNumber, String AnalizatorResult, String AnalizatorUnit, String InterpretationFromAnalizator, Integer SampleDate) {
+        this.analizatorName = AnalizatorName;
+        this.controlSampleName = ControlSampleName;
+        this.testName = TestName;
+        this.lotTest = LotTest;
+        this.expirationDateTest = ExpirationDateTest;
+        this.lotControlSamples = LotControlSamples;
+        this.expirationDateControlSamples = ExpirationDateControlSamples;
+        this.sampleNumber = sampleNumber;
+        this.analizatorResult = AnalizatorResult;
+        this.analizatorUnit = AnalizatorUnit;
+        this.interpretationFromAnalizator = InterpretationFromAnalizator;
+        this.sampleDate = sampleDate;
+    }
+
+    public Integer  getSampleDate() {
+        return sampleDate;
+    }
+
+    public void setSampleDate(Integer sampleDate) {
+        this.sampleDate = sampleDate;
+    }
+
+    public String getAnalizatorName() {
+        return analizatorName;
+    }
+
+    public void setAnalizatorName(String analizatorName) {
+        this.analizatorName = analizatorName;
+    }
+
+    public String getControlSampleName() {
+        return controlSampleName;
+    }
+
+    public void setControlSampleName(String controlSampleName) {
+        this.controlSampleName = controlSampleName;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
+    public String getLotTest() {
+        return lotTest;
+    }
+
+    public void setLotTest(String lotTest) {
+        this.lotTest = lotTest;
+    }
+
+    public String getExpirationDateTest() {
+        return expirationDateTest;
+    }
+
+    public void setExpirationDateTest(String expirationDataTest) {
+        this.expirationDateTest = expirationDataTest;
+    }
+
+    public String getLotControlSamples() {
+        return lotControlSamples;
+    }
+
+    public void setLotControlSamples(String lotControlSamples) {
+        this.lotControlSamples = lotControlSamples;
+    }
+
+    public String getExpirationDateControlSamples() {
+        return expirationDateControlSamples;
+    }
+
+    public void setExpirationDateControlSamples(String expirationDataControlSamples) {
+        this.expirationDateControlSamples = expirationDataControlSamples;
+    }
+
+    public String getSampleNumber() {
+        return sampleNumber;
+    }
+
+    public void setSampleNumber(String sampleNumber) {
+        this.sampleNumber = sampleNumber;
+    }
+
+    public String getAnalizatorResult() {
+        return analizatorResult;
+    }
+
+    public void setAnalizatorResult(String analizatorResult) {
+        this.analizatorResult = analizatorResult;
+    }
+
+    public String getAnalizatorUnit() {
+        return analizatorUnit;
+    }
+
+    public void setAnalizatorUnit(String analizatorUnit) {
+        this.analizatorUnit = analizatorUnit;
+    }
+
+    public String getInterpretationFromAnalizator() {
+        return interpretationFromAnalizator;
+    }
+
+    public void setInterpretationFromAnalizator(String interpretationFromAnalizator) {
+        this.interpretationFromAnalizator = interpretationFromAnalizator;
+    }
+
+}
