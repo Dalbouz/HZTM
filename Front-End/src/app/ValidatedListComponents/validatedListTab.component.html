@@ -1,0 +1,114 @@
+   <!--BACK BUTTON PART-->
+   <button class="back-btn" (click)="goBack()" title="Back">
+  <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
+  <span class="back-text">Back</span>
+</button>
+
+<!--SEARCH PART-->
+<div class="search-container">
+  <div class="filter-buttons-vertical">
+    <ng-container *ngFor="let filter of filters">
+      <div class="filter-row">
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="filter.active"
+        (click)="toggleFilter(filter)"
+      >
+        {{ filter.label }}
+      </button>
+      <input
+        *ngIf="filter.active"
+        type="text"
+        class="filter-input"
+        [(ngModel)]="filter.value"
+        [placeholder]="'Upišite ' + filter.label"
+      />
+    </div>
+    </ng-container>
+    <div class="search-actions-row">
+      <button class="search-btn" (click)="onSearch()" title="Start Search">
+        <span class="search-icon">🔍</span>
+      </button>
+      <button class="refresh-btn" (click)="onRefresh()" title="Refresh">
+        <span class="refresh-icon">&#x21bb;</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!--TABLE OF CONTROL SAMPLES PART-->
+    <div class="table-wrapper">
+      <table class="analizators-table">
+        <thead>
+          <tr>
+            <th>Ime Analizatora</th>
+            <th>Testna oznaka</th>
+            <th>Broj uzorka</th>
+            <th>LOT</th>
+            <th>Datum isteka reagensa</th>
+            <th>Interpretacijski rezultat</th>
+            <th>Numerička vrijednost iz Analizatora</th>
+            <th>Interpretacija za eD</th>
+            <th>Testna oznaka za eD</th>
+            <th>Datum očitavanja</th>
+            <th>Vrijeme očitavanja</th>
+            <!--<th>Status testa</th>-->
+            <th>Naziv pretrage</th>
+            <th>ID pacijenta</th>
+            <th>Bilješke</th>
+            <th>Zaključni rezultat</th>
+            <th>Status validacije</th>
+          </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let analizator of filteredListTemp">
+          <tr>
+            <td>
+              {{analizator.analizatorName}}
+            </td>
+            <td>
+              {{analizator.testMark}}
+            </td>
+            <td>{{ analizator.sampleNumber }}</td>
+            <td>
+              {{analizator.lot}}
+            </td>
+            <td>
+              {{analizator.expirationDateReagens}}
+            </td>
+            <td>
+              {{analizator.interpretedResult}}
+            </td>
+            <td>
+              {{analizator.numericValueFromAnalizator}}
+            </td>
+            <td>
+              {{analizator.interpretationForEDelphyn}}
+            </td>
+            <td>
+              {{analizator.testMarkForEDelphyn}}
+            </td>
+            <td>
+              {{analizator.dateOfReading}}
+            </td>
+            <td>
+              {{analizator.timeOfReading}}
+            </td>
+            <!--<td>{{ analizator.testStatus }}</td>-->
+            <td>
+              {{analizator.assayName}}
+            </td>
+            <td>{{ analizator.specimenID }}</td>
+            <td>
+              {{analizator.notes}}
+            </td>
+            <td>
+              {{analizator.finalResult}}
+            </td>
+            <td>{{ analizator.validated }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

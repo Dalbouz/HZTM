@@ -5,6 +5,7 @@ import { PatientsTabComponent } from './PatientsTab/patientsTab.component';
 import { AuthGuard } from './AuthGuard';
 import { AnalizatorTestsTabComponent } from './AnalizatorTestComponents/analizatorTestsTab.component';
 import { ControlSamplesTabComponent } from './ControlSamplesComponents/controlSamplesTab.component';
+import { ValidatedListTabComponent } from './ValidatedListComponents/validatedListTab.component';
 
 
 export const routes: Routes = [
@@ -13,5 +14,8 @@ export const routes: Routes = [
   { path: 'patientsTab', component: PatientsTabComponent, canActivate: [AuthGuard]},
   { path: 'analizatorTestsTab', component: AnalizatorTestsTabComponent, canActivate: [AuthGuard]},
   { path: 'controlSamplesTab', component: ControlSamplesTabComponent, canActivate: [AuthGuard]},
+  { path: 'validatedListTab', component: ValidatedListTabComponent, canActivate: [AuthGuard]},
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
+
+

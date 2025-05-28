@@ -6,18 +6,22 @@
   <h1>Dobrodošli {{mainDataService.currentUser.fullName}}</h1>
   <div class="nav-boxes">
     <button class="nav-box" (click)="navigateTo('patientsTab')">
-      <span class="nav-title">Pacijenti</span>
-      <span class="nav-desc">Pregled testova</span>
+      <span class="nav-title">Karton pacijenta</span>
+      <span class="nav-desc">Pregled pacijenta i testova</span>
     </button>
     <button class="nav-box" (click)="navigateTo('analizatorTestsTab')">
       <span class="nav-title">Analizator Testovi</span>
       <span class="nav-desc">Prihvat i kontrola analizator testova</span>
     </button>
-    <button class="nav-box" (click)="navigateTo('reports')">
-      <span class="nav-title">Arhiva</span>
-      <span class="nav-desc">Svi validirani testovi</span>
+    <button class="nav-box" (click)="navigateTo('arhivaTestsTab')">
+      <span class="nav-title">Arhiva testova</span>
+      <span class="nav-desc">Arhivirani testovi</span>
     </button>
-    <button class="nav-box" (click)="navigateTo('settings')">
+    <button class="nav-box" (click)="navigateTo('validatedListTab')">
+      <span class="nav-title">Lista validiranih testova</span>
+      <span class="nav-desc">Lista validiranih testova po grupama.</span>
+    </button>
+    <button class="nav-box" (click)="navigateTo('listsTab')">
       <span class="nav-title">Liste</span>
       <span class="nav-desc">
         Lista ponavljača,
@@ -25,7 +29,7 @@
         Lista uzorka prema testu
       </span>
     </button>
-    <button class="nav-box" (click)="navigateTo('settings')">
+    <button class="nav-box" (click)="navigateTo('registerPositiveGiversTab')">
       <span class="nav-title">Registar pozitivnih<br>Davatelja</span>
       <span class="nav-desc">
         DDK koji je pozitivan na jedan od biljega

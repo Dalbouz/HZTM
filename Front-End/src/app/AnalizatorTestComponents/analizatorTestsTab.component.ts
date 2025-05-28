@@ -29,7 +29,10 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     public addingIndex: number = -1;
 
     filteredAnalizatorTests: AnalizatorData[] = [];
-    @ViewChildren('TextareaNotes') textareaRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
+    
+    @ViewChildren('TextareaNotes') textareaNoteRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
+    @ViewChildren('TextareaFinalResult') textareaFinalResultRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
+    
     filters = [
     { label: FiltersEnum.analizatorName, key: 'analizatorName', active: false, value: '' },
     { label: FiltersEnum.assayName, key: 'assayTest', active: false, value: '' },
@@ -47,10 +50,23 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.textareaRefs.forEach(ref => {
-        this.autoResize({ target: ref.nativeElement } as any as Event);
+        // Combine both sets of textarea references
+        const allTextareas = [
+          ...this.textareaNoteRefs.toArray(),
+          ...this.textareaFinalResultRefs.toArray()
+        ];
+
+        // Auto-resize all textareas
+        allTextareas.forEach(ref => {
+          this.autoResize({ target: ref.nativeElement } as unknown as Event);
+        });
       });
-    });
+
+    // setTimeout(() => {
+    //   this.textareaNoteRefs.forEach(ref => {
+    //     this.autoResize({ target: ref.nativeElement } as any as Event);
+    //   });
+    // });
     this.clearAddedTestIfNotConfirmed();
   }
 
@@ -176,6 +192,7 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     analizatorName: '', // You can override or set new values below
     testMark: '',
     interpretedResult: '',
+    numericValueFromAnalizator:'',
     interpretationForEDelphyn: '',
     testMarkForEDelphyn: '',
     testWasValidatedBy: '',
@@ -187,7 +204,8 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     testStatus: TestStatusEnum.Active,
     dateOfReading: new Date().toISOString().split('T')[0],
     timeOfReading: new Date().toLocaleTimeString(),
-    notes: ''
+    notes: '',
+    finalResult:''
   };
 
   // Find the index of the base test and insert below it
@@ -198,10 +216,12 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
 
   public confirmAdd(test: AnalizatorData) {
     // Validate required fields
-    // if (!test.testMark || !test.lot || !test.expirationDateReagens) {
-    //   alert('Please fill all required fields');
-    //   return;
-    // }
+    if (!test.analizatorName || !test.testMark || !test.lot || 
+      !test.expirationDateReagens || !test.interpretedResult || !test.numericValueFromAnalizator || 
+      !test.interpretationForEDelphyn || !test.testMarkForEDelphyn || !test.assayName) {
+      alert('Please fill all required fields');
+      return;
+    }
     test.isNew = false;
     this.addingIndex = -1;
     delete test.id;

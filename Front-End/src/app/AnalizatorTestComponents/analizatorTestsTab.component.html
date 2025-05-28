@@ -47,13 +47,17 @@
             <th>Broj uzorka</th>
             <th>LOT</th>
             <th>Datum isteka reagensa</th>
+            <th>Interpretacijski rezultat</th>
             <th>Numerička vrijednost iz Analizatora</th>
+            <th>Interpretacija za eD</th>
+            <th>Testna oznaka za eD</th>
             <th>Datum očitavanja</th>
             <th>Vrijeme očitavanja</th>
-            <th>Status testa</th>
+            <!--<th>Status testa</th>-->
             <th>Naziv pretrage</th>
             <th>ID pacijenta</th>
             <th>Bilješke</th>
+            <th>Zaključni rezultat</th>
             <th>Status validacije</th>
             <th>Akcije</th>
           </tr>
@@ -62,17 +66,48 @@
         <ng-container *ngFor="let analizator of filteredAnalizatorTests; let i = index">
           <tr [class.editing-test]="analizator.isNew" 
           *ngIf="analizator.testStatus == 'ACTIVE'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
-            <td>{{ analizator.analizatorName }}</td>
-            <td>{{ analizator.testMark }}</td>
-            <td>{{ analizator.sampleNumber }}</td>
-            <td>{{ analizator.lot }}</td>
-            <td>{{ analizator.expirationDateReagens }}</td>
-            <td>{{ analizator.numericValueFromAnalizator }}</td>
-            <td>{{ analizator.dateOfReading }}</td>
-            <td>{{ analizator.timeOfReading }}</td>
-            <td>{{ analizator.testStatus }}</td>
             <td>
-              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.assayName" required>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.analizatorName" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.analizatorName }}</span>
+            </td>
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.testMark" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.testMark }}</span>
+            </td>
+            <td>{{ analizator.sampleNumber }}</td>
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.lot" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.lot }}</span>
+            </td>
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.expirationDateReagens" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.expirationDateReagens }}</span>
+            </td>
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.interpretedResult" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.interpretedResult }}</span>
+            </td>
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.numericValueFromAnalizator" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.numericValueFromAnalizator }}</span>
+            </td>
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.interpretationForEDelphyn" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.interpretationForEDelphyn }}</span>
+            </td>
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.testMarkForEDelphyn" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.testMarkForEDelphyn }}</span>
+            </td>
+            <td>
+              {{analizator.dateOfReading}}
+            </td>
+            <td>
+              {{analizator.timeOfReading}}
+            </td>
+            <!--<td>{{ analizator.testStatus }}</td>-->
+            <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.assayName" required class="small-tall-input">
               <span *ngIf="!analizator.isNew">{{ analizator.assayName }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
             </td>
             <td>{{ analizator.specimenID }}</td>
@@ -84,6 +119,18 @@
                 class="auto-resize-textarea"
                 rows="1"
                 (input)="autoResize($event)"
+                [disabled]="analizator.validated == 'VALIDATED' && mainDataService.currentUser.securityLevelStatus !='HIGH'"
+              ></textarea>
+            </td>
+            <td>
+              <textarea
+                #TextareaFinalResult
+                [(ngModel)]="analizator.finalResult"
+                [name]="'finalni rezultat_' + i"
+                class="auto-resize-textarea"
+                rows="1"
+                (input)="autoResize($event)"
+                [disabled]="analizator.validated == 'VALIDATED' && mainDataService.currentUser.securityLevelStatus !='HIGH'"
               ></textarea>
             </td>
             <td>{{ analizator.validated }}</td>
@@ -105,19 +152,19 @@
                 <!-- Original buttons -->
                 <!-- Delete Button -->
                       <button class="icon-btn delete" 
-                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() !== 'HIGH'"
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
                               (click)="confirmDelete(analizator)">
                         <span title="Delete">🗑️</span>
                       </button>
                       <!-- Archive Button -->
                       <button class="icon-btn archive" 
-                              [disabled]="analizator.validated !== 'VALIDATED'"
+                              [disabled]="analizator.validated != 'VALIDATED'"
                               (click)="archiveAnalizator(analizator)">
                         <span title="Archive">🗃️</span>
                       </button>
                       <!-- Validate Button -->
                       <button class="icon-btn validate"
-                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() == 'LOW'"
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() == 'LOW' || analizator.validated == 'VALIDATED'"
                               (click)="confirmValidate(analizator)">
                         <span title="Validate">&#9989;</span> <!-- Check mark icon -->
                       </button>

@@ -108,9 +108,10 @@
 }
 
 
-/*CSS za biljeske*/
+/*CSS za biljeske i zakljucni rez*/
 .auto-resize-textarea {
   width: 100%;
+  min-width: 180px;
   min-height: 32px;
   max-height: 300px;
   resize: none;
@@ -149,7 +150,7 @@
   background: #fa5a7d22;
   color: #fa5a7d;
 }
-.icon-btn.archive:disabled {
+.icon-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -311,4 +312,15 @@ tr.editing-test {
 
 tr.editing-test:hover {
   background-color: #d9e255 !important;  /* Slightly darker on hover */
+}
+
+/*CSS for inputfileds for the newly created tests*/
+.small-tall-input {
+  width: 90px;      /* Adjust width as needed */
+  height: 2.2em;    /* Makes the input taller */
+  font-size: 0.8em; /* Optional: increases text size */
+  padding: 0.2em 0.5em;
+  border-radius: 6px;
+  border: 1px solid #bcd;
+  box-sizing: border-box;
 }

@@ -28,6 +28,8 @@ public class AnalizatorData implements Serializable {
     @Column(name="AssayName")
     private String assayName;
     private String TestWasValidatedBy;
+    private String units;
+    private String finalResult;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +61,9 @@ public class AnalizatorData implements Serializable {
             String testStatus,
             String specimenID,
             String assayName,
-            String TestWasValidatedBy
+            String TestWasValidatedBy,
+            String units,
+            String finalResult
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -80,7 +84,25 @@ public class AnalizatorData implements Serializable {
         this.specimenID = specimenID;
         this.assayName = assayName;
         this.TestWasValidatedBy = TestWasValidatedBy;
+        this. units = units;
+        this.finalResult = finalResult;
 
+    }
+
+    public String getFinalResult() {
+        return finalResult;
+    }
+
+    public void setFinalResult(String finalResult) {
+        this.finalResult = finalResult;
+    }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
     }
 
     public String getTestWasValidatedBy() {

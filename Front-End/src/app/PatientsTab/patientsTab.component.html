@@ -89,21 +89,40 @@
               <tr>
                 <th>Broj uzorka</th>
                 <th>Analizator ime</th>
+                <th>Mjerna jedinica</th>
                 <th>Test oznaka</th>
-                <th>Vrijednost</th>
+                <th>Lot</th>
+                <th>Rok trajanja reagensa</th>
+                <th>Interpretacijski rezultat</th>
+                <th>Numerička vrijednost analizatora</th>
+                <th>Interpretacija za eD</th>
+                <th>Testna oznaka za eD</th>
+                 <th>Bilješke</th>
                 <th>Datum očitanja</th>
                 <th>Vrijeme očitanja</th>
+                <th>Status testa</th>
+                <th>Validacija testa</th>
+                
                 <!-- Add more columns as needed -->
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of getFilteredAnalizatorDataBySampleNumber(patient)">
+              <tr class="analizator-table-row" *ngFor="let data of getFilteredAnalizatorDataBySampleNumber(patient)">
               <td>{{ data.sampleNumber }}</td>
               <td>{{ data.analizatorName }}</td>
+              <td>{{ data.units }}</td>
               <td>{{ data.testMark }}</td>
+              <td>{{ data.lot }}</td>
+              <td>{{ data.expirationDateReagens }}</td>
+              <td>{{ data.interpretedResult }}</td>
               <td>{{ data.numericValueFromAnalizator }}</td>
+              <td>{{ data.interpretationForEDelphyn }}</td>
+              <td>{{ data.testMarkForEDelphyn }}</td>
+              <td>{{ data.notes }}</td>
               <td>{{ data.dateOfReading }}</td>
               <td>{{ data.timeOfReading }}</td>
+              <td>{{ data.testStatus }}</td>
+              <td>{{ data.validated }}</td>
               <!-- Add more columns as needed -->
             </tr>
             <tr *ngIf="getFilteredAnalizatorDataBySampleNumber(patient).length === 0">

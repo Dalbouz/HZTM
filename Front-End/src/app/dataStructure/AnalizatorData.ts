@@ -21,5 +21,7 @@ export interface AnalizatorData{
     assayName:String;
     specimenID:string;
     testWasValidatedBy:string;
-    isNew:boolean
+    isNew:boolean,
+    units: string;
+    finalResult: string;
 }
