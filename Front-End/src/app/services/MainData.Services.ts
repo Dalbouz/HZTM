@@ -7,6 +7,8 @@ import { AnalizatorData } from "../dataStructure/AnalizatorData";
 import { UserData } from "../dataStructure/UserData";
 import { InstitutionService } from "./Institution.Services";
 import { ControlSampleData } from "../dataStructure/ControlSampleData";
+import { RegistryDDKData } from "../dataStructure/RegistryDDKData";
+import { DdkTestData } from "../dataStructure/DdkTestData";
 
 @Injectable({
     providedIn:'root'
@@ -18,6 +20,8 @@ export class MainDataService{
     public analizatorDatas: AnalizatorData[] = [];
     public institutions: InstitutionLabData[] = [];
     public controlSamples: ControlSampleData[] = [];
+    public registryDdkDatas: RegistryDDKData[] = [];
+    public ddkTests: DdkTestData[] = [];
 
     public adminUserExist: boolean = false;
     public adminUserName:string = "";

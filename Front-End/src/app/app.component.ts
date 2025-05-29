@@ -13,6 +13,9 @@ import { AnalizatorData } from './dataStructure/AnalizatorData';
 import { MainDataService } from './services/MainData.Services';
 import { InstitutionLabData } from './dataStructure/InstitutionLabData';
 import { InstitutionService } from './services/Institution.Services';
+import { DDKServices } from './services/DDKServices';
+import { RegistryDDKData } from './dataStructure/RegistryDDKData';
+import { DdkTestData } from './dataStructure/DdkTestData';
 
 @Component({
   selector: 'app-root',
@@ -61,7 +64,8 @@ export class AppComponent implements OnInit{
     private userService: UserService,
     private patientService: PatientService,
     private analizatorService: AnalizatorServices,
-    private mainDataService: MainDataService
+    private mainDataService: MainDataService,
+    private ddkService: DDKServices
   ){}
 
 
@@ -70,6 +74,8 @@ export class AppComponent implements OnInit{
     this.getPatients();
     
     this.mainDataService.getInstitutions();
+
+    this.getDdkTests();
 
     this.userService.getUserById(1).subscribe(
         (response: UserData) => {
@@ -115,30 +121,54 @@ export class AppComponent implements OnInit{
     }
 
     //vidjeti jos kako ce ED slati listu uzoraka u bazu
-      private setAnalizatorDataForPatients():void{
-        this.mainDataService.patients.forEach(patient => {
-          this.analizatorService.getAnalizatorsDataBySpecimentID(patient.specimentID).subscribe(
-      (response: AnalizatorData[]) =>{
-        if(response == null || response.length == 0){
-          return alert("Za pacijenta" + patient.name + " " + patient.surname + "Nema Analizator Testova");
-        }
-        patient.analizatorDatas = response;
-        
-        //dodaje broj uzorka iz analizator testa u array uzorka za pacijenta
-        patient.sampleNumbers = [];
-        patient.analizatorDatas.forEach(analizatorData => {
-          analizatorData.isNew = false;
-          if (!patient.sampleNumbers.includes(analizatorData.sampleNumber)) {
-          patient.sampleNumbers.push(analizatorData.sampleNumber);
-      }
-      
-});
+    private setAnalizatorDataForPatients():void{
+      this.mainDataService.patients.forEach(patient => {
+        this.analizatorService.getAnalizatorsDataBySpecimentID(patient.specimentID).subscribe(
+          (response: AnalizatorData[]) =>{
+            if(response == null || response.length == 0){
+              return alert("Za pacijenta" + patient.name + " " + patient.surname + "Nema Analizator Testova");
+            }
+            patient.analizatorDatas = response;
+            
+            //dodaje broj uzorka iz analizator testa u array uzorka za pacijenta
+            patient.sampleNumbers = [];
+            patient.analizatorDatas.forEach(analizatorData => {
+              analizatorData.isNew = false;
+              if (!patient.sampleNumbers.includes(analizatorData.sampleNumber)) {
+              patient.sampleNumbers.push(analizatorData.sampleNumber);
+          }
+    
+        });
       },
       (error: HttpErrorResponse) => {
       alert(error.message + "\nNEMA ANALIZATOR PODATAKA!");
     }
     )
     });
-    
+  
+  }
+
+
+  private getDdkPatientsWithTests(testList: DdkTestData[]){
+    this.ddkService.getPatientsWithTests(testList).subscribe(
+      (response: RegistryDDKData[]) =>{
+        this.mainDataService.registryDdkDatas = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message + "\nPokusavam dohvatiti sve DDK pacijente ali nejde!");
+      }
+    )
+  }
+
+  private getDdkTests(){
+    this.ddkService.getAllTests().subscribe(
+          (response: DdkTestData[]) =>{
+            this.mainDataService.ddkTests = response;
+            this.getDdkPatientsWithTests(response);
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message + "\nPokusavam dohvatiti sve DDK pacijente ali nejde!");
+          }
+        )
   }
 }
