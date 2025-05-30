@@ -19,7 +19,7 @@ export class DDKServices{
     }
 
     public addPatient(data: RegistryDDKData): Observable<RegistryDDKData>{
-         return this.http.post<RegistryDDKData>(`${this.apiServerUrl}/ddkRegistry/add/` , data);
+         return this.http.post<RegistryDDKData>(`${this.apiServerUrl}/ddkRegistry/add`, data);
     }
 
      public updatePatient(data: RegistryDDKData, id:number): Observable<RegistryDDKData>{
@@ -31,7 +31,7 @@ export class DDKServices{
     }
 
     public addTest(data: DdkTestData): Observable<DdkTestData>{
-         return this.http.post<DdkTestData>(`${this.apiServerUrl}/ddkTests/add/` , data);
+         return this.http.post<DdkTestData>(`${this.apiServerUrl}/ddkTests/add`, data);
     }
 
      public updateTest(data: DdkTestData, id:number): Observable<DdkTestData>{

@@ -6,6 +6,7 @@ import studiobox.jobs.hztm_patient_manager.model.DdkTestData;
 import studiobox.jobs.hztm_patient_manager.model.RegistryDDKData;
 import studiobox.jobs.hztm_patient_manager.repositorys.RegistryDDKDataRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,8 +33,12 @@ public class RegistryDDKService {
     public List<RegistryDDKData> fillRegistryDDKDataWithTests(List<DdkTestData> ddkTestDataList) {
         List<RegistryDDKData> registryDDKDataList = registryDDKDataRepository.findAll();
         for (RegistryDDKData registryDDKData : registryDDKDataList) {
-            for(DdkTestData ddkTestData : ddkTestDataList) {
-                if(ddkTestData.getId().equals(registryDDKData.getId())) {
+            // Initialize the list if it's null
+            if (registryDDKData.getDdkTestDataList() == null) {
+                registryDDKData.setDdkTestDataList(new ArrayList<>());
+            }
+            for (DdkTestData ddkTestData : ddkTestDataList) {
+                if (ddkTestData.getId().equals(registryDDKData.getId())) {
                     registryDDKData.getDdkTestDataList().add(ddkTestData);
                 }
             }

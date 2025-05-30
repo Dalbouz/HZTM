@@ -1,0 +1,352 @@
+.patient-table-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.add-patient-btn {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  padding: 0.5rem 1.3rem;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, transform 0.1s;
+}
+.add-patient-btn:hover, .add-patient-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.add-test-btn {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  padding: 0.3rem 0.9rem;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: background 0.2s, transform 0.1s;
+}
+.add-test-btn:hover, .add-test-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+
+/* Make sure the table is full width and scrolls if needed */
+.table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 2.5rem 0 0 0;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(60, 60, 120, 0.11);
+  padding: 2rem 1.5rem;
+  overflow-x: auto;
+}
+
+.test-table-wrapper {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  overflow-x: auto;
+}
+
+.ddk-table {
+  width: 100%;
+  background: #c1daee;
+  border-collapse: collapse;
+}
+
+.ddk-table th, .ddk-table td {
+  box-sizing: border-box;
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+}
+
+.ddk{
+  width: 100%;
+  border: 2px solid #6c8df5;
+}
+
+.test-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.97rem;
+  color: #2d3a4a;
+  background: #b9b9dd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(60, 60, 120, 0.08);
+  margin-bottom: 0.5rem;
+}
+
+.test-table th, .test-table td {
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+}
+
+.test-table th {
+  background: #eaf1fb;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid #d9e7fa;
+}
+
+.test-table tr {
+  transition: background 0.15s;
+}
+
+.test-table tr:hover {
+  background: #f5faff;
+}
+
+.test-table td {
+  border-bottom: 1px solid #e2e9fa;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+  .ddk-table th, .ddk-table td,
+  .test-table th, .test-table td {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+  }
+}
+
+/*Back button CSS*/
+.back-btn {
+  position: fixed;
+  top: 2rem;
+  right: 8rem; /* Leaves room if you have a logout button at 2.5rem */
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.55rem 1.5rem 0.55rem 1.1rem;
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(60, 60, 120, 0.13);
+  transition: background 0.22s, transform 0.13s, box-shadow 0.22s;
+  outline: none;
+  letter-spacing: 0.5px;
+}
+
+.back-btn .back-icon {
+  font-size: 1.2rem;
+  margin-right: 0.2rem;
+  opacity: 0.82;
+  transition: opacity 0.2s;
+}
+
+.back-btn:hover, .back-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 8px 24px rgba(60, 60, 120, 0.18);
+}
+
+.back-btn:hover .back-icon,
+.back-btn:focus .back-icon {
+  opacity: 1;
+}
+
+.back-btn:active {
+  transform: scale(0.97);
+}
+
+
+/*CSS for search*/
+.search-container {
+  max-width: 600px;
+  margin: 2.5rem auto 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(60, 60, 120, 0.11);
+  padding: 2rem 1.5rem;
+  animation: fadeIn 0.7s;
+}
+
+/* Updated for vertical layout */
+.filter-buttons-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+
+.filter-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.filter-btn {
+  padding: 0.45rem 1.2rem;
+  border: 1.5px solid #bcd;
+  background: #f0f4f8;
+  color: #2d3a4a;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  outline: none;
+  order: 2;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border-color: #6c8df5;
+}
+
+.filter-input {
+  padding: 0.45rem 1rem;
+  border: 1.5px solid #c7d0dd;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #f9fbfd;
+  min-width: 130px;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  order: 1;
+}
+
+.filter-input:focus {
+  border-color: #6c8df5;
+  box-shadow: 0 0 0 2px #e2e9fa;
+}
+
+.search-btn {
+  padding: 0.55rem 1.3rem;
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  transition: background 0.2s, transform 0.1s;
+  outline: none;
+  margin-top: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.search-btn:hover, .search-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.search-icon {
+  font-size: 1.2rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+@media (max-width: 700px) {
+  .search-container {
+    padding: 1rem 0.2rem;
+  }
+  .filter-btn, .filter-input {
+    font-size: 0.95rem;
+    padding: 0.35rem 0.7rem;
+  }
+  .search-btn {
+    font-size: 1rem;
+    padding: 0.4rem 0.9rem;
+  }
+}
+
+
+/*CSS for refresh search button*/
+.refresh-btn {
+  padding: 0.55rem 1.3rem;
+  background: linear-gradient(90deg, #5ac8fa 0%, #6c8df5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  transition: background 0.2s, transform 0.1s;
+  outline: none;
+  margin-top: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.refresh-btn:hover, .refresh-btn:focus {
+  background: linear-gradient(90deg, #3fa3f7 0%, #5a7dfa 100%);
+}
+
+.refresh-icon {
+  font-size: 1.3rem;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+/*CSS for confirm buttons*/
+.icon-btn.confirm {
+  color: #4caf50;
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+}
+.icon-btn.confirm:hover,
+.icon-btn.confirm:focus {
+  background: #a5d6a7;
+  color: #fff;
+}
+
+.icon-btn.cancel {
+  color: #fa5a7d;
+  background: #fff0f3;
+  border: 1px solid #fa5a7d66;
+}
+.icon-btn.cancel:hover,
+.icon-btn.cancel:focus {
+  background: #fa5a7d;
+  color: #fff;
+}
+
+/* Center the H1 */
+.patient-table-header h1 {
+  flex: 1 1 100%;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #3a4a6c;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}

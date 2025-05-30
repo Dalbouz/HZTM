@@ -1,0 +1,180 @@
+    <!--BACK BUTTON PART-->
+    <button class="back-btn" (click)="goBack()" title="Back">
+  <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
+  <span class="back-text">Back</span>
+</button>
+
+    <!--SEARCH PART-->
+<div class="search-container">
+  <div class="filter-buttons-vertical">
+    <ng-container *ngFor="let filter of filters">
+      <div class="filter-row">
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="filter.active"
+        (click)="toggleFilter(filter)"
+      >
+        {{ filter.label }}
+      </button>
+      <input
+        *ngIf="filter.active"
+        type="text"
+        class="filter-input"
+        [(ngModel)]="filter.value"
+        [placeholder]="'Upišite ' + filter.label"
+      />
+    </div>
+    </ng-container>
+    <div class="search-actions-row">
+      <button class="search-btn" (click)="onSearch()" title="Start Search">
+        <span class="search-icon">🔍</span>
+      </button>
+      <button class="refresh-btn" (click)="onRefresh()" title="Refresh">
+        <span class="refresh-icon">&#x21bb;</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PLUS BUTTON TO ADD PATIENT (FLOATS RIGHT ABOVE TABLE) -->
+<div class="patient-table-header">
+  <h1>Dobrovoljni darivatelji krvi</h1>
+  <button class="icon-btn create add-patient-btn" (click)="addDDK()" title="Dodaj pacijenta" [disabled]="isCreatingDDK">
+    <span>➕</span> Dodaj pacijenta
+  </button>
+</div>
+
+<!-- PATIENT TABLE PART -->
+<div class="table-wrapper">
+  <table class="ddk-table patient-table">
+    <thead>
+      <tr>
+        <th>Ime</th>
+        <th>Prezime</th>
+        <th>Datum rođenja</th>
+        <th>Centar koji prikuplja krv</th>
+        <th>DDK broj</th>
+        <th>Akcije</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let patient of patientDatasTemp" >
+        <!-- Patient Row -->
+        <tr>
+          <td>
+            <input *ngIf="patient.isNew" [(ngModel)]="patient.name" required class="small-tall-input">
+            <span *ngIf="!patient.isNew">{{ patient.name }}</span>
+          </td>
+          <td>
+            <input *ngIf="patient.isNew" [(ngModel)]="patient.surname" required class="small-tall-input">
+            <span *ngIf="!patient.isNew">{{ patient.surname }}</span>
+          </td>
+          <td>
+            <input *ngIf="patient.isNew" [(ngModel)]="patient.dateOfBirth" required class="small-tall-input">
+            <span *ngIf="!patient.isNew">{{ patient.dateOfBirth }}</span>
+          </td>
+          <td>
+            <input *ngIf="patient.isNew" [(ngModel)]="patient.centerThatGetsTheBlood" required class="small-tall-input">
+            <span *ngIf="!patient.isNew">{{ patient.centerThatGetsTheBlood }}</span>
+          </td>
+          <td>
+            <input *ngIf="patient.isNew" [(ngModel)]="patient.ddkNumber" required class="small-tall-input">
+            <span *ngIf="!patient.isNew">{{ patient.ddkNumber }}</span>
+          </td>
+          <td class="action-buttons">
+            <ng-container *ngIf="patient.isNew; else existingButtons">
+              <button class="icon-btn confirm" (click)="confirmAddPatient(patient)" title="Potvrdi">
+                <span>✔️</span>
+              </button>
+              <button class="icon-btn cancel" (click)="cancelAddPatient()" title="Odustani">
+                <span>❌</span>
+              </button>
+            </ng-container>
+            <ng-template #existingButtons>
+              <button class="icon-btn create add-test-btn" (click)="addTest(patient)" title="Dodaj test" [disabled]="isCreatingTest">
+                <span>➕</span>
+              </button>
+            </ng-template>
+          </td>
+        </tr>
+        <!-- Test Table Row (one per patient) -->
+        <tr>
+          <td colspan="6">
+            <div class="test-table-wrapper">
+              <table class="test-table">
+                <thead>
+                  <tr>
+                    <th>Doza</th>
+                    <th>Uzorak</th>
+                    <th>Test</th>
+                    <th>Metoda</th>
+                    <th>Vrijednost očitanja</th>
+                    <th>Test Rezultat</th>
+                    <th>Datum očitanja</th>
+                    <th>Šifra</th>
+                    <th>Akcije</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let data of patient.tests">
+                    <tr class="test-table-row">
+                      <td>
+                        <input *ngIf="data.isNew" [(ngModel)]="data.dose" required class="small-tall-input">
+                        <span *ngIf="!data.isNew">{{ data.dose }}</span>
+                      </td>
+                      <td>
+                        <input *ngIf="data.isNew" [(ngModel)]="data.sample" required class="small-tall-input">
+                        <span *ngIf="!data.isNew">{{ data.sample }}</span>
+                      </td>
+                      <td>
+                        <input *ngIf="data.isNew" [(ngModel)]="data.test" required class="small-tall-input">
+                        <span *ngIf="!data.isNew">{{ data.test }}</span>
+                      </td>
+                      <td>
+                        <input *ngIf="data.isNew" [(ngModel)]="data.method" required class="small-tall-input">
+                        <span *ngIf="!data.isNew">{{ data.method }}</span>
+                      </td>
+                      <td>
+                        <input *ngIf="data.isNew" [(ngModel)]="data.readingValue" required class="small-tall-input">
+                        <span *ngIf="!data.isNew">{{ data.readingValue }}</span>
+                      </td>
+                      <td>
+                        <input *ngIf="data.isNew" [(ngModel)]="data.testResult" required class="small-tall-input">
+                        <span *ngIf="!data.isNew">{{ data.testResult }}</span>
+                      </td>
+                      <td>
+                        <input *ngIf="data.isNew" [(ngModel)]="data.dateOfReading" required class="small-tall-input">
+                        <span *ngIf="!data.isNew">{{ data.dateOfReading }}</span>
+                      </td>
+                      <td>{{ data.code }}</td>
+                      <td class="action-buttons">
+                        <ng-container *ngIf="data.isNew; else existingTestButtons">
+                          <button class="icon-btn confirm" (click)="confirmAddTest(data, patient)" title="Potvrdi">
+                            <span>✔️</span>
+                          </button>
+                          <button class="icon-btn cancel" (click)="cancelAddTest(patient)" title="Odustani">
+                            <span>❌</span>
+                          </button>
+                        </ng-container>
+                        <ng-template #existingTestButtons>
+                          <!-- Add more test actions here if needed -->
+                        </ng-template>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+                      <hr style="
+                        width: 60%;
+                        margin: 2rem auto;
+                        border: none;
+                        border-bottom: 1px solid #142a60;
+                      ">
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

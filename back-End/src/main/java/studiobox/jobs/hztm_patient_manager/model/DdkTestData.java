@@ -16,20 +16,39 @@ public class DdkTestData implements Serializable {
     private String test;
     private String method;
     private String readingValue;
+    private String testResult;
     private String dateOfReading;
-    private String code;
+    private String code = generateCode();
     private Long patientId;
 
     public DdkTestData (){}
 
-    public DdkTestData(String dose, Integer sample, String test, String method, String readingValue, String code, Long patientId) {
+    public DdkTestData(String dose, Integer sample, String test, String method, String readingValue,
+                        Long patientId,String dateofReading, String testResult) {
         this.dose = dose;
         this.sample = sample;
         this.test = test;
         this.method = method;
         this.readingValue = readingValue;
-        this.code = code;
         this.patientId = patientId;
+        this.dateOfReading = dateofReading;
+        this.testResult = testResult;
+    }
+
+    public String getTestResult() {
+        return testResult;
+    }
+
+    public void setTestResult(String testResult) {
+        this.testResult = testResult;
+    }
+
+    public String getDateOfReading() {
+        return dateOfReading;
+    }
+
+    public void setDateOfReading(String dateOfReading) {
+        this.dateOfReading = dateOfReading;
     }
 
     public Long getId() {
@@ -95,6 +114,14 @@ public class DdkTestData implements Serializable {
 
     public void setPatientId(Long patientId) {
         this.patientId = patientId;
+    }
+
+    private String generateCode() {
+        // Random number between 0 and 99 (2 digits)
+        int number = (int) (Math.random() * 100);
+        // Random lowercase letter
+        char letter = (char) ('a' + (int)(Math.random() * 26));
+        return number + String.valueOf(letter);
     }
 }
 

@@ -149,25 +149,50 @@ export class AppComponent implements OnInit{
   }
 
 
-  private getDdkPatientsWithTests(testList: DdkTestData[]){
-    this.ddkService.getPatientsWithTests(testList).subscribe(
-      (response: RegistryDDKData[]) =>{
+  // private getDdkPatientsWithTests(testList: DdkTestData[]){
+  //   this.ddkService.getPatientsWithTests(testList).subscribe(
+  //     (response: RegistryDDKData[]) =>{
+  //       this.mainDataService.registryDdkDatas = response;
+  //     },
+  //     (error: HttpErrorResponse) => {
+  //       alert(error.message + "\nPokusavam dohvatiti sve DDK pacijente sa testovima ali nejde!");
+  //     }
+  //   )
+  // }
+
+  private getDdkPatients(){
+    this.ddkService.getAllPatients().subscribe(
+      (response:RegistryDDKData[]) =>{
         this.mainDataService.registryDdkDatas = response;
+        this.connectDdkTestsWithDdkPatients();
       },
       (error: HttpErrorResponse) => {
-        alert(error.message + "\nPokusavam dohvatiti sve DDK pacijente ali nejde!");
-      }
+            alert(error.message + "\nPokusavam dohvatiti sve DDK pacijente ali nejde!");
+          }
     )
+  }
+
+  private connectDdkTestsWithDdkPatients():void{
+    this.mainDataService.registryDdkDatas.forEach(patient =>{
+      this.mainDataService.ddkTests.forEach(test=>{
+        if(patient.id == test.patientId){
+          if(!patient.tests){
+            patient.tests = [];
+          }
+          patient.tests.push(test);
+        }
+      })
+    })
   }
 
   private getDdkTests(){
     this.ddkService.getAllTests().subscribe(
           (response: DdkTestData[]) =>{
             this.mainDataService.ddkTests = response;
-            this.getDdkPatientsWithTests(response);
+            this.getDdkPatients();
           },
           (error: HttpErrorResponse) => {
-            alert(error.message + "\nPokusavam dohvatiti sve DDK pacijente ali nejde!");
+            alert(error.message + "\nPokusavam dohvatiti sve DDK testove ali nejde!");
           }
         )
   }

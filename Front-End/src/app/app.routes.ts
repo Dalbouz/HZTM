@@ -6,6 +6,7 @@ import { AuthGuard } from './AuthGuard';
 import { AnalizatorTestsTabComponent } from './AnalizatorTestComponents/analizatorTestsTab.component';
 import { ControlSamplesTabComponent } from './ControlSamplesComponents/controlSamplesTab.component';
 import { ValidatedListTabComponent } from './ValidatedListComponents/validatedListTab.component';
+import { DdkTabComponent } from './DdkTab/ddkTab.component';
 
 
 export const routes: Routes = [
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'analizatorTestsTab', component: AnalizatorTestsTabComponent, canActivate: [AuthGuard]},
   { path: 'controlSamplesTab', component: ControlSamplesTabComponent, canActivate: [AuthGuard]},
   { path: 'validatedListTab', component: ValidatedListTabComponent, canActivate: [AuthGuard]},
+  { path: 'ddkTab', component: DdkTabComponent, canActivate: [AuthGuard]},
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
