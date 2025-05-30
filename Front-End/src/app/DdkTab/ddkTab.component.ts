@@ -24,8 +24,11 @@ export class DdkTabComponent implements OnInit, OnDestroy{
     title = 'hztm_pacient_management';
 
     public patientDatasTemp: RegistryDDKData[] = [];
+    public testsDataTemp: DdkTestData[] = [];
     public isCreatingDDK: boolean = false;
     public isCreatingTest:boolean = false;
+    public filterActiveStatus: boolean = false;
+    private activeFilter: FiltersEnum | undefined;
 
     filters = [
         { label: FiltersEnum.code, key: 'code', active: false, value: '' },
@@ -67,14 +70,70 @@ export class DdkTabComponent implements OnInit, OnDestroy{
   //   });
   // }
 
-     public toggleFilter(filter: any) {
+  public toggleFilter(selectedFilter: any) {
+    if(this.filterActiveStatus == false){
+        selectedFilter.active = true;
+        this.activeFilter = selectedFilter.label;
+        this.filterActiveStatus = true;
+      }
+      else{
+        if(selectedFilter.label == this.activeFilter){
+          selectedFilter.active = false;
+          this.filterActiveStatus = false;
+          this.activeFilter = undefined;
+        }
+        else{
+          this.filters.forEach(filter => {
+            filter.active = false;
+          });
+          selectedFilter.active = true;
+          this.activeFilter = selectedFilter.label;
+          this.filterActiveStatus = true;
+        }
+      }
     this.genericMethodService.toggleFilter(filter);
   }
 
     public onSearch():void
-  {
-    this.patientDatasTemp = this.genericMethodService.getFilteredArrayOnSearch(this.filters, this.mainDataService.registryDdkDatas)
-  }
+    {
+      switch (this.activeFilter) {
+          case FiltersEnum.centerThatGetsTheBlood:
+            this.patientDatasTemp = this.genericMethodService.getFilteredArrayOnSearch(this.filters, this.mainDataService.registryDdkDatas);
+            break;
+          case FiltersEnum.code:
+            this.testsDataTemp = this.genericMethodService.getFilteredArrayOnSearch(this.filters, this.mainDataService.ddkTests);
+            this.patientDatasTemp.forEach(patient =>{
+              if(patient.id == this.testsDataTemp[0].patientId){
+                this.patientDatasTemp = [];
+                this.patientDatasTemp.push(patient);
+                return;
+              }
+            })
+            break;
+            case FiltersEnum.testResult:
+              const newList: RegistryDDKData[] = [];
+              this.filters.forEach(filter=>{
+                if(filter.key == 'testResult' && filter.active){
+                  this.patientDatasTemp.forEach(patient=>{
+                    if(patient.tests){
+                        patient.tests.forEach(test =>{
+                        if(test.testResult == filter.value){
+                          newList.push(patient);
+                        }
+                      })
+                    }
+                  })
+                  this.patientDatasTemp = newList;
+                  return;
+                }
+              })
+              
+            break;
+          // ... more cases ...
+          default:
+      }
+    }
+      
 
   public disableAllFilters() {
       this.genericMethodService.disableAllFilters(this.filters);
@@ -83,6 +142,7 @@ export class DdkTabComponent implements OnInit, OnDestroy{
   public onRefresh(){
     this.disableAllFilters();
     this.patientDatasTemp = this.mainDataService.registryDdkDatas;
+    this.filterActiveStatus = false;
   }
 
   public addTest(patient:RegistryDDKData){
@@ -151,18 +211,18 @@ export class DdkTabComponent implements OnInit, OnDestroy{
 
   public confirmAddPatient(patient: RegistryDDKData) {
     // Validate required fields
-    // if (!test.analizatorName || !test.testMark || !test.lot || 
-    //   !test.expirationDateReagens || !test.interpretedResult || !test.numericValueFromAnalizator || 
-    //   !test.interpretationForEDelphyn || !test.testMarkForEDelphyn || !test.assayName) {
-    //   alert('Please fill all required fields');
-    //   return;
-    // }
+    if (!patient.name || !patient.surname || !patient.centerThatGetsTheBlood || 
+      !patient.dateOfBirth || !patient.ddkNumber) {
+      alert('Please fill all required fields');
+      return;
+    }
     patient.isNew = false;
     delete patient.id;
     const test1:RegistryDDKData = this.addDDKToDatabase(patient);
     this.isCreatingDDK = false;
   }
 
+//#region DatabaseCalls
   private addDDKToDatabase(test: RegistryDDKData):RegistryDDKData{
       this.ddkService.addPatient(test).subscribe(
         (response: RegistryDDKData) => {
@@ -199,6 +259,7 @@ export class DdkTabComponent implements OnInit, OnDestroy{
         );
         return test;
       }
+      //#endregion
   }
 
 
