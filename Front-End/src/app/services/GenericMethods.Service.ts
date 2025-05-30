@@ -1,5 +1,6 @@
 
 import { Injectable } from "@angular/core";
+import { utils, writeFile } from 'xlsx';
 
 @Injectable({
     providedIn:'root'
@@ -60,5 +61,63 @@ export class GenericServices{
   public toggleFilter(filter: any) {
     filter.active = !filter.active;
     if (!filter.active) filter.value = '';
+  }
+
+  /**
+ * Exports an HTML table to Excel
+ * @param tableId ID of the table element (e.g., "my-table")
+ * @param fileName Desired filename (e.g., "export.xlsx")
+ * Export the entire table
+ */
+  public exportTableToExcel(tableId: string, fileName: string): void {
+    // Get the table element
+    const table = document.getElementById(tableId) as HTMLTableElement;
+    if (!table) {
+      console.error(`Table with ID '${tableId}' not found.`);
+      return;
+    }
+
+    // Convert table to worksheet
+    const worksheet = utils.table_to_sheet(table);
+
+    // Create workbook and add worksheet
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    // Write file
+    writeFile(workbook, fileName);
+  }
+
+  //use this if the table is create with an if function and this exports a table created withing a table
+  public exportAllTestTables(className: string, fileName: string = 'all_tests.xlsx') {
+    const testTables = document.getElementsByClassName(className);
+    const allRows: any[][] = [];
+    let headers: any[] | null = null;
+
+    Array.from(testTables).forEach((table) => {
+      const sheetData = utils.sheet_to_json(
+        utils.table_to_sheet(table as HTMLTableElement),
+        { header: 1 }
+      ) as any[][];
+
+      if (!headers && sheetData.length > 0) {
+        headers = sheetData[0];
+        allRows.push(headers);
+      }
+      // Add all data rows except the header
+      for (let i = 1; i < sheetData.length; i++) {
+        allRows.push(sheetData[i]);
+      }
+    });
+
+    if (!headers) {
+      alert("No data found to export.");
+      return;
+    }
+
+    const worksheet = utils.aoa_to_sheet(allRows);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, 'All_Tests');
+    writeFile(workbook, fileName);
   }
 }

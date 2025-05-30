@@ -43,11 +43,15 @@
   <button class="icon-btn create add-patient-btn" (click)="addDDK()" title="Dodaj pacijenta" [disabled]="isCreatingDDK">
     <span>➕</span> Dodaj pacijenta
   </button>
+  <button class="icon-btn export export-excel-btn" (click)="genericMethodService.exportAllTestTables('test-table')">
+    <span>➕</span>
+  Izvoz u Excel
+</button>
 </div>
 
 <!-- PATIENT TABLE PART -->
 <div class="table-wrapper">
-  <table class="ddk-table patient-table">
+  <table id="table" class="ddk-table patient-table">
     <thead>
       <tr>
         <th>Ime</th>
@@ -102,7 +106,7 @@
         <tr>
           <td colspan="6">
             <div class="test-table-wrapper">
-              <table class="test-table">
+              <table id="table-tests" class="test-table">
                 <thead>
                   <tr>
                     <th>Doza</th>

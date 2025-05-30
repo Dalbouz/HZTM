@@ -6,7 +6,7 @@
   margin-right: 0.5rem;
 }
 
-.add-patient-btn {
+.add-patient-btn, .export-excel-btn {
   background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
   color: #fff;
   font-weight: 600;
@@ -20,8 +20,9 @@
   align-items: center;
   gap: 0.5rem;
   transition: background 0.2s, transform 0.1s;
+  padding-right: 2px;
 }
-.add-patient-btn:hover, .add-patient-btn:focus {
+.add-patient-btn:hover, .add-patient-btn:focus, .export-excel-btn:hover, .export-excel-btn:focus {
   background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
   transform: translateY(-2px) scale(1.04);
 }
@@ -187,7 +188,7 @@
   animation: fadeIn 0.7s;
 }
 
-/* Updated for vertical layout */
+/* Updated for vertical layout in search */
 .filter-buttons-vertical {
   display: flex;
   flex-direction: column;
