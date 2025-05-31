@@ -11,8 +11,6 @@ import { PatientService } from './services/Patient.Services';
 import { AnalizatorServices } from './services/Analizator.Services';
 import { AnalizatorData } from './dataStructure/AnalizatorData';
 import { MainDataService } from './services/MainData.Services';
-import { InstitutionLabData } from './dataStructure/InstitutionLabData';
-import { InstitutionService } from './services/Institution.Services';
 import { DDKServices } from './services/DDKServices';
 import { RegistryDDKData } from './dataStructure/RegistryDDKData';
 import { DdkTestData } from './dataStructure/DdkTestData';
@@ -30,35 +28,8 @@ import { DdkTestData } from './dataStructure/DdkTestData';
 export class AppComponent implements OnInit{
   title = 'hztm_pacient_management';
   
-  // public showLoginWindow: boolean = true;
-  // public showLogin: boolean = true;
-  // public showRegister:boolean = false;
   public showPatientPanel:boolean = false;
   public showAnalizatorPanel:boolean = false;
-  // public adminUserExist: boolean = false;
-
-  // public adminUserName:string = "";
-  // public adminPassword:string ="";
-  // public adminUserNameChecker:string = "";
-  // public adminPasswordChecker:string ="";
-
-  // public currentUser: UserData = {
-  //   fullName: '',
-  //   password: '',
-  //   userName: '',
-  //   passwordTimeout: 0,
-  //   activeStatus: false,
-  //   securityLevelStatus: ''
-  // };
-
-  // public registerdUser: UserData  = {
-  //   fullName: '',
-  //   password: '',
-  //   userName: '',
-  //   passwordTimeout: 0,
-  //   activeStatus: false,
-  //   securityLevelStatus: ''
-  // };
 
   constructor(
     private userService: UserService,
@@ -134,6 +105,7 @@ export class AppComponent implements OnInit{
             patient.sampleNumbers = [];
             patient.analizatorDatas.forEach(analizatorData => {
               analizatorData.isNew = false;
+              analizatorData.isEdited = false;
               if (!patient.sampleNumbers.includes(analizatorData.sampleNumber)) {
               patient.sampleNumbers.push(analizatorData.sampleNumber);
           }

@@ -97,7 +97,7 @@
             </ng-container>
             <ng-template #existingButtons>
               <button class="icon-btn create add-test-btn" (click)="addTest(patient)" title="Dodaj test" [disabled]="isCreatingTest">
-                <span>➕</span>
+                <span>➕</span>dodaj test
               </button>
             </ng-template>
           </td>
@@ -162,6 +162,7 @@
                           </button>
                         </ng-container>
                         <ng-template #existingTestButtons>
+                          <span>❌</span> nema akcija
                           <!-- Add more test actions here if needed -->
                         </ng-template>
                       </td>

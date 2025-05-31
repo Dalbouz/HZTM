@@ -7,26 +7,26 @@ import { MainDataService } from '../services/MainData.Services';
 import { AnalizatorData } from '../dataStructure/AnalizatorData';
 import { SecurityLevel } from '../dataStructure/SecurityLevel';
 import { AnalizatorServices } from '../services/Analizator.Services';
-import { ValidationStatus } from '../dataStructure/ValidationStatus';
 import { TestStatusEnum } from '../dataStructure/TestStatusEnum';
 import { FiltersEnum } from '../dataStructure/FiltersEnum';
 import { GenericServices } from '../services/GenericMethods.Service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-analizatorTestsTab',
+  selector: 'app-archivedTestsTab',
   standalone: true,
   imports: [RouterOutlet,
     CommonModule,
     FormsModule],
-  templateUrl: './analizatorTestsTab.component.html',
-  styleUrls: ['./analizatorTestsTab.component.css']
+  templateUrl: './archivedTestsTab.component.html',
+  styleUrls: ['./archivedTestsTab.component.css']
 })
-export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDestroy{
+export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestroy{
     title = 'hztm_pacient_management';
 
-    public newTestTemplate: AnalizatorData | undefined;
     public addingIndex: number = -1;
+    public editTests: boolean = false;
+    private currentEditedAnalizator: AnalizatorData | undefined;
 
     filteredAnalizatorTests: AnalizatorData[] = [];
     
@@ -40,6 +40,7 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     { label: FiltersEnum.timeOfReading, key: 'timeOfReading', active: false, value: '' },
     { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
     { label: FiltersEnum.specimenID, key: 'specimenID', active: false, value: '' },
+    { label: FiltersEnum.positiveResults, key: 'positiveResults', active: false, value: '' },
     
     // Add more filters as needed
   ];
@@ -62,12 +63,6 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
           this.autoResize({ target: ref.nativeElement } as unknown as Event);
         });
       });
-
-    // setTimeout(() => {
-    //   this.textareaNoteRefs.forEach(ref => {
-    //     this.autoResize({ target: ref.nativeElement } as any as Event);
-    //   });
-    // });
     this.clearAddedTestIfNotConfirmed();
   }
 
@@ -135,39 +130,19 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  public archiveAnalizator(analizator: AnalizatorData):void {
-    if (analizator.validated == ValidationStatus.Validated && this.mainDataService.currentUser.securityLevelStatus == SecurityLevel.High) {
-      const isSure = window.confirm('Želite li arhivirati test za uzorak:' + " " + analizator.sampleNumber + " " + "za pacijenta:" + " " + analizator.specimenID +"?");
-      if (isSure) {
-        analizator.testStatus = TestStatusEnum.Archived;
-        const now = new Date();
-        analizator.testWasValidatedBy = this.mainDataService.currentUser.fullName + " / " + now.toLocaleDateString() + " / " + now.toLocaleTimeString();
-        this.updateAnalizatorData(analizator, analizator.id);
-      }
+  public editAnalizator(analizator: AnalizatorData):void {
+    if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
+      return;
     }
-  }
 
-  public confirmValidate(analizator: AnalizatorData):void {
-    if(this.mainDataService.currentUser.securityLevelStatus == SecurityLevel.Low){
-        return;
-      }
-      
-    const adminUser = prompt('Enter username:');
-    if(this.mainDataService.currentUser.userName == adminUser){
+    if(this.editTests){
+      return;
+    }
 
-      const adminPass = prompt('Enter password:');
-      if(this.mainDataService.currentUser.password == adminPass){
-        analizator.validated = ValidationStatus.Validated;
-        if(analizator.id != undefined)
-          this.updateAnalizatorData(analizator, analizator.id);
-      }
-      else{
-        alert("Password je netočan!");
-      }
-    }
-    else{
-      alert("Username je netočan!");
-    }
+    analizator.isEdited = true;
+    this.editTests = true;
+
+    this.currentEditedAnalizator = analizator;
   }
 
   public onSearch():void
@@ -183,39 +158,14 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     this.disableAllFilters();
     this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
     this.clearAddedTestIfNotConfirmed();
+    this.editTests = false;
+    if(this.currentEditedAnalizator){
+      this.currentEditedAnalizator.isEdited = false;
+      this.currentEditedAnalizator = undefined;
+    }
   }
 
-  public addTest(baseTest: AnalizatorData){
-     
-  // Create a copy of the base test with default values
-  const newTest: AnalizatorData = {
-    ...baseTest,
-    analizatorName: '', // You can override or set new values below
-    testMark: '',
-    interpretedResult: '',
-    numericValueFromAnalizator:'',
-    interpretationForEDelphyn: '',
-    testMarkForEDelphyn: '',
-    testWasValidatedBy: '',
-    lot: '',
-    expirationDateReagens: '',
-    assayName: '',
-    isNew: true,
-    validated: ValidationStatus.NotValidated,
-    testStatus: TestStatusEnum.Active,
-    dateOfReading: new Date().toISOString().split('T')[0],
-    timeOfReading: new Date().toLocaleTimeString(),
-    notes: '',
-    finalResult:''
-  };
-
-  // Find the index of the base test and insert below it
-  const index = this.filteredAnalizatorTests.indexOf(baseTest);
-  this.filteredAnalizatorTests.splice(index + 1, 0, newTest);
-  this.addingIndex = index + 1;
-  }
-
-  public confirmAdd(test: AnalizatorData) {
+  public confirmUpdate(test: AnalizatorData) {
     // Validate required fields
     if (!test.analizatorName || !test.testMark || !test.lot || 
       !test.expirationDateReagens || !test.interpretedResult || !test.numericValueFromAnalizator || 
@@ -223,19 +173,16 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
       alert('Please fill all required fields');
       return;
     }
-    test.isNew = false;
     this.addingIndex = -1;
-    delete test.id;
-    const test1:AnalizatorData = this.addAnalizatorData(test);
-    this.mainDataService.patients.forEach(patient =>{
-      if(patient.specimentID == test1.specimenID){
-        patient.analizatorDatas.push(test1);
-        return;
-      }
-    })
+    this.updateAnalizatorData(test, test.id);
+    this.editTests = false;
+    if(this.currentEditedAnalizator){
+      this.currentEditedAnalizator.isEdited = false;
+      this.currentEditedAnalizator = undefined;
+    }
   }
 
-  public cancelAdd(test: AnalizatorData){
+  public cancelUpdate(){
     this.clearAddedTestIfNotConfirmed();
   }
 
@@ -244,31 +191,21 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
       this.filteredAnalizatorTests.splice(this.addingIndex, 1);
       this.addingIndex = -1;
     }
-  }
-//#region CallersToBackend
-  private addAnalizatorData(analizator: AnalizatorData):AnalizatorData{
-      this.analizatorService.addAnalizatorData(analizator).subscribe(
-        (response: AnalizatorData) => {
-          if (response != null) {
-             return response;
-          }
-          else {
-            alert("Error wont add Analizator Test"); // Handle existing user
-            return null;
-          }
-        },
-        (error: HttpErrorResponse) => {
-          alert(`Error: ${error.error.message || error.message}`);
-        }
-      );
-      return analizator;
+    this.editTests = false;
+    if(this.currentEditedAnalizator){
+      this.currentEditedAnalizator.isEdited = false;
+      this.currentEditedAnalizator = undefined;
     }
-
+  }
+  
+//#region CallersToBackend
     private updateAnalizatorData(analizator: AnalizatorData, id:number = -1):void{
       this.analizatorService.updateAnalizator(analizator, id).subscribe(
         (response: AnalizatorData) => {
           if (response != null) {
+            console.log("analizator found when updated");
             this.mainDataService.analizatorDatas = this.genericMethods.replaceObjectById(this.mainDataService.analizatorDatas, response);
+            
           }
           else {
             alert("Error wont update Analizator Test"); // Handle existing user

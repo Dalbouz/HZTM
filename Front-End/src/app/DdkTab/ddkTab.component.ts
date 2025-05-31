@@ -183,10 +183,8 @@ export class DdkTabComponent implements OnInit, OnDestroy{
     test.isNew = false;
     delete test.id;
     delete test.code;
-    const test1:DdkTestData = this.addTestDataToDatabase(test);
-    this.mainDataService.ddkTests.push(test1);
+    const test1:DdkTestData = this.addTestDataToDatabase(test, patient);
     this.isCreatingTest = false;
-    patient.tests[0] = test1;
   }
 
   public addDDK(){
@@ -227,6 +225,7 @@ export class DdkTabComponent implements OnInit, OnDestroy{
       this.ddkService.addPatient(test).subscribe(
         (response: RegistryDDKData) => {
           if (response != null) {
+            
             return response;
           }
           else {
@@ -242,10 +241,12 @@ export class DdkTabComponent implements OnInit, OnDestroy{
   }
   
 
-  private addTestDataToDatabase(test: DdkTestData):DdkTestData{
+  private addTestDataToDatabase(test: DdkTestData, patient: RegistryDDKData):DdkTestData{
         this.ddkService.addTest(test).subscribe(
           (response: DdkTestData) => {
             if (response != null) {
+              this.mainDataService.ddkTests.push(response);
+              patient.tests[0] = response;
                return response;
             }
             else {

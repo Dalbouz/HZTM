@@ -54,7 +54,8 @@
             <th>Vrijeme uzorka</th>
             <th>Zaprimanje uzorka</th>
             <th>Zahtjevi testa</th>
-            <th>Broj testova po uzorku</th>
+            <th>Broj testova</th>
+            <th>ID pacijenta</th>
           </tr>
         </thead>
         <tbody>
@@ -79,6 +80,7 @@
       <td>{{ patient.sampleReceipt }}</td>
       <td>{{ patient.testRequirements }}</td>
       <td>{{ patient.analizatorDatas?.length || 0 }}</td>
+      <td>{{patient.specimentID}}</td>
     </tr>
     <!-- Analizator Data Row (conditionally shown) -->
     <tr *ngIf="patient.selectedSampleNumber">

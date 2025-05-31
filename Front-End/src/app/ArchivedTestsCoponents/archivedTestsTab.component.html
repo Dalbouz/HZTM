@@ -1,0 +1,169 @@
+   <!--BACK BUTTON PART-->
+   <button class="back-btn" (click)="goBack()" title="Back">
+  <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
+  <span class="back-text">Back</span>
+</button>
+
+<!--SEARCH PART-->
+<div class="search-container">
+  <div class="filter-buttons-vertical">
+    <ng-container *ngFor="let filter of filters">
+      <div class="filter-row">
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="filter.active"
+        (click)="toggleFilter(filter)"
+      >
+        {{ filter.label }}
+      </button>
+      <input
+        *ngIf="filter.active"
+        type="text"
+        class="filter-input"
+        [(ngModel)]="filter.value"
+        [placeholder]="'Upišite ' + filter.label"
+      />
+    </div>
+    </ng-container>
+    <div class="search-actions-row">
+      <button class="search-btn" (click)="onSearch()" title="Start Search">
+        <span class="search-icon">🔍</span>
+      </button>
+      <button class="refresh-btn" (click)="onRefresh()" title="Refresh">
+        <span class="refresh-icon">&#x21bb;</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!--TABLE OF ANALIZATORS PART-->
+    <div class="table-wrapper">
+      <table class="analizators-table">
+        <thead>
+          <tr>
+            <th>Ime Analizatora</th>
+            <th>Testna oznaka</th>
+            <th>Broj uzorka</th>
+            <th>LOT</th>
+            <th>Datum isteka reagensa</th>
+            <th>Interpretacijski rezultat</th>
+            <th>Numerička vrijednost iz Analizatora</th>
+            <th>Interpretacija za eD</th>
+            <th>Testna oznaka za eD</th>
+            <th>Datum očitavanja</th>
+            <th>Vrijeme očitavanja</th>
+            <!--<th>Status testa</th>-->
+            <th>Naziv pretrage</th>
+            <th>ID pacijenta</th>
+            <th>Bilješke</th>
+            <th>Zaključni rezultat</th>
+            <th>Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let analizator of filteredAnalizatorTests; let i = index">
+          <tr 
+          *ngIf="analizator.testStatus == 'ARCHIVED'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.analizatorName" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.analizatorName }}</span>
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.testMark" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.testMark }}</span>
+            </td>
+            <td>{{ analizator.sampleNumber }}</td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.lot" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.lot }}</span>
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.expirationDateReagens" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.expirationDateReagens }}</span>
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.interpretedResult" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.interpretedResult }}</span>
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.numericValueFromAnalizator" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.numericValueFromAnalizator }}</span>
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.interpretationForEDelphyn" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.interpretationForEDelphyn }}</span>
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.testMarkForEDelphyn" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.testMarkForEDelphyn }}</span>
+            </td>
+            <td>
+              {{analizator.dateOfReading}}
+            </td>
+            <td>
+              {{analizator.timeOfReading}}
+            </td>
+            <!--<td>{{ analizator.testStatus }}</td>-->
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.assayName" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.assayName }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
+            </td>
+            <td>{{ analizator.specimenID }}</td>
+            <td>
+              <textarea
+                #TextareaNotes
+                [(ngModel)]="analizator.notes"
+                [name]="'bilješke_' + i"
+                class="auto-resize-textarea"
+                rows="1"
+                (input)="autoResize($event)"
+                [disabled]="!editTests && !analizator.isEdited"
+              ></textarea>
+            </td>
+            <td>
+              <textarea
+                #TextareaFinalResult
+                [(ngModel)]="analizator.finalResult"
+                [name]="'finalni rezultat_' + i"
+                class="auto-resize-textarea"
+                rows="1"
+                (input)="autoResize($event)"
+                [disabled]="!editTests && !analizator.isEdited"
+              ></textarea>
+            </td>
+
+            <td class="action-buttons">
+
+              <!-- Action buttons -->
+            <td class="action-buttons">
+              <ng-container *ngIf="editTests  && analizator.isEdited; else existingButtons">
+                <button class="icon-btn confirm" (click)="confirmUpdate(analizator)" title="Confirm">
+                  <span>✔️</span>
+                </button>
+                <button class="icon-btn cancel" (click)="cancelUpdate()" title="Cancel">
+                  <span>❌</span>
+                </button>
+              </ng-container>
+
+              <ng-template #existingButtons>
+                <!-- Original buttons -->
+                <!-- Delete Button -->
+                      <button class="icon-btn delete" 
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
+                              (click)="confirmDelete(analizator)">
+                        <span title="Delete">🗑️</span>
+                      </button>
+                      <!-- Archive Button -->
+                      <button class="icon-btn archive" 
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
+                              (click)="editAnalizator(analizator)">
+                        <span title="Archive">✏️</span>
+                      </button>
+              </ng-template>
+            </td>
+          </tr>
+        </ng-container>
+</tbody>
+      </table>
+    </div>

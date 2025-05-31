@@ -24,4 +24,5 @@ export interface AnalizatorData{
     isNew:boolean,
     units: string;
     finalResult: string;
+    isEdited:boolean;
 }

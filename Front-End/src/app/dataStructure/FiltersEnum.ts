@@ -14,6 +14,7 @@ export enum FiltersEnum{
     ddkNumber = "Broj DDK",
     code = "Dodijeljena šifra",
     testResult ="Rezultat testa",
-    centerThatGetsTheBlood ="Centar koji prikuplja krv"
+    centerThatGetsTheBlood ="Centar koji prikuplja krv",
+    positiveResults = "Pozitivni rezultati (da ili ne)"
 
 }
