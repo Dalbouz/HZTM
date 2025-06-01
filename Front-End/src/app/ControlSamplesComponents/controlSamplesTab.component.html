@@ -18,7 +18,7 @@
           {{ filter.label }}
         </button>
         <ng-container *ngIf="filter.active">
-          <ng-container *ngIf="filter.key === 'sampleDate'; else singleInput">
+          <ng-container *ngIf="filter.key == 'sampleDate'; else singleInput">
             <div style="display: flex; flex-direction: column; margin-right: 1rem;">
               <input
                 type="date"
@@ -107,16 +107,33 @@
   
   <div class="controls">
     <div class="form-row">
-      <label>Start Date: <input type="date" id="startDate"></label>
-      <label>End Date: <input type="date" id="endDate"></label>
-      <label>Control Lot: <input type="text" id="lot"></label>
+      <label>Start Date: <input
+                type="date"
+                class="filter-input"
+                [(ngModel)]="graphDateStart"
+                placeholder="Početni datum"
+              /></label>
+      <label>End Date: 
+        <input
+                type="date"
+                class="filter-input"
+                [(ngModel)]="graphDateEnd"
+                placeholder="Početni datum"
+              />
+      </label>
+      <label>Control Lot: 
+        <input
+                type="text"
+                class="filter-input"
+                [(ngModel)]="graphControlLot"
+                placeholder="Lot"
+              />
+      </label>
     </div>
-    <button onclick="generateReport()">Generate Report</button>
+    <button (click)="generateReport()">Generate Report</button>
   </div>
 
-  <div class="chart-container">
-    <canvas id="ljChart"></canvas>
+    <div class="chart-container">
+    <canvas id="leveyJenningsChart"></canvas>
   </div>
-  
-  <div id="rulesViolations"></div>
 </div>

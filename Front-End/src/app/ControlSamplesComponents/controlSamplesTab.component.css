@@ -250,7 +250,24 @@
   transition: transform 0.3s;
 }
 
-/*GRAFIKON CSS*/
+
+/* styles.css Grafikon */
+.chart-container {
+  width: 80%;
+  margin: 2rem auto;
+  position: relative;
+}
+
+#leveyJenningsChart {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+
+/*GRAFIKON CSS
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -282,4 +299,4 @@
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
+}*/

@@ -9,12 +9,16 @@ import { ControlSampleServices } from '../services/ControlSample.Service';
 import { FiltersEnum } from '../dataStructure/FiltersEnum';
 import { ControlSampleData } from '../dataStructure/ControlSampleData';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Chart, ChartConfiguration, registerables } from 'chart.js';
 
  export interface ControlDataPoint {
   date: Date;
   value: number;
   lot: string;
   }
+
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-controlSamplesTab',
@@ -31,11 +35,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ControlSamplesTabComponent {
     title = 'hztm_pacient_management';
 
+
     public sampleDateStart:string ='';
     public sampleDateEnd:string = '';
     public showTable:boolean = false;
     public filterActiveStatus: boolean = false;
     private activeFilter: FiltersEnum | undefined;
+    public graphDateStart: string = '';
+    public graphDateEnd: string = '';
+    public graphControlLot: string = '';
 
     constructor(
         public mainDataService: MainDataService,
@@ -94,7 +102,7 @@ export class ControlSamplesTabComponent {
             this.sampleDateStart = this.formatDateToDDMMYYYY(this.sampleDateStart);
             console.log(this.sampleDateStart);
             console.log(this.sampleDateEnd);
-            this.getByDate();
+            this.getByDate(this.sampleDateStart, this.sampleDateEnd, 'ONSEARCH');
             break;
           case FiltersEnum.controlSampleLot:
             this.getByLot();
@@ -125,12 +133,37 @@ export class ControlSamplesTabComponent {
   const [year, month, day] = dateString.split('-');
   return `${day}.${month}.${year}`;
 }
+
+public generateReport():void{
+  this.graphDateEnd = this.formatDateToDDMMYYYY(this.graphDateEnd);
+  this.graphDateStart = this.formatDateToDDMMYYYY(this.graphDateStart);
+  this.getByDate(this.graphDateStart, this.graphDateEnd, 'GRAPH');
+}
+
 //#region CallersToBackend
-    private getByDate():void{
-          this.controlSampleService.getControlSamplesWithingDate(this.sampleDateStart,this.sampleDateEnd).subscribe(
+    private getByDate(start:string, end:string, caller:string):void{
+          this.controlSampleService.getControlSamplesWithingDate(start,end).subscribe(
             (response: ControlSampleData[]) => {
               if (response != null) {
-                return this.mainDataService.controlSamples = response;
+                if(caller == 'ONSEARCH'){
+                  return this.mainDataService.controlSamples = response;
+                }
+                else if(caller == 'GRAPH'){
+                    let i:number = 0;
+                    const numberArray: number[] = [];
+                    response.forEach(data =>{
+                    console.log(data.id);
+                    if(data.lotControlSamples == this.graphControlLot){ //TU VIDJET STA TOCNO ZNACI PREMA LOTU KOJI LOT DA LI JE LOT TEST ILI LOT CONTROL SAMPLE
+                      numberArray.push(data.id); //TU TREBAM VIDJET I DODAT U BAZU KOJA JE TO VRIJEDNOST KOJU ON UZIMA MORA BITI NEMA INT VRIJEDNOST
+                      console.log("Lot: " + data.lotControlSamples);
+                      console.log("numerArray: " + numberArray[i]);
+                      i++;
+                    }
+                  })
+                  this.createLeveyJenningsChart('leveyJenningsChart', numberArray, { showLegend: true });
+                  return null;
+                }
+                return null;
               }
               else {
                 alert("Nismo mogli naći kontrolne uzorke prema zadanim filterima"); // Handle existing user
@@ -189,7 +222,99 @@ export class ControlSamplesTabComponent {
       );
     }
 //#endregion
+
 //#region Chart
+  public calculateMean(data: number[]): number {
+    return data.reduce((sum, val) => sum + val, 0) / data.length;
+  }
+
+  public calculateSD(data: number[], mean: number): number {
+    const variance = data.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / data.length;
+    return Math.sqrt(variance);
+  }
+
+  public createLeveyJenningsChart(
+    canvasId: string,
+    data: number[],
+    options: { showLegend?: boolean } = {}
+  ): Chart {
+    const labels = data.map((_, i) => (i + 1).toString());
+    const mean = this.calculateMean(data);
+    const sd = this.calculateSD(data, mean);
+
+    const controlLines = [
+      { value: mean + 3 * sd, color: 'red', label: '+3SD' },
+      { value: mean + 2 * sd, color: 'orange', label: '+2SD' },
+      { value: mean + sd, color: 'yellow', label: '+1SD' },
+      { value: mean, color: 'green', label: 'Mean' },
+      { value: mean - sd, color: 'yellow', label: '-1SD' },
+      { value: mean - 2 * sd, color: 'orange', label: '-2SD' },
+      { value: mean - 3 * sd, color: 'red', label: '-3SD' },
+    ];
+
+    const config: ChartConfiguration<'line'> = {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Measurement Values',
+            data,
+            borderColor: '#2196F3',
+            backgroundColor: '#2196F3',
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          },
+          ...controlLines.map(line => ({
+            label: line.label,
+            data: Array(data.length).fill(line.value),
+            borderColor: line.color,
+            borderDash: [5, 5],
+            pointRadius: 0,
+            borderWidth: 1.5
+          }))
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: options.showLegend ?? true,
+            position: 'top'
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Measurement Sequence'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Measurement Values'
+            },
+            beginAtZero: false
+          }
+        }
+      }
+    };
+
+    return new Chart(document.getElementById(canvasId) as HTMLCanvasElement, config);
+  }
+//#endregion
+}
+
+//#region Chart
+
+
 // private chart: Chart;
 //   private dataPoints: ControlDataPoint[] = [];
 //   private mean: number;
@@ -327,4 +452,3 @@ export class ControlSamplesTabComponent {
 //   return data;
 // }
 //#endregion
-}
