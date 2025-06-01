@@ -28,11 +28,15 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
     public editTests: boolean = false;
     private currentEditedAnalizator: AnalizatorData | undefined;
 
+    public isStatisticFilterNumbOfPatients: boolean = false;
+    public isStatisticFilterNumbOfSamples: boolean = false;
+    public isStatisticFilterNumbOfTests: boolean = false;
+
     filteredAnalizatorTests: AnalizatorData[] = [];
     
     @ViewChildren('TextareaNotes') textareaNoteRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
     @ViewChildren('TextareaFinalResult') textareaFinalResultRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
-    
+//#region filters
     filters = [
     { label: FiltersEnum.analizatorName, key: 'analizatorName', active: false, value: '' },
     { label: FiltersEnum.assayName, key: 'assayTest', active: false, value: '' },
@@ -41,10 +45,23 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
     { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
     { label: FiltersEnum.specimenID, key: 'specimenID', active: false, value: '' },
     { label: FiltersEnum.positiveResults, key: 'positiveResults', active: false, value: '' },
+    { label: FiltersEnum.analizatorMark, key: 'testMark', active: false, value: '' },
+    { label: FiltersEnum.lot, key: 'lot', active: false, value: '' },
+    { label: FiltersEnum.expirationDateReagens, key: 'expirationDateReagens', active: false, value: '' },
     
     // Add more filters as needed
   ];
 
+statisticFilterNumberPatients = [
+    { label: FiltersEnum.assayName, key: 'assayTest', active: false, value: '' },
+    { label: FiltersEnum.priority, key: 'priority', active: false, value: '' },
+    { label: FiltersEnum.priorityReason, key: 'priorityReason', active: false, value: '' },
+    { label: FiltersEnum.testResult, key: 'testResult', active: false, value: '' },
+    
+    // Add more filters as needed
+  ];
+
+//#endregion
   ngOnDestroy(): void {
     this.clearAddedTestIfNotConfirmed();
     this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
@@ -197,7 +214,7 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
       this.currentEditedAnalizator = undefined;
     }
   }
-  
+
 //#region CallersToBackend
     private updateAnalizatorData(analizator: AnalizatorData, id:number = -1):void{
       this.analizatorService.updateAnalizator(analizator, id).subscribe(

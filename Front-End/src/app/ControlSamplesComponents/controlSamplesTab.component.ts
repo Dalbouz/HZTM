@@ -92,6 +92,8 @@ export class ControlSamplesTabComponent {
           case FiltersEnum.controlSampleDate:
             this.sampleDateEnd = this.formatDateToDDMMYYYY(this.sampleDateEnd);
             this.sampleDateStart = this.formatDateToDDMMYYYY(this.sampleDateStart);
+            console.log(this.sampleDateStart);
+            console.log(this.sampleDateEnd);
             this.getByDate();
             break;
           case FiltersEnum.controlSampleLot:
@@ -110,11 +112,12 @@ export class ControlSamplesTabComponent {
 
   public disableAllFilters() {
      this.genericMethods.disableAllFilters(this.filters);
+    this.filterActiveStatus = false;
+    this.activeFilter = undefined;
   }
 
   public onRefresh(){
     this.disableAllFilters();
-    
   }
 
   private formatDateToDDMMYYYY(dateString: string): string {
@@ -140,51 +143,51 @@ export class ControlSamplesTabComponent {
           );
         }
 
-        private getByLot():void{
-          let val:string = '';
-          this.filters.forEach(f => {
-              if(f.active){
-                  val = f.value;
-              }
-          })
-          this.controlSampleService.getControlSamplesByLot(val).subscribe(
-            (response: ControlSampleData[]) => {
-              if (response != null) {
-                return this.mainDataService.controlSamples = response;
-              }
-              else {
-                alert("Nismo mogli naći kontrolne uzorke prema zadanim filterima"); // Handle existing user
-                return null;
-              }
-            },
-            (error: HttpErrorResponse) => {
-              alert(`Error: ${error.error.message || error.message}`);
-            }
-          );
+    private getByLot():void{
+      let val:string = '';
+      this.filters.forEach(f => {
+          if(f.active){
+              val = f.value;
+          }
+      })
+      this.controlSampleService.getControlSamplesByLot(val).subscribe(
+        (response: ControlSampleData[]) => {
+          if (response != null) {
+            return this.mainDataService.controlSamples = response;
+          }
+          else {
+            alert("Nismo mogli naći kontrolne uzorke prema zadanim filterima"); // Handle existing user
+            return null;
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
         }
+      );
+    }
 
-        private getByTestName():void{
-          let val:string = '';
-          this.filters.forEach(f => {
-              if(f.active){
-                  val = f.value;
-              }
-          })
-          this.controlSampleService.getControlSamplesByTestName(val).subscribe(
-            (response: ControlSampleData[]) => {
-              if (response != null) {
-                return this.mainDataService.controlSamples = response;
-              }
-              else {
-                alert("Nismo mogli naći kontrolne uzorke prema zadanim filterima"); // Handle existing user
-                return null;
-              }
-            },
-            (error: HttpErrorResponse) => {
-              alert(`Error: ${error.error.message || error.message}`);
-            }
-          );
+    private getByTestName():void{
+      let val:string = '';
+      this.filters.forEach(f => {
+          if(f.active){
+              val = f.value;
+          }
+      })
+      this.controlSampleService.getControlSamplesByTestName(val).subscribe(
+        (response: ControlSampleData[]) => {
+          if (response != null) {
+            return this.mainDataService.controlSamples = response;
+          }
+          else {
+            alert("Nismo mogli naći kontrolne uzorke prema zadanim filterima"); // Handle existing user
+            return null;
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
         }
+      );
+    }
 //#endregion
 //#region Chart
 // private chart: Chart;

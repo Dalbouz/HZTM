@@ -55,6 +55,9 @@
             <th>Vrijeme očitavanja</th>
             <!--<th>Status testa</th>-->
             <th>Naziv pretrage</th>
+            <th>Min vrijednost testa</th>
+            <th>Max vrijednost testa</th>
+            <th>Reakcija</th>
             <th>ID pacijenta</th>
             <th>Bilješke</th>
             <th>Zaključni rezultat</th>
@@ -76,12 +79,12 @@
             </td>
             <td>{{ analizator.sampleNumber }}</td>
             <td>
-              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.lot" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew">{{ analizator.lot }}</span>
+              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.lot" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.lot }}</span>
             </td>
             <td>
-              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.expirationDateReagens" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew">{{ analizator.expirationDateReagens }}</span>
+              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.expirationDateReagens" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.expirationDateReagens }}</span>
             </td>
             <td>
               <input *ngIf="analizator.isNew" [(ngModel)]="analizator.interpretedResult" required class="small-tall-input">
@@ -110,6 +113,18 @@
               <input *ngIf="analizator.isNew" [(ngModel)]="analizator.assayName" required class="small-tall-input">
               <span *ngIf="!analizator.isNew">{{ analizator.assayName }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
             </td>
+            <td>
+              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.minDataValue" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.minDataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
+            </td>
+            <td>
+              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.maxDataValue" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.maxDataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
+            </td>
+            <td>
+              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.dataValue" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.dataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
+            </td>
             <td>{{ analizator.specimenID }}</td>
             <td>
               <textarea
@@ -119,7 +134,7 @@
                 class="auto-resize-textarea"
                 rows="1"
                 (input)="autoResize($event)"
-                [disabled]="analizator.validated == 'VALIDATED' && mainDataService.currentUser.securityLevelStatus !='HIGH'"
+                [disabled]="!analizator.isNew || !analizator.isEdited"
               ></textarea>
             </td>
             <td>
@@ -130,7 +145,7 @@
                 class="auto-resize-textarea"
                 rows="1"
                 (input)="autoResize($event)"
-                [disabled]="analizator.validated == 'VALIDATED' && mainDataService.currentUser.securityLevelStatus !='HIGH'"
+                [disabled]="!analizator.isNew || !analizator.isEdited"
               ></textarea>
             </td>
             <td>{{ analizator.validated }}</td>
@@ -151,6 +166,12 @@
               <ng-template #existingButtons>
                 <!-- Original buttons -->
                 <!-- Delete Button -->
+                 <button class="icon-btn edit" 
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH' || analizator.validated == 'VALIDATED'"
+                              (click)="editAnalizator(analizator)">
+                        <span title="edit" *ngIf="!analizator.isEdited">✏️</span>
+                        <span title="edit"*ngIf="analizator.isEdited">✔️</span>
+                      </button>
                       <button class="icon-btn delete" 
                               [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
                               (click)="confirmDelete(analizator)">
@@ -158,7 +179,7 @@
                       </button>
                       <!-- Archive Button -->
                       <button class="icon-btn archive" 
-                              [disabled]="analizator.validated != 'VALIDATED'"
+                              [disabled]="analizator.validated != 'VALIDATED' || mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
                               (click)="archiveAnalizator(analizator)">
                         <span title="Archive">🗃️</span>
                       </button>

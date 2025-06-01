@@ -9,7 +9,7 @@ import studiobox.jobs.hztm_patient_manager.service.ControlSampleService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/controlSamples")
+@RequestMapping("/controlsamples")
 public class ControlSampleController {
 
     private final ControlSampleService controlSampleService;

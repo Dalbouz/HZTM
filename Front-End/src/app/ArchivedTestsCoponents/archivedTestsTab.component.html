@@ -55,6 +55,9 @@
             <th>Vrijeme očitavanja</th>
             <!--<th>Status testa</th>-->
             <th>Naziv pretrage</th>
+            <th>Min vrijednost testa</th>
+            <th>Max vrijednost testa</th>
+            <th>Reakcija</th>
             <th>ID pacijenta</th>
             <th>Bilješke</th>
             <th>Zaključni rezultat</th>
@@ -108,6 +111,18 @@
             <td>
               <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.assayName" required class="small-tall-input">
               <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.assayName }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.minDataValue" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.minDataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.maxDataValue" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.maxDataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
+            </td>
+            <td>
+              <input *ngIf="editTests && analizator.isEdited" [(ngModel)]="analizator.dataValue" required class="small-tall-input">
+              <span *ngIf="!editTests && !analizator.isEdited">{{ analizator.dataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
             </td>
             <td>{{ analizator.specimenID }}</td>
             <td>

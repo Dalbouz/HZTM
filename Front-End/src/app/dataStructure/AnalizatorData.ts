@@ -25,4 +25,7 @@ export interface AnalizatorData{
     units: string;
     finalResult: string;
     isEdited:boolean;
+    dataValue: string;
+    minDataValue:string;
+    maxDataValue:string;
 }

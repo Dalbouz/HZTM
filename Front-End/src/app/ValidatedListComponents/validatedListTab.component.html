@@ -55,6 +55,9 @@
             <th>Vrijeme očitavanja</th>
             <!--<th>Status testa</th>-->
             <th>Naziv pretrage</th>
+            <th>Min vrijednost testa</th>
+            <th>Max vrijednost testa</th>
+            <th>Reakcija</th>
             <th>ID pacijenta</th>
             <th>Bilješke</th>
             <th>Zaključni rezultat</th>
@@ -98,6 +101,15 @@
             <!--<td>{{ analizator.testStatus }}</td>-->
             <td>
               {{analizator.assayName}}
+            </td>
+            <td>
+              {{analizator.minDataValue}}
+            </td>
+            <td>
+              {{analizator.maxDataValue}}
+            </td>
+            <td>
+              {{analizator.dataValue}}
             </td>
             <td>{{ analizator.specimenID }}</td>
             <td>

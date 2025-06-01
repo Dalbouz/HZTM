@@ -30,6 +30,9 @@ public class AnalizatorData implements Serializable {
     private String TestWasValidatedBy;
     private String units;
     private String finalResult;
+    private String dataValue;
+    private String minDataValue;
+    private String maxDataValue;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,7 +66,10 @@ public class AnalizatorData implements Serializable {
             String assayName,
             String TestWasValidatedBy,
             String units,
-            String finalResult
+            String finalResult,
+            String DataValue,
+            String MaxDataValue,
+            String MinDataValue
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -86,7 +92,33 @@ public class AnalizatorData implements Serializable {
         this.TestWasValidatedBy = TestWasValidatedBy;
         this. units = units;
         this.finalResult = finalResult;
+        this.dataValue = DataValue;
+        this.maxDataValue = MaxDataValue;
+        this.minDataValue = MinDataValue;
+    }
 
+    public String getMaxDataValue() {
+        return maxDataValue;
+    }
+
+    public void setMaxDataValue(String maxDataValue) {
+        this.maxDataValue = maxDataValue;
+    }
+
+    public String getMinDataValue(){
+        return minDataValue;
+    }
+
+    public void setMinDataValue(String minDataValue){
+        this.minDataValue = minDataValue;
+    }
+
+    public String getDataValue() {
+        return dataValue;
+    }
+
+    public void setDataValue(String dataValue) {
+        this.dataValue = dataValue;
     }
 
     public String getFinalResult() {

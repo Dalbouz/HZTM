@@ -113,7 +113,7 @@ export class AppComponent implements OnInit{
         });
       },
       (error: HttpErrorResponse) => {
-      alert(error.message + "\nNEMA ANALIZATOR PODATAKA!");
+      alert(error.message + "\nNEMA ANALIZATOR PODATAKA! za pacijenta:\n" + patient.name + "\n SpecimenID: " + patient.specimentID);
     }
     )
     });

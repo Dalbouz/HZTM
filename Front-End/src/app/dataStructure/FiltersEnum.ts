@@ -15,6 +15,12 @@ export enum FiltersEnum{
     code = "Dodijeljena šifra",
     testResult ="Rezultat testa",
     centerThatGetsTheBlood ="Centar koji prikuplja krv",
-    positiveResults = "Pozitivni rezultati (da ili ne)"
+    positiveResults = "Pozitivni rezultati (da ili ne)",
+    priority = "Prioritet",
+    priorityReason = "Razlog",
+    analizatorMark = "Oznaka analizatora",
+    lot = "Lot",
+    expirationDateReagens = "Datum isteka reagensa",
+    dateRange = "Razdoblje od/do"
 
 }

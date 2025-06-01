@@ -25,8 +25,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDestroy{
     title = 'hztm_pacient_management';
 
-    public newTestTemplate: AnalizatorData | undefined;
     public addingIndex: number = -1;
+    private currentAnalizatorEditing: AnalizatorData | undefined;
 
     filteredAnalizatorTests: AnalizatorData[] = [];
     
@@ -133,6 +133,17 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     else{
       alert("Username je netočan!");
     }
+  }
+
+  public editAnalizator(analizator:AnalizatorData):void{
+    if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
+      return;
+    }
+    if(analizator.isEdited){
+      this.updateAnalizatorData(analizator, analizator.id);
+    }
+
+    analizator.isEdited = !analizator.isEdited;
   }
 
   public archiveAnalizator(analizator: AnalizatorData):void {

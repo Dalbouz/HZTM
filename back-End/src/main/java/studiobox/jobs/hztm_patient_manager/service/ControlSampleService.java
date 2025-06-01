@@ -32,7 +32,7 @@ public class ControlSampleService {
         List<ControlSampleData> newList = new ArrayList<>();
 
         // Date format (adjust if your dates use a different format)
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
         try {
             Date start = sdf.parse(startDate);
