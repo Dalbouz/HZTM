@@ -1,15 +1,34 @@
-   <!--BACK BUTTON PART-->
-   <button class="back-btn" (click)="goBack()" title="Back">
+<!--BACK BUTTON PART-->
+<button class="back-btn" (click)="goBack()" title="Back">
   <span class="back-icon">&#8592;</span> <!-- Unicode left arrow -->
   <span class="back-text">Back</span>
 </button>
+
+<!-- Hamburger Icon -->
+<button class="hamburger" (click)="menuOpen = !menuOpen" [attr.aria-expanded]="menuOpen">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<!-- Hamburger Dropdown Menu -->
+<nav class="hamburger-menu" [class.open]="menuOpen">
+  <button class="nav-box" (click)="navigateTo('archivedTestsTab'); menuOpen = false">
+    <span class="nav-title">Arhiva testova</span>
+    <span class="nav-desc">Arhivirani testovi</span>
+  </button>
+  <button class="nav-box" (click)="navigateTo('validatedListTab'); menuOpen = false">
+    <span class="nav-title">Lista validiranih testova</span>
+    <span class="nav-desc">Lista validiranih testova po grupama.</span>
+  </button>
+</nav>
 
 <!--SEARCH PART-->
 <div class="search-container">
   <div class="filter-buttons-vertical">
     <ng-container *ngFor="let filter of filters">
-      <div class="filter-row">
-      <button
+      <div class="filter-row" *ngIf="filter.key != 'validated'">
+      <button 
         type="button"
         class="filter-btn"
         [class.active]="filter.active"
@@ -17,13 +36,27 @@
       >
         {{ filter.label }}
       </button>
-      <input
-        *ngIf="filter.active"
-        type="text"
-        class="filter-input"
-        [(ngModel)]="filter.value"
-        [placeholder]="'Upišite ' + filter.label"
-      />
+      <ng-container *ngIf="filter.active">
+          <ng-container *ngIf="filter.key == 'dateOfReading'; else normalInput">
+            <div style="display: flex; flex-direction: column; margin-right: 1rem;">
+              <input
+                type="date"
+                class="filter-input"
+                [(ngModel)]="filter.value"
+                placeholder="Početni datum"
+              />
+              <span style="font-size: 0.93em; color: #555; margin-top: 2px;">Početni datum (<i>npr.01.01.2025</i>)</span>
+            </div>
+          </ng-container>
+          <ng-template #normalInput>
+            <input 
+              type="text"
+              class="filter-input"
+              [(ngModel)]="filter.value"
+              [placeholder]="'Upišite ' + filter.label"
+            />
+          </ng-template>
+        </ng-container>
     </div>
     </ng-container>
     <div class="search-actions-row">
@@ -37,96 +70,98 @@
   </div>
 </div>
 
+<div class ="table-validate-all">
+  <button class="validate-btn" (click)="validateAll()" title="validate">
+    <span class="validate-icon">&#9989;</span> <!-- Unicode left arrow -->
+    <span class="validate-text">Validiraj sve</span>
+  </button>
+  </div>
     <!--TABLE OF ANALIZATORS PART-->
     <div class="table-wrapper">
+      
       <table class="analizators-table">
         <thead>
           <tr>
             <th>Ime Analizatora</th>
-            <th>Testna oznaka</th>
-            <th>Broj uzorka</th>
-            <th>LOT</th>
-            <th>Datum isteka reagensa</th>
-            <th>Interpretacijski rezultat</th>
-            <th>Numerička vrijednost iz Analizatora</th>
-            <th>Interpretacija za eD</th>
-            <th>Testna oznaka za eD</th>
-            <th>Datum očitavanja</th>
-            <th>Vrijeme očitavanja</th>
-            <!--<th>Status testa</th>-->
             <th>Naziv pretrage</th>
-            <th>Min vrijednost testa</th>
-            <th>Max vrijednost testa</th>
-            <th>Reakcija</th>
-            <th>ID pacijenta</th>
-            <th>Bilješke</th>
-            <th>Zaključni rezultat</th>
-            <th>Status validacije</th>
+            <th>Broj uzorka</th>
+            <th>Numerička vrijednost iz Analizatora</th>
+            <th>Interpretacijski rezultat</th>
+            <th>Interpretacija za eD</th>
+
+            
+            <th *ngIf="isTestSelected">Testna oznaka</th>
+            <th *ngIf="isTestSelected">LOT</th>
+            <th *ngIf="isTestSelected">Datum isteka reagensa</th>
+            
+            <th *ngIf="isTestSelected">Testna oznaka za eD</th>
+            <th *ngIf="isTestSelected">Datum očitavanja</th>
+            <th *ngIf="isTestSelected">Vrijeme očitavanja</th>
+            <!--<th>Status testa</th>-->
+            
+            
+            <th *ngIf="isTestSelected">ID pacijenta</th>
+            <th *ngIf="isTestSelected">Bilješke</th>
+            <th *ngIf="isTestSelected">Status validacije</th>
             <th>Akcije</th>
           </tr>
         </thead>
         <tbody>
         <ng-container *ngFor="let analizator of filteredAnalizatorTests; let i = index">
-          <tr [class.editing-test]="analizator.isNew" 
-          *ngIf="analizator.testStatus == 'ACTIVE'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
+          <tr [class.editing-test]="analizator.isNew" (click)="expandTest(analizator)"
+          *ngIf="analizator.testStatus == 'ACTIVE' && analizator.validated == 'NOT_VALIDATED'"><!--Prikazivanja samo onih testova koji su aktivni ili arhivirani-->
             <td>
               <input *ngIf="analizator.isNew" [(ngModel)]="analizator.analizatorName" required class="small-tall-input">
               <span *ngIf="!analizator.isNew">{{ analizator.analizatorName }}</span>
             </td>
             <td>
-              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.testMark" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew">{{ analizator.testMark }}</span>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.assayName" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.assayName }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
             </td>
             <td>{{ analizator.sampleNumber }}</td>
             <td>
-              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.lot" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.lot }}</span>
-            </td>
-            <td>
-              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.expirationDateReagens" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.expirationDateReagens }}</span>
-            </td>
-            <td>
-              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.interpretedResult" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew">{{ analizator.interpretedResult }}</span>
-            </td>
-            <td>
               <input *ngIf="analizator.isNew" [(ngModel)]="analizator.numericValueFromAnalizator" required class="small-tall-input">
               <span *ngIf="!analizator.isNew">{{ analizator.numericValueFromAnalizator }}</span>
+            </td>
+             <td>
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.interpretedResult" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.interpretedResult }}</span>
             </td>
             <td>
               <input *ngIf="analizator.isNew" [(ngModel)]="analizator.interpretationForEDelphyn" required class="small-tall-input">
               <span *ngIf="!analizator.isNew">{{ analizator.interpretationForEDelphyn }}</span>
             </td>
-            <td>
+
+
+
+
+            <td *ngIf="isTestSelected && analizator.isSelected">
+              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.testMark" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew">{{ analizator.testMark }}</span>
+            </td>
+            <td *ngIf="isTestSelected && analizator.isSelected">
+              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.lot" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.lot }}</span>
+            </td>
+            <td *ngIf="isTestSelected && analizator.isSelected">
+              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.expirationDateReagens" required class="small-tall-input">
+              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.expirationDateReagens }}</span>
+            </td>
+            <td *ngIf="isTestSelected && analizator.isSelected">
               <input *ngIf="analizator.isNew" [(ngModel)]="analizator.testMarkForEDelphyn" required class="small-tall-input">
               <span *ngIf="!analizator.isNew">{{ analizator.testMarkForEDelphyn }}</span>
             </td>
-            <td>
+            <td *ngIf="isTestSelected && analizator.isSelected">
               {{analizator.dateOfReading}}
             </td>
-            <td>
+            <td *ngIf="isTestSelected && analizator.isSelected">
               {{analizator.timeOfReading}}
             </td>
             <!--<td>{{ analizator.testStatus }}</td>-->
-            <td>
-              <input *ngIf="analizator.isNew" [(ngModel)]="analizator.assayName" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew">{{ analizator.assayName }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
-            </td>
-            <td>
-              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.minDataValue" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.minDataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
-            </td>
-            <td>
-              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.maxDataValue" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.maxDataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
-            </td>
-            <td>
-              <input *ngIf="analizator.isNew || (analizator.isEdited)" [(ngModel)]="analizator.dataValue" required class="small-tall-input">
-              <span *ngIf="!analizator.isNew && !analizator.isEdited">{{ analizator.dataValue }}</span><!--NA OVAJ NACIN NAPRAVIT SVA POLJA KOJA JE MOGUCE EDITIRATI KADA SE NAPRAVI NOVI TEST IZ APPA-->
-            </td>
-            <td>{{ analizator.specimenID }}</td>
-            <td>
+            
+            
+            <td *ngIf="isTestSelected && analizator.isSelected">{{ analizator.specimenID }}</td>
+            <td *ngIf="isTestSelected && analizator.isSelected">
               <textarea
                 #TextareaNotes
                 [(ngModel)]="analizator.notes"
@@ -134,10 +169,10 @@
                 class="auto-resize-textarea"
                 rows="1"
                 (input)="autoResize($event)"
-                [disabled]="!analizator.isNew || !analizator.isEdited"
+                [disabled]="!analizator.isNew && !analizator.isEdited"
               ></textarea>
             </td>
-            <td>
+            <!--<td>
               <textarea
                 #TextareaFinalResult
                 [(ngModel)]="analizator.finalResult"
@@ -145,52 +180,63 @@
                 class="auto-resize-textarea"
                 rows="1"
                 (input)="autoResize($event)"
-                [disabled]="!analizator.isNew || !analizator.isEdited"
+                [disabled]="!analizator.isNew && !analizator.isEdited"
               ></textarea>
-            </td>
-            <td>{{ analizator.validated }}</td>
+            </td>-->
+            <td *ngIf="isTestSelected && analizator.isSelected">{{ analizator.validated }}</td>
 
             <td class="action-buttons">
 
               <!-- Action buttons -->
             <td class="action-buttons">
               <ng-container *ngIf="analizator.isNew; else existingButtons">
-                <button class="icon-btn confirm" (click)="confirmAdd(analizator)" title="Confirm">
+                <button class="icon-btn confirm" (click)="confirmAdd(analizator); $event.stopPropagation()" title="Confirm">
                   <span>✔️</span>
                 </button>
-                <button class="icon-btn cancel" (click)="cancelAdd(analizator)" title="Cancel">
+                <button class="icon-btn cancel" (click)="cancelAdd(analizator); $event.stopPropagation()" title="Cancel">
                   <span>❌</span>
                 </button>
               </ng-container>
 
               <ng-template #existingButtons>
                 <!-- Original buttons -->
-                <!-- Delete Button -->
+                 <!--
                  <button class="icon-btn edit" 
-                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH' || analizator.validated == 'VALIDATED'"
-                              (click)="editAnalizator(analizator)">
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH' || isEditing"
+                              (click)="editAnalizator(analizator); $event.stopPropagation()">
+                              
                         <span title="edit" *ngIf="!analizator.isEdited">✏️</span>
-                        <span title="edit"*ngIf="analizator.isEdited">✔️</span>
                       </button>
+                      <button class="icon-btn edit" *ngIf="analizator.isEdited"
+                              (click)="confirmEdit(analizator); $event.stopPropagation()">
+                        <span title="cancle">✔️</span>
+                      </button>
+                      <button class="icon-btn edit" *ngIf="analizator.isEdited"
+                              (click)="cancelEdit(analizator); $event.stopPropagation()">
+                        <span title="cancle">❌</span>
+                      </button>-->
                       <button class="icon-btn delete" 
-                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
-                              (click)="confirmDelete(analizator)">
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH' || isEditing"
+                              (click)="confirmDelete(analizator); $event.stopPropagation()">
                         <span title="Delete">🗑️</span>
                       </button>
                       <!-- Archive Button -->
+                      <!--
                       <button class="icon-btn archive" 
-                              [disabled]="analizator.validated != 'VALIDATED' || mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
+                              [disabled]="analizator.validated != 'VALIDATED' || mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH' || isEditing"
                               (click)="archiveAnalizator(analizator)">
                         <span title="Archive">🗃️</span>
                       </button>
+                      -->
                       <!-- Validate Button -->
                       <button class="icon-btn validate"
-                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() == 'LOW' || analizator.validated == 'VALIDATED'"
-                              (click)="confirmValidate(analizator)">
+                              [disabled]="mainDataService.currentUser.securityLevelStatus.trim() == 'LOW' || isEditing"
+                              (click)="confirmValidate(analizator); $event.stopPropagation()">
                         <span title="Validate">&#9989;</span> <!-- Check mark icon -->
                       </button>
                       <button class="icon-btn create"
-                              (click)="addTest(analizator)">
+                              [disabled]="isEditing"
+                              (click)="addTest(analizator); $event.stopPropagation()">
                         <span title="Validate">➕</span> <!-- Check mark icon -->
                       </button>
               </ng-template>

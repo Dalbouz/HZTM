@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "analizators")
 public class AnalizatorData implements Serializable {
-    private Integer sampleNumber;
+    private String sampleNumber;
     private String analizatorName;
     private Long analizatorOib;
     private String testMark;
@@ -33,6 +33,12 @@ public class AnalizatorData implements Serializable {
     private String dataValue;
     private String minDataValue;
     private String maxDataValue;
+    private Number numberOfTestsDone;
+    private Number numberOfPositiveTests;
+    private Number numberOfNegativeTests;
+    @Column(name="RLU")
+    private String RLU;
+    private String idOcitanjaAnalizatora;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +52,7 @@ public class AnalizatorData implements Serializable {
     public AnalizatorData() {}
 
     public AnalizatorData(
-            Integer SampleNumber,
+            String SampleNumber,
             String AnalizatorName,
             String TestMark,
             String Lot,
@@ -69,7 +75,12 @@ public class AnalizatorData implements Serializable {
             String finalResult,
             String DataValue,
             String MaxDataValue,
-            String MinDataValue
+            String MinDataValue,
+            Number numberOfTestsDone,
+            Number numberOfNegativeTests,
+            Number numberOfPositiveTests,
+            String RLU,
+            String idOcitanjaAnalizatora
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -95,6 +106,51 @@ public class AnalizatorData implements Serializable {
         this.dataValue = DataValue;
         this.maxDataValue = MaxDataValue;
         this.minDataValue = MinDataValue;
+        this.numberOfTestsDone = numberOfTestsDone;
+        this.numberOfPositiveTests = numberOfPositiveTests;
+        this.numberOfNegativeTests = numberOfNegativeTests;
+        this.RLU = RLU;
+        this.idOcitanjaAnalizatora = idOcitanjaAnalizatora;
+    }
+
+    public String getRLU(){
+        return this.RLU;
+    }
+
+    public void setRLU(String RLU){
+        this.RLU = RLU;
+    }
+
+    public String getIdOcitanjaAnalizatora(){
+        return this.idOcitanjaAnalizatora;
+    }
+
+    public void setIdOcitanjaAnalizatora(String idOcitanjaAnalizatora){
+        this.idOcitanjaAnalizatora = idOcitanjaAnalizatora;
+    }
+
+    public Number getNumberOfTestsDone() {
+        return numberOfTestsDone;
+    }
+
+    public void setNumberOfTestsDone(Number numberOfTestsDone) {
+        this.numberOfTestsDone = numberOfTestsDone;
+    }
+
+    public Number getNumberOfPositiveTests() {
+        return numberOfPositiveTests;
+    }
+
+    public void setNumberOfPositiveTests(Number numberOfPositiveTests) {
+        this.numberOfPositiveTests = numberOfPositiveTests;
+    }
+
+    public Number getNumberOfNegativeTests() {
+        return numberOfNegativeTests;
+    }
+
+    public void setNumberOfNegativeTests(Number numberOfNegativeTests) {
+        this.numberOfNegativeTests = numberOfNegativeTests;
     }
 
     public String getMaxDataValue() {
@@ -199,11 +255,11 @@ public class AnalizatorData implements Serializable {
         return id;
     }
 
-    public Integer getSampleNumber() {
+    public String getSampleNumber() {
         return sampleNumber;
     }
 
-    public void setSampleNumber(Integer sampleNumber) {
+    public void setSampleNumber(String sampleNumber) {
         this.sampleNumber = sampleNumber;
     }
 

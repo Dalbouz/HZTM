@@ -22,6 +22,7 @@
   transition: background 0.2s, transform 0.1s;
   padding-right: 2px;
 }
+
 .add-patient-btn:hover, .add-patient-btn:focus, .export-excel-btn:hover, .export-excel-btn:focus {
   background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
   transform: translateY(-2px) scale(1.04);

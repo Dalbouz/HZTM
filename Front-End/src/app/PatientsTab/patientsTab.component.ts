@@ -26,7 +26,7 @@ export class PatientsTabComponent implements OnInit, OnDestroy{
     public patientDatasTemp: PatientData[] = [];
 
     filters = [
-        { label: FiltersEnum.specimenID, key: 'specimenID', active: false, value: '' },
+        { label: FiltersEnum.specimentID, key: 'specimentID', active: false, value: '' },
         { label: FiltersEnum.oib, key: 'oib', active: false, value: '' }
         
         // Add more filters as needed

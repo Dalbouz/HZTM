@@ -98,9 +98,9 @@ export class ControlSamplesTabComponent {
       if (isSure) {
         switch (this.activeFilter) {
           case FiltersEnum.controlSampleDate:
-            this.sampleDateEnd = this.formatDateToDDMMYYYY(this.sampleDateEnd);
-            this.sampleDateStart = this.formatDateToDDMMYYYY(this.sampleDateStart);
-            console.log(this.sampleDateStart);
+            console.log(this.sampleDateEnd);
+            this.sampleDateEnd = this.genericMethods.formatDateToYYYYMMDD(this.sampleDateEnd);
+            this.sampleDateStart = this.genericMethods.formatDateToYYYYMMDD(this.sampleDateStart);
             console.log(this.sampleDateEnd);
             this.getByDate(this.sampleDateStart, this.sampleDateEnd, 'ONSEARCH');
             break;
@@ -128,17 +128,15 @@ export class ControlSamplesTabComponent {
     this.disableAllFilters();
   }
 
-  private formatDateToDDMMYYYY(dateString: string): string {
-  if (!dateString) return '';
-  const [year, month, day] = dateString.split('-');
-  return `${day}.${month}.${year}`;
-}
-
 public generateReport():void{
-  this.graphDateEnd = this.formatDateToDDMMYYYY(this.graphDateEnd);
-  this.graphDateStart = this.formatDateToDDMMYYYY(this.graphDateStart);
+  this.graphDateEnd = this.genericMethods.formatDateToYYYYMMDD(this.graphDateEnd);
+  this.graphDateStart = this.genericMethods.formatDateToYYYYMMDD(this.graphDateStart);
   this.getByDate(this.graphDateStart, this.graphDateEnd, 'GRAPH');
 }
+
+//#region PrivateMethods
+
+//#endregion
 
 //#region CallersToBackend
     private getByDate(start:string, end:string, caller:string):void{
@@ -149,17 +147,18 @@ public generateReport():void{
                   return this.mainDataService.controlSamples = response;
                 }
                 else if(caller == 'GRAPH'){
-                    let i:number = 0;
-                    const numberArray: number[] = [];
-                    response.forEach(data =>{
-                    console.log(data.id);
-                    if(data.lotControlSamples == this.graphControlLot){ //TU VIDJET STA TOCNO ZNACI PREMA LOTU KOJI LOT DA LI JE LOT TEST ILI LOT CONTROL SAMPLE
-                      numberArray.push(data.id); //TU TREBAM VIDJET I DODAT U BAZU KOJA JE TO VRIJEDNOST KOJU ON UZIMA MORA BITI NEMA INT VRIJEDNOST
-                      console.log("Lot: " + data.lotControlSamples);
-                      console.log("numerArray: " + numberArray[i]);
-                      i++;
-                    }
-                  })
+                  const numberArray: number[] = Array.from({ length: 15 }, () =>
+                  Math.floor(Math.random() * (1000 - 50 + 1)) + 5);
+
+                  //   let i:number = 0;
+                  //   const numberArray: number[] = [];
+                  //   response.forEach(data =>{
+                  //   if(data.lotControlSamples == this.graphControlLot){ //TU VIDJET STA TOCNO ZNACI PREMA LOTU KOJI LOT DA LI JE LOT TEST ILI LOT CONTROL SAMPLE
+                  //     numberArray.push(data.targetValue); //TU TREBAM VIDJET I DODAT U BAZU KOJA JE TO VRIJEDNOST KOJU ON UZIMA MORA BITI NEMA INT VRIJEDNOST
+                  //     console.log("Lot: " + data.lotControlSamples);
+                  //     i++;
+                  //   }
+                  // })
                   this.createLeveyJenningsChart('leveyJenningsChart', numberArray, { showLegend: true });
                   return null;
                 }
@@ -311,144 +310,3 @@ public generateReport():void{
   }
 //#endregion
 }
-
-//#region Chart
-
-
-// private chart: Chart;
-//   private dataPoints: ControlDataPoint[] = [];
-//   private mean: number;
-//   private sd: number;
-
-//   constructor(private canvas: HTMLCanvasElement) {}
-
-//   public updateChart(data: ControlDataPoint[]) {
-//     this.dataPoints = data;
-//     this.calculateStatistics();
-//     this.renderChart();
-//     this.checkWestgardRules();
-//   }
-
-//   private calculateStatistics() {
-//     const values = this.dataPoints.map(p => p.value);
-//     this.mean = values.reduce((a,b) => a + b, 0) / values.length;
-//     const variance = values.reduce((a,b) => a + Math.pow(b - this.mean, 2), 0) / values.length;
-//     this.sd = Math.sqrt(variance);
-//   }
-
-//   private renderChart() {
-//     if (this.chart) this.chart.destroy();
-
-//     this.chart = new Chart(this.canvas, {
-//       type: 'line',
-//       data: {
-//         labels: this.dataPoints.map(p => p.date.toISOString().split('T')[0]),
-//         datasets: [{
-//           label: 'Control Values',
-//           data: this.dataPoints.map(p => p.value),
-//           borderColor: '#4CAF50',
-//           tension: 0.1
-//         }]
-//       },
-//       options: {
-//         scales: {
-//           x: { type: 'time' },
-//           y: {
-//             min: this.mean - (4 * this.sd),
-//             max: this.mean + (4 * this.sd),
-//             grid: {
-//               color: (ctx) => this.getGridColor(ctx.tick.value)
-//             }
-//           }
-//         },
-//         plugins: {
-//           annotation: {
-//             annotations: this.getControlLimits()
-//           }
-//         }
-//       }
-//     });
-//   }
-
-//   private getControlLimits() {
-//     return {
-//       meanLine: {
-//         type: 'line',
-//         yMin: this.mean,
-//         yMax: this.mean,
-//         borderColor: '#2196F3',
-//         borderWidth: 2
-//       },
-//       plus1sd: this.createLimitLine(this.mean + this.sd, '#FFC107'),
-//       plus2sd: this.createLimitLine(this.mean + 2*this.sd, '#FF9800'),
-//       plus3sd: this.createLimitLine(this.mean + 3*this.sd, '#F44336'),
-//       minus1sd: this.createLimitLine(this.mean - this.sd, '#FFC107'),
-//       minus2sd: this.createLimitLine(this.mean - 2*this.sd, '#FF9800'),
-//       minus3sd: this.createLimitLine(this.mean - 3*this.sd, '#F44336')
-//     };
-//   }
-
-//   private createLimitLine(value: number, color: string) {
-//     return {
-//       type: 'line',
-//       yMin: value,
-//       yMax: value,
-//       borderColor: color,
-//       borderWidth: 1,
-//       borderDash: [5, 5]
-//     };
-//   }
-
-//   private checkWestgardRules() {
-//     const violations = [
-//       this.check13sRule(),
-//       this.check22sRule(),
-//       this.checkR4sRule(),
-//       thischeck41sRule(),
-//       this.check7TRule()
-//     ].filter(v => v.length > 0);
-
-//     this.displayViolations(violations.flat());
-//   }
-
-//   private check13sRule(): string[] {
-//     return this.dataPoints
-//       .filter(p => Math.abs(p.value - this.mean) > 3 * this.sd)
-//       .map(p => `1:3s rule violated on ${p.date.toDateString()}`);
-//   }
-
-//   // Implement other Westgard rules similarly
-// }
-
-// // Initialize chart
-// const chart = new LeveyJenningsChart(document.getElementById('ljChart') as HTMLCanvasElement);
-
-// async function generateReport() {
-//   const startDate = (document.getElementById('startDate') as HTMLInputElement).value;
-//   const endDate = (document.getElementById('endDate') as HTMLInputElement).value;
-//   const lot = (document.getElementById('lot') as HTMLInputElement).value;
-
-//   const data = await fetchControlData(startDate, endDate, lot);
-//   chart.updateChart(data);
-// }
-
-// // Simulated data fetch
-// async function fetchControlData(start: string, end: string, lot: string): Promise<ControlDataPoint[]> {
-//   // Replace with actual API call
-//   return simulateControlData();
-// }
-
-// function simulateControlData(): ControlDataPoint[] {
-//   // Generate mock data for demonstration
-//   const data: ControlDataPoint[] = [];
-//   const baseDate = new Date();
-//   for (let i = 0; i < 30; i++) {
-//     data.push({
-//       date: new Date(baseDate.setDate(baseDate.getDate() + 1)),
-//       value: 100 + (Math.random() * 4 - 2),
-//       lot: 'LOT123'
-//     });
-//   }
-//   return data;
-// }
-//#endregion

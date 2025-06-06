@@ -51,6 +51,12 @@ public class PatientController {
         return  new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
+    @GetMapping("/find/specimentID/{specimentID}")
+    public ResponseEntity<PatientData> findPatientBySpecimentID(@PathVariable String specimentID){
+        PatientData patient = patientService.findPatientBySpecimentID(specimentID);
+        return  new ResponseEntity<>(patient, HttpStatus.OK);
+    }
+
     @GetMapping("/find/{oib}")
     public ResponseEntity<PatientData> findPatientByOIB(@PathVariable Long oib){
         PatientData patient = patientService.findPatientByOib(oib);

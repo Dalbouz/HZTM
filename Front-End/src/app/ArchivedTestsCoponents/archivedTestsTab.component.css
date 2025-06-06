@@ -324,3 +324,34 @@ tr.editing-test:hover {
   border: 1px solid #bcd;
   box-sizing: border-box;
 }
+
+/*CSS FOR EXPORT BUTTON*/
+.exportToExcel {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+}
+
+.export-excel-btn {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  padding: 0.5rem 1.3rem;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, transform 0.1s;
+  padding-right: 2px;
+}
+
+.export-excel-btn:hover, .export-excel-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
+}

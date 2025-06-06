@@ -15,12 +15,12 @@ public class PositiveSpecimenData implements Serializable {
     @Column(name="SpecimenID")
     private String specimenID;
     private String dateOfFirstPositiveTest;
-    private String dataValue;
+    private String numericValueFromAnalizator;
 
-    public PositiveSpecimenData(String specimenID, String dateOfFirstPositiveTest, String dataValue) {
+    public PositiveSpecimenData(String specimenID, String dateOfFirstPositiveTest, String numericValueFromAnalizator) {
         this.specimenID = specimenID;
         this.dateOfFirstPositiveTest = dateOfFirstPositiveTest;
-        this.dataValue = dataValue;
+        this.numericValueFromAnalizator = numericValueFromAnalizator;
 
     }
 
@@ -50,10 +50,10 @@ public class PositiveSpecimenData implements Serializable {
         this.dateOfFirstPositiveTest = dateOfFirstPositiveTest;
     }
 
-    public String getDataValue() {
-        return dataValue;
+    public String getNumericValueFromAnalizator() {
+        return numericValueFromAnalizator;
     }
-    public void setDataValue(String dataValue) {
-        this.dataValue = dataValue;
+    public void setNumericValueFromAnalizator(String numericValueFromAnalizator) {
+        this.numericValueFromAnalizator = numericValueFromAnalizator;
     }
 }

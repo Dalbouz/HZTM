@@ -3,6 +3,7 @@ package studiobox.jobs.hztm_patient_manager.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import studiobox.jobs.hztm_patient_manager.exception.DataNotFound;
+import studiobox.jobs.hztm_patient_manager.model.AnalizatorData;
 import studiobox.jobs.hztm_patient_manager.model.ControlSampleData;
 import studiobox.jobs.hztm_patient_manager.model.PatientData;
 import studiobox.jobs.hztm_patient_manager.model.PositiveSpecimenData;
@@ -35,7 +36,7 @@ public class PositiveSpecimenService {
         List<PatientData> newPatientDataList = new ArrayList<>();
 
         // Date format (adjust if your dates use a different format)
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//"dd.MM.yyyy"
 
         try {
             Date start = sdf.parse(startDate);

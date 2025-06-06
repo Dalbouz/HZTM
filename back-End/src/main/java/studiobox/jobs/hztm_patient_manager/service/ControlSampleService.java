@@ -32,7 +32,7 @@ public class ControlSampleService {
         List<ControlSampleData> newList = new ArrayList<>();
 
         // Date format (adjust if your dates use a different format)
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//"dd.MM.yyyy"
 
         try {
             Date start = sdf.parse(startDate);
@@ -78,7 +78,7 @@ public class ControlSampleService {
         List<ControlSampleData> list = controlSampleDataRepository.findAll();
         List<ControlSampleData> newList = new ArrayList<>();
         for (ControlSampleData controlSampleData : list) {
-            String testname = controlSampleData.getLotTest();
+            String testname = controlSampleData.getTestName();
             if(testname != null && testname.equals(name)){
                 newList.add(controlSampleData);
             }

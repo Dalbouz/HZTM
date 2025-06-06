@@ -56,4 +56,16 @@ export class AnalizatorServices{
     public getAnalizatorsDataBySpecimentID(specimenID:string):Observable<AnalizatorData[]>{
         return this.http.get<AnalizatorData[]>(`${this.apiServerUrl}/analizators/find/all/${specimenID}`);
     }
+
+    public getArchivedAnalizatorsDataByDateRange(start:string, end:string):Observable<AnalizatorData[]>{
+        return this.http.get<AnalizatorData[]>(`${this.apiServerUrl}/analizators/find/archived/date/${start}/${end}`);
+    }
+
+    public getArchivedAnalizators():Observable<AnalizatorData[]>{
+         return this.http.get<AnalizatorData[]>(`${this.apiServerUrl}/analizators/find/archived`);
+    }
+
+    public filterAnalizators(filters: any[]):Observable<AnalizatorData[]>{
+         return this.http.post<AnalizatorData[]>(`${this.apiServerUrl}/analizators/search`,filters);
+    }
 }

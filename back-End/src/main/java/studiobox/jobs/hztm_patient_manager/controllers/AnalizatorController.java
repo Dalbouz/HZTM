@@ -4,11 +4,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import studiobox.jobs.hztm_patient_manager.model.AnalizatorData;
+import studiobox.jobs.hztm_patient_manager.model.ControlSampleData;
+import studiobox.jobs.hztm_patient_manager.model.FilterDTO;
 import studiobox.jobs.hztm_patient_manager.model.PatientData;
 import studiobox.jobs.hztm_patient_manager.service.AnalizatorService;
 import studiobox.jobs.hztm_patient_manager.service.PatientService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/analizators")
@@ -132,42 +136,24 @@ public class AnalizatorController {
         }
     }
 
-
-
-    /*
-
-
-
-    @PostMapping("/add")
-    public ResponseEntity<AnalizatorData> addAnalizator(@RequestBody AnalizatorData analizatorData) {
-        AnalizatorData analizator =  analizatorService.saveAnalizatorData(analizatorData);
-        return new ResponseEntity<>(analizator, HttpStatus.CREATED);
+    @GetMapping("/find/archived/date/{startDate}/{endDate}")
+    public ResponseEntity <List<AnalizatorData>> findArchivedWithinDate(@PathVariable String startDate, @PathVariable String endDate){
+        List<AnalizatorData> list = analizatorService.findAllArchivedWithinDateRange(startDate,endDate);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    // 5. Delete analizator data (permanently)
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteAnalizatorDataById(@PathVariable Long id) {
-        try {
-            analizatorService.deleteAnalizatorDataById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/find/archived")
+    public ResponseEntity <List<AnalizatorData>> findArchived(){
+        List<AnalizatorData> list = analizatorService.getArchivedAnalizators();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    // 6. Unlink analizator from patient (keep analizator data, just remove patient association)
-    @PutMapping("/unlink/{analizatorId}")
-    public ResponseEntity<AnalizatorData> unlinkAnalizatorFromPatient(@PathVariable Long analizatorId) {
-        try {
-            AnalizatorData analizator = analizatorService.findAnalizatorDataById(analizatorId);
-            analizator.setPatient(null);
-            AnalizatorData saved = analizatorService.saveAnalizatorData(analizator);
-            return new ResponseEntity<>(saved, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PostMapping("/search")
+    public ResponseEntity<List<AnalizatorData>> searchAnalizators(
+            @RequestBody List<FilterDTO> filterDTOs
+    ) {
+        List<AnalizatorData> filteredList = analizatorService.getFilteredAnalizators(filterDTOs);
+
+        return new ResponseEntity<>(filteredList, HttpStatus.OK);
     }
- */
-
-
 }

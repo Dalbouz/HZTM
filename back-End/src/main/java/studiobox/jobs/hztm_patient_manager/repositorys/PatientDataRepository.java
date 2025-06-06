@@ -9,4 +9,7 @@ import java.util.Optional;
 @Repository
 public interface PatientDataRepository extends JpaRepository<PatientData, Long> {
     Optional<PatientData> findByOib(Long oib);
+
+    Optional<PatientData> findBySpecimentID(String specimentID);
+
 }

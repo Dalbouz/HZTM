@@ -324,3 +324,143 @@ tr.editing-test:hover {
   border: 1px solid #bcd;
   box-sizing: border-box;
 }
+
+/*validate button CSS*/
+.table-validate-all {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0.7rem; /* Space between button and table */
+  margin-right: 1.5rem;  /* Align with table if needed */
+}
+
+.validate-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(60, 60, 120, 0.13);
+  transition: background 0.22s, transform 0.13s, box-shadow 0.22s;
+  outline: none;
+  letter-spacing: 0.5px;
+}
+
+.validate-btn .validate-icon {
+  font-size: 1.2rem;
+  margin-right: 0.2rem;
+  opacity: 0.82;
+  transition: opacity 0.2s;
+}
+
+.validate-btn:hover, .validate-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 8px 24px rgba(60, 60, 120, 0.18);
+}
+
+.validate-btn:hover .validate-icon,
+.validate-btn:focus .validate-icon {
+  opacity: 1;
+}
+
+.validate-btn:active {
+  transform: scale(0.97);
+}
+
+/* Hamburger Icon */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+  margin: 0 1rem;
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  width: 28px;
+  background: #2d3a4a;
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+  position: absolute;
+  top: 60px; /* adjust as needed */
+  left: 1.5rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(60, 60, 120, 0.15);
+  padding: 1rem 0.5rem;
+  display: none;
+  flex-direction: column;
+  min-width: 220px;
+  z-index: 1099;
+  animation: fadeIn 0.3s;
+}
+
+.hamburger-menu.open {
+  display: flex;
+}
+
+.nav-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: none;
+  border: none;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.18s;
+  text-align: left;
+}
+
+.nav-box:hover, .nav-box:focus {
+  background: #f0f4fa;
+}
+
+.nav-title {
+  font-weight: 600;
+  color: #2d3a4a;
+  font-size: 1.1rem;
+}
+
+.nav-desc {
+  font-size: 0.97rem;
+  color: #6c8df5;
+  opacity: 0.85;
+}
+
+/* Optional: Hamburger animation when open */
+.hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px);}
+  to { opacity: 1; transform: translateY(0);}
+}

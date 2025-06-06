@@ -6,8 +6,8 @@ import { utils, writeFile } from 'xlsx';
     providedIn:'root'
 })
 
+
 export class GenericServices{
-    
         /**
      * Filters an array of objects based on multiple string filters.
      * @param array The array of objects to filter.
@@ -61,6 +61,13 @@ export class GenericServices{
   public toggleFilter(filter: any) {
     filter.active = !filter.active;
     if (!filter.active) filter.value = '';
+  }
+
+  public formatDateToYYYYMMDD(dateString: string): string {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${year}-${month}-${day}`;
+    // return `${day}.${month}.${year}`;
   }
 
   /**

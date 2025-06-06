@@ -42,7 +42,7 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
      filters = [
         { label: FiltersEnum.dateOfReading, key: 'dateOfReading', active: false, value: '' },
         { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
-        { label: FiltersEnum.assayName, key: 'assayName', active: false, value: '' },
+        { label: FiltersEnum.AssayName, key: 'assayName', active: false, value: '' },
         
         // Add more filters as needed
       ];
@@ -56,7 +56,7 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
       }
 
     public goBack():void {
-      this.router.navigate([`/home`]);
+      this.router.navigate([`/analizatorTestsTab`]);
       this.disableAllFilters();
     }
 

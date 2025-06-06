@@ -24,6 +24,10 @@ public class ControlSampleData implements Serializable {
     private String analizatorUnit;
     private String interpretationFromAnalizator;
     private String sampleDate;
+    private String acceptableValueLimits;
+    private Integer targetValue;
+    private String manufacturer;
+    private String controlLabel;
 
     public ControlSampleData(){
 
@@ -31,7 +35,10 @@ public class ControlSampleData implements Serializable {
 
     public ControlSampleData(String AnalizatorName, String ControlSampleName, String TestName,
                              String LotTest, String ExpirationDateTest, String LotControlSamples, String ExpirationDateControlSamples,
-                             String SampleNumber, String AnalizatorResult, String AnalizatorUnit, String InterpretationFromAnalizator, String SampleDate) {
+                             String SampleNumber, String AnalizatorResult, String AnalizatorUnit, String InterpretationFromAnalizator, String SampleDate,
+                             String acceptableValueLimits, Integer targetValue, String manufacturer, String controlLabel
+
+    ) {
         this.analizatorName = AnalizatorName;
         this.controlSampleName = ControlSampleName;
         this.testName = TestName;
@@ -44,9 +51,45 @@ public class ControlSampleData implements Serializable {
         this.analizatorUnit = AnalizatorUnit;
         this.interpretationFromAnalizator = InterpretationFromAnalizator;
         this.sampleDate = sampleDate;
+        this.acceptableValueLimits = acceptableValueLimits;
+        this.targetValue = targetValue;
+        this.manufacturer = manufacturer;
+        this.controlLabel = controlLabel;
     }
 
-    public String  getSampleDate() {
+    public String acceptableValueLimits(){
+        return acceptableValueLimits;
+    }
+
+    public void setAcceptableValueLimits(String acceptableValueLimits){
+        this.acceptableValueLimits = acceptableValueLimits;
+    }
+
+    public Integer getTargetValue(){
+        return targetValue;
+    }
+
+    public void setTargetValue(Integer targetValue){
+        this.targetValue = targetValue;
+    }
+
+    public String getManufacturer(){
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer){
+        this.manufacturer = manufacturer;
+    }
+
+    public String getControlLabel(){
+        return controlLabel;
+    }
+
+    public void setControlLabel(String controlLabel){
+        this.controlLabel = controlLabel;
+    }
+
+    public String getSampleDate() {
         return sampleDate;
     }
 

@@ -33,4 +33,8 @@ export class PatientService{
     public getPatientByOib(oib: number):Observable<PatientData>{
         return this.http.get<PatientData>(`${this.apiServerUrl}/patients/find/${oib}`);
     }
+
+    public getPatientBySpecimenID(specimentID: string):Observable<PatientData>{
+        return this.http.get<PatientData>(`${this.apiServerUrl}/patients/find/specimentID/${specimentID}`);
+    }
 }

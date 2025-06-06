@@ -24,13 +24,19 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestroy{
     title = 'hztm_pacient_management';
 
-    public addingIndex: number = -1;
     public editTests: boolean = false;
-    private currentEditedAnalizator: AnalizatorData | undefined;
+    public isFilteredByDateRange: boolean = false;
+    public dateStart:string = '';
+    public dateEnd:string = '';
+  
+    private currentEditedAnalizator?: AnalizatorData | undefined;
+    private tempAnalizatorData?:AnalizatorData | undefined;
+    private dataListTemp: AnalizatorData[] = [];
 
-    public isStatisticFilterNumbOfPatients: boolean = false;
-    public isStatisticFilterNumbOfSamples: boolean = false;
-    public isStatisticFilterNumbOfTests: boolean = false;
+    // public isStatisticFilterNumbOfPatients: boolean = false;
+    // public isStatisticFilterNumbOfSamples: boolean = false;
+    // public isStatisticFilterNumbOfTests: boolean = false;
+
 
     filteredAnalizatorTests: AnalizatorData[] = [];
     
@@ -39,7 +45,7 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
 //#region filters
     filters = [
     { label: FiltersEnum.analizatorName, key: 'analizatorName', active: false, value: '' },
-    { label: FiltersEnum.assayName, key: 'assayTest', active: false, value: '' },
+    { label: FiltersEnum.AssayName, key: 'assayTest', active: false, value: '' },
     { label: FiltersEnum.dateOfReading, key: 'dateOfReading', active: false, value: '' },
     { label: FiltersEnum.timeOfReading, key: 'timeOfReading', active: false, value: '' },
     { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
@@ -48,22 +54,30 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
     { label: FiltersEnum.analizatorMark, key: 'testMark', active: false, value: '' },
     { label: FiltersEnum.lot, key: 'lot', active: false, value: '' },
     { label: FiltersEnum.expirationDateReagens, key: 'expirationDateReagens', active: false, value: '' },
+    { label: FiltersEnum.dateRange, key: 'dateRange', active: false, value: '' },
     
     // Add more filters as needed
   ];
 
-statisticFilterNumberPatients = [
-    { label: FiltersEnum.assayName, key: 'assayTest', active: false, value: '' },
-    { label: FiltersEnum.priority, key: 'priority', active: false, value: '' },
-    { label: FiltersEnum.priorityReason, key: 'priorityReason', active: false, value: '' },
-    { label: FiltersEnum.testResult, key: 'testResult', active: false, value: '' },
+  constructor(
+      public mainDataService: MainDataService,
+      private router: Router,
+      private analizatorService:AnalizatorServices,
+      public genericMethods: GenericServices
+  ){}
+
+// statisticFilterNumberPatients = [
+//     { label: FiltersEnum.assayName, key: 'assayTest', active: false, value: '' },
+//     { label: FiltersEnum.priority, key: 'priority', active: false, value: '' },
+//     { label: FiltersEnum.priorityReason, key: 'priorityReason', active: false, value: '' },
+//     { label: FiltersEnum.testResult, key: 'testResult', active: false, value: '' },
     
-    // Add more filters as needed
-  ];
+//     // Add more filters as needed
+//   ];
 
 //#endregion
   ngOnDestroy(): void {
-    this.clearAddedTestIfNotConfirmed();
+    this.clearEditedTestIfNotConfirmed();
     this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
   }
 
@@ -80,29 +94,34 @@ statisticFilterNumberPatients = [
           this.autoResize({ target: ref.nativeElement } as unknown as Event);
         });
       });
-    this.clearAddedTestIfNotConfirmed();
+    this.clearEditedTestIfNotConfirmed();
   }
 
    ngOnInit():void{
-      this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
-       this.clearAddedTestIfNotConfirmed();
+      this.filteredAnalizatorTests = this.mainDataService.archivedAnalizators;
+       this.clearEditedTestIfNotConfirmed();
   }
 
-    constructor(
-        public mainDataService: MainDataService,
-        private router: Router,
-        private analizatorService:AnalizatorServices,
-        public genericMethods: GenericServices
-    ){}
+  public goBack():void {
+    this.router.navigate([`/analizatorTestsTab`]);
+    this.filteredAnalizatorTests = this.mainDataService.archivedAnalizators;
+    this.disableAllFilters();
+    this.clearEditedTestIfNotConfirmed();
+  }
 
-    public goBack():void {
-      this.router.navigate([`/home`]);
-      this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
-      this.disableAllFilters();
-       this.clearAddedTestIfNotConfirmed();
+  public onRefresh(){
+    this.disableAllFilters();
+    this.filteredAnalizatorTests = this.mainDataService.archivedAnalizators;
+    this.clearEditedTestIfNotConfirmed();
+  }
+
+  public toggleFilter(filter: any) {
+    if(filter.key == 'dateRange' && filter.active == false ){
+      this.isFilteredByDateRange = true;
     }
-
-    public toggleFilter(filter: any) {
+    else if(filter.key == 'dateRange' && filter.active == true){
+      this.isFilteredByDateRange = false;
+    }
     this.genericMethods.toggleFilter(filter);
   }
 
@@ -112,77 +131,93 @@ statisticFilterNumberPatients = [
     textarea.style.height = textarea.scrollHeight + 'px'; // Set to scrollHeight
   }
 
-  public confirmDelete(analizator: AnalizatorData):void {
-    if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
-      return;
-    }
-
-    const userName = prompt('Enter username:');
-    if(userName == this.mainDataService.currentUser.userName){
-      const password = prompt('Enter password:');
-      if(password == this.mainDataService.currentUser.password ){
-        const userNameAdmin = prompt('Enter admin username:');
-        if(userNameAdmin == this.mainDataService.adminUserName){
-          const passwordAdmin = prompt('Enter admin password:');
-          if(this.mainDataService.adminPassword == passwordAdmin){
-
-            analizator.testStatus = TestStatusEnum.Deleted;
-            if(analizator.id != undefined)
-              this.analizatorService.updateAnalizator(analizator, analizator.id);
-          }
-          else{
-            alert("Admin password je netočan!");
-          }
-        }
-        else{
-          alert("Admin username je netočan!");
-        }
-      }
-      else{
-        alert("Password je netočan!");
-      }
-    }
-    else{
-      alert("Username je netočan!");
-    }
-  }
-
-  public editAnalizator(analizator: AnalizatorData):void {
-    if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
-      return;
-    }
-
-    if(this.editTests){
-      return;
-    }
-
-    analizator.isEdited = true;
-    this.editTests = true;
-
-    this.currentEditedAnalizator = analizator;
-  }
-
   public onSearch():void
   {
-    this.filteredAnalizatorTests = this.genericMethods.getFilteredArrayOnSearch(this.filters, this.mainDataService.analizatorDatas)
+    if(this.isFilteredByDateRange){
+      this.dateEnd = this.genericMethods.formatDateToYYYYMMDD(this.dateEnd);
+      this.dateStart = this.genericMethods.formatDateToYYYYMMDD(this.dateStart);
+      this.getByDate();
+    }
+    else{
+      this.filteredAnalizatorTests = this.genericMethods.getFilteredArrayOnSearch(this.filters, this.mainDataService.archivedAnalizators);
+    }
   }
 
   public disableAllFilters() {
       this.genericMethods.disableAllFilters(this.filters);
   }
 
-  public onRefresh(){
-    this.disableAllFilters();
-    this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
-    this.clearAddedTestIfNotConfirmed();
+  //#region PrivateMethods
+  private clearEditedTestIfNotConfirmed(){
     this.editTests = false;
     if(this.currentEditedAnalizator){
       this.currentEditedAnalizator.isEdited = false;
       this.currentEditedAnalizator = undefined;
     }
+    if(this.tempAnalizatorData){
+      this.tempAnalizatorData = undefined;
+    }
   }
+  //#endregion
 
-  public confirmUpdate(test: AnalizatorData) {
+  //#region ActionButttons
+  public confirmDelete(analizator: AnalizatorData):void {
+    if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
+      return;
+    }
+
+      const userName = prompt('Enter username:');
+      if(userName == this.mainDataService.currentUser.userName){
+        const password = prompt('Enter password:');
+        if(password == this.mainDataService.currentUser.password ){
+          const userNameAdmin = prompt('Enter admin username:');
+          if(userNameAdmin == this.mainDataService.adminUserName){
+            const passwordAdmin = prompt('Enter admin password:');
+            if(this.mainDataService.adminPassword == passwordAdmin){
+
+              analizator.testStatus = TestStatusEnum.Deleted;
+              if(analizator.id != undefined)
+                this.analizatorService.updateAnalizator(analizator, analizator.id);
+            }
+            else{
+              alert("Admin password je netočan!");
+            }
+          }
+          else{
+            alert("Admin username je netočan!");
+          }
+        }
+        else{
+          alert("Password je netočan!");
+        }
+      }
+      else{
+        alert("Username je netočan!");
+      }
+    }
+
+    public editAnalizator(analizator: AnalizatorData):void {
+      if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
+        return;
+      }
+
+      if(this.editTests){
+        return;
+      }
+
+      analizator.isEdited = true;
+      this.editTests = true;
+
+      this.currentEditedAnalizator = analizator;
+
+      this.tempAnalizatorData = {
+        ...analizator
+      }
+
+      this.dataListTemp = [...this.mainDataService.archivedAnalizators];
+    }
+
+    public confirmUpdate(test: AnalizatorData) {
     // Validate required fields
     if (!test.analizatorName || !test.testMark || !test.lot || 
       !test.expirationDateReagens || !test.interpretedResult || !test.numericValueFromAnalizator || 
@@ -190,7 +225,6 @@ statisticFilterNumberPatients = [
       alert('Please fill all required fields');
       return;
     }
-    this.addingIndex = -1;
     this.updateAnalizatorData(test, test.id);
     this.editTests = false;
     if(this.currentEditedAnalizator){
@@ -199,21 +233,13 @@ statisticFilterNumberPatients = [
     }
   }
 
-  public cancelUpdate(){
-    this.clearAddedTestIfNotConfirmed();
-  }
-
-  private clearAddedTestIfNotConfirmed(){
-    if(this.addingIndex > 0){
-      this.filteredAnalizatorTests.splice(this.addingIndex, 1);
-      this.addingIndex = -1;
+  public cancelUpdate(analizator: AnalizatorData){
+    if (this.tempAnalizatorData != null) {
+    Object.assign(analizator, this.tempAnalizatorData);
     }
-    this.editTests = false;
-    if(this.currentEditedAnalizator){
-      this.currentEditedAnalizator.isEdited = false;
-      this.currentEditedAnalizator = undefined;
-    }
+    this.clearEditedTestIfNotConfirmed();
   }
+  //#endregion
 
 //#region CallersToBackend
     private updateAnalizatorData(analizator: AnalizatorData, id:number = -1):void{
@@ -221,11 +247,26 @@ statisticFilterNumberPatients = [
         (response: AnalizatorData) => {
           if (response != null) {
             console.log("analizator found when updated");
-            this.mainDataService.analizatorDatas = this.genericMethods.replaceObjectById(this.mainDataService.analizatorDatas, response);
-            
+            this.mainDataService.archivedAnalizators = this.genericMethods.replaceObjectById(this.mainDataService.analizatorDatas, response);
           }
           else {
             alert("Error wont update Analizator Test"); // Handle existing user
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
+        }
+      );
+    }
+
+    private getByDate():void{
+      this.analizatorService.getArchivedAnalizatorsDataByDateRange(this.dateStart, this.dateEnd).subscribe(
+        (response: AnalizatorData[])=>{
+          if(response != null){
+              this.filteredAnalizatorTests = this.genericMethods.getFilteredArrayOnSearch(this.filters, response);
+          }
+        else {
+            alert("Error cant find archived tests by date"); // Handle existing user
           }
         },
         (error: HttpErrorResponse) => {

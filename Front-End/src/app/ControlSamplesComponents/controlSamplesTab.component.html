@@ -77,6 +77,10 @@
             <th>Analizator - mjerna jedinica</th>
             <th>Interpretacija iz analizatora</th>
             <th>Datum uzorka</th>
+            <th>Granice prihvatljive vrijednosti</th>
+            <th>Ciljana vrijednost</th>
+            <th>Proizvođač</th>
+            <th>Oznaka Kontrole High/Low</th>
           </tr>
         </thead>
         <tbody>
@@ -94,6 +98,10 @@
             <td>{{ controlSamples.analizatorUnit }}</td>
             <td>{{ controlSamples.interpretationFromAnalizator }}</td>
             <td>{{ controlSamples.sampleDate }}</td>
+            <td>{{ controlSamples.acceptableValueLimits }}</td>
+            <td>{{ controlSamples.targetValue }}</td>
+            <td>{{ controlSamples.manufacturer }}</td>
+            <td>{{ controlSamples.controlLabel }}</td>
           </tr>
         </ng-container>
 </tbody>

@@ -28,4 +28,10 @@ export interface AnalizatorData{
     dataValue: string;
     minDataValue:string;
     maxDataValue:string;
+    numberOfTestsDone:number,
+    numberOfPositiveTests: number;
+    numberOfNegativeTests: number;
+    isSelected:boolean;
+    RLU: string;
+    idOcitanjaAnalizatora:string;
 }

@@ -38,4 +38,8 @@ public class PatientService {
     public PatientData findPatientByOib(Long oib){
         return patientDataRepository.findByOib(oib).orElseThrow(()->new DataNotFound("Patient with the OIB:" + oib + "not Found!"));
     }
+
+    public PatientData findPatientBySpecimentID(String specimentID){
+        return patientDataRepository.findBySpecimentID(specimentID).orElseThrow(()->new DataNotFound("Patient with the specimentID:" + specimentID + "not Found!"));
+    }
 }

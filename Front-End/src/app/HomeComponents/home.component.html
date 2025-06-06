@@ -5,14 +5,22 @@
 <div class="homepage-nav">
   <h1>Dobrodošli {{mainDataService.currentUser.fullName}}</h1>
   <div class="nav-boxes">
-    <button class="nav-box" (click)="navigateTo('patientsTab')">
-      <span class="nav-title">Karton pacijenta</span>
-      <span class="nav-desc">Pregled pacijenta i testova</span>
+    <button class="nav-box" (click)="navigateTo('controlSamplesTab')">
+      <span class="nav-title">Kontrolni Uzorci</span>
+      <span class="nav-desc">
+        Lista rezultata kontrolnih uzoraka za test prema datumu/prema lot-u/prema testu.
+        Levey-Jennings izvještaj/grafikon s Wesgardovim pravilima prema lotu kontrola i prema vremenskom razdoblju. 
+      </span>
     </button>
     <button class="nav-box" (click)="navigateTo('analizatorTestsTab')">
       <span class="nav-title">Analizator Testovi</span>
       <span class="nav-desc">Prihvat i kontrola analizator testova</span>
     </button>
+    <button class="nav-box" (click)="navigateTo('patientsTab')">
+      <span class="nav-title">Karton pacijenta</span>
+      <span class="nav-desc">Pregled pacijenta i testova</span>
+    </button>
+    <!--
     <button class="nav-box" (click)="navigateTo('archivedTestsTab')">
       <span class="nav-title">Arhiva testova</span>
       <span class="nav-desc">Arhivirani testovi</span>
@@ -21,6 +29,7 @@
       <span class="nav-title">Lista validiranih testova</span>
       <span class="nav-desc">Lista validiranih testova po grupama.</span>
     </button>
+    -->
     <button class="nav-box" (click)="navigateTo('listsTab')">
       <span class="nav-title">Liste</span>
       <span class="nav-desc">
@@ -33,13 +42,6 @@
       <span class="nav-title">Registar pozitivnih<br>Davatelja</span>
       <span class="nav-desc">
         DDK koji je pozitivan na jedan od biljega
-      </span>
-    </button>
-    <button class="nav-box" (click)="navigateTo('controlSamplesTab')">
-      <span class="nav-title">Kontrolni Uzorci</span>
-      <span class="nav-desc">
-        Lista rezultata kontrolnih uzoraka za test prema datumu/prema lot-u/prema testu.
-        Levey-Jennings izvještaj/grafikon s Wesgardovim pravilima prema lotu kontrola i prema vremenskom razdoblju. 
       </span>
     </button>
   </div>

@@ -2,22 +2,30 @@ package studiobox.jobs.hztm_patient_manager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import studiobox.jobs.hztm_patient_manager.SearchEngine;
 import studiobox.jobs.hztm_patient_manager.exception.DataNotFound;
 import studiobox.jobs.hztm_patient_manager.model.AnalizatorData;
+import studiobox.jobs.hztm_patient_manager.model.FilterDTO;
 import studiobox.jobs.hztm_patient_manager.model.PatientData;
 import studiobox.jobs.hztm_patient_manager.repositorys.AnalizatorDataRepository;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AnalizatorService {
     private final AnalizatorDataRepository analizatorDataRepository;
     private final PatientService patientService;
+    public final SearchEngine searchEngine;
 
     @Autowired
-    public AnalizatorService(AnalizatorDataRepository analizatorDataRepository, PatientService patientService) {
+    public AnalizatorService(AnalizatorDataRepository analizatorDataRepository, PatientService patientService, SearchEngine searchEngine) {
         this.analizatorDataRepository = analizatorDataRepository;
         this.patientService = patientService;
+        this.searchEngine = searchEngine;
     }
 
     public List<AnalizatorData> findAllAnalizators(){
@@ -59,5 +67,50 @@ public class AnalizatorService {
 
     public List<AnalizatorData> findAnalizatorsBySpecimenID(String specimenID){
         return analizatorDataRepository.findBySpecimenID(specimenID);
+    }
+
+    public List<AnalizatorData> findAllArchivedWithinDateRange(String startStr, String endStr) {
+        // Validate input dates
+        if (startStr == null || endStr == null || startStr.isEmpty() || endStr.isEmpty()) {
+            throw new IllegalArgumentException("Start and end dates must be provided");
+        }
+
+        try {
+            // 2. Use modern DateTime API
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");//"dd.MM.yyyy"
+            LocalDate startDate = LocalDate.parse(startStr, formatter);
+            LocalDate endDate = LocalDate.parse(endStr, formatter);
+
+            // 3. Use stream API for cleaner code
+            return analizatorDataRepository.findAll().stream()
+                    .filter(a -> "ARCHIVED".equals(a.getTestStatus()))
+                    .filter(a -> isValidDateWithinRange(a.getDateOfReading(), startDate, endDate, formatter))
+                    .collect(Collectors.toList());
+
+        } catch (DataNotFound e) {
+            throw new IllegalArgumentException("Invalid date format. Use yyyy-MM-dd", e);
+        }
+    }
+
+    private boolean isValidDateWithinRange(String dateStr, LocalDate start, LocalDate end, DateTimeFormatter formatter) {
+        if (dateStr == null || dateStr.isEmpty()) return false;
+
+        try {
+            LocalDate date = LocalDate.parse(dateStr, formatter);
+            return !date.isBefore(start) && !date.isAfter(end);
+        } catch (DataNotFound e) {
+            return false;
+        }
+    }
+
+    public List<AnalizatorData> getArchivedAnalizators(){
+        return analizatorDataRepository.findAll().stream()
+                .filter(a -> "ARCHIVED".equals(a.getTestStatus()))
+                .collect(Collectors.toList());
+    }
+
+    public List<AnalizatorData> getFilteredAnalizators(List<FilterDTO> filters) {
+        Map<String, String> searchCriteria = searchEngine.convertFilters(filters);
+        return SearchEngine.searchByFilters(analizatorDataRepository.findAll(), searchCriteria);
     }
 }

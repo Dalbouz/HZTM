@@ -3,8 +3,9 @@ export enum FiltersEnum{
     dateOfReading = "datum očitavanja",
     timeOfReading = "vrijeme očitavanja",
     analizatorName = "naziv analizatora",
-    assayName = "naziv pretrage",
+    AssayName = "naziv pretrage",
     specimenID ="ID pacijenta",
+    specimentID ="ID pacijenta",
     oib ="Oib pacijenta",
     controlSampleLot = "Lot kontrolnog uzorka",
     controlSampleTestName="Ime kontrolnog testa",
@@ -21,6 +22,7 @@ export enum FiltersEnum{
     analizatorMark = "Oznaka analizatora",
     lot = "Lot",
     expirationDateReagens = "Datum isteka reagensa",
-    dateRange = "Razdoblje od/do"
+    dateRange = "Razdoblje od/do",
+    validated = "Da li je validiran (VALIDATED ili NOT_VALIDATED)"
 
 }

@@ -14,4 +14,8 @@ export interface ControlSampleData{
     analizatorUnit:string;
     interpretationFromAnalizator:string;
     sampleDate:string;
+    acceptableValueLimits:string;
+    targetValue:number;
+    manufacturer:string;
+    controlLabel:string;
 }

@@ -5,7 +5,6 @@ import { Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { MainDataService } from '../services/MainData.Services';
 import { PatientData } from '../dataStructure/PatientData';
-import { AnalizatorData } from '../dataStructure/AnalizatorData';
 import { FiltersEnum } from '../dataStructure/FiltersEnum';
 import { GenericServices } from '../services/GenericMethods.Service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -56,19 +55,17 @@ export class ListsTabTabComponent implements OnInit, OnDestroy{
     this.patientDatasTemp = [];
     this.disableAllFilters();
   }
-
-  // public getFilteredAnalizatorDataBySampleNumber(patient: PatientData): AnalizatorData[] {
-  //   if (!patient.analizatorDatas) return [];
   
-  //   console.log('Selected sample number:', patient.selectedSampleNumber);
-  //   console.log('All analizator datas:', patient.analizatorDatas);
-    
-  //   return patient.analizatorDatas.filter(a => {
-  //     const match = String(a.sampleNumber).trim() === String(patient.selectedSampleNumber).trim();
-  //     console.log(`SampleNumber: ${a.sampleNumber} | Match: ${match}`);
-  //     return match;
-  //   });
-  // }
+  public disableAllFilters() {
+      this.genericMethodService.disableAllFilters(this.filters);
+      this.activeFilter = undefined;
+      this.filterActiveStatus = false;
+      this.patientDatasTemp = [];
+  }
+
+  public onRefresh(){
+    this.disableAllFilters();
+  }
 
   public toggleFilter(selectedFilter: any) {
     if(this.filterActiveStatus == false){
@@ -103,8 +100,8 @@ export class ListsTabTabComponent implements OnInit, OnDestroy{
       if (isSure) {
         switch (this.activeFilter) {
           case FiltersEnum.dateRange:
-            this.dateEnd = this.formatDateToDDMMYYYY(this.dateEnd);
-            this.dateStart = this.formatDateToDDMMYYYY(this.dateStart);
+            this.dateEnd = this.genericMethodService.formatDateToYYYYMMDD(this.dateEnd);
+            this.dateStart = this.genericMethodService.formatDateToYYYYMMDD(this.dateStart);
             this.getByDate();
             break;
           case FiltersEnum.controlSampleLot:
@@ -116,23 +113,6 @@ export class ListsTabTabComponent implements OnInit, OnDestroy{
     // code block if no case matches
       }
     }
-  }
-
-  private formatDateToDDMMYYYY(dateString: string): string {
-  if (!dateString) return '';
-  const [year, month, day] = dateString.split('-');
-  return `${day}.${month}.${year}`;
-}
-
-  public disableAllFilters() {
-      this.genericMethodService.disableAllFilters(this.filters);
-      this.activeFilter = undefined;
-      this.filterActiveStatus = false;
-      this.patientDatasTemp = [];
-  }
-
-  public onRefresh(){
-    this.disableAllFilters();
   }
 
 //#region CallersToBackend

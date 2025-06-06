@@ -22,6 +22,7 @@ export class MainDataService{
     public controlSamples: ControlSampleData[] = [];
     public registryDdkDatas: RegistryDDKData[] = [];
     public ddkTests: DdkTestData[] = [];
+    public archivedAnalizators: AnalizatorData[] = [];
 
     public adminUserExist: boolean = false;
     public adminUserName:string = "";
@@ -41,15 +42,6 @@ export class MainDataService{
     name:'',
     adress:''
   };
-
-  // public registerdUser: UserData  = {
-  //   fullName: '',
-  //   password: '',
-  //   userName: '',
-  //   passwordTimeout: 0,
-  //   activeStatus: false,
-  //   securityLevelStatus: ''
-  // };
 
   public clearCurrentUser():void{
       this.currentUser.fullName = '';

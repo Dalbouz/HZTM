@@ -48,6 +48,8 @@ export class AppComponent implements OnInit{
 
     this.getDdkTests();
 
+    this.getArchivedAnalizators();
+
     this.userService.getUserById(1).subscribe(
         (response: UserData) => {
           if(response == null){
@@ -61,6 +63,21 @@ export class AppComponent implements OnInit{
         })
   }
 
+//#region ArchivedAnalizators
+ private getArchivedAnalizators():void{
+      this.analizatorService.getArchivedAnalizators().subscribe(
+        (response: AnalizatorData[]) =>{
+          this.mainDataService.archivedAnalizators = response;
+          console.log(response.length);
+        },
+        (error: HttpErrorResponse) => {
+        console.log(error.message + "\nPokusavam dohvatiti sve analizator testove ali nejde!");
+      }
+      )
+    }
+//#endregion
+
+//#region Patient&AnalizatorData
     public getPatients():PatientData[]{
       this.patientService.getPatients().subscribe(
         (response: PatientData[]) =>{
@@ -107,7 +124,7 @@ export class AppComponent implements OnInit{
               analizatorData.isNew = false;
               analizatorData.isEdited = false;
               if (!patient.sampleNumbers.includes(analizatorData.sampleNumber)) {
-              patient.sampleNumbers.push(analizatorData.sampleNumber);
+                patient.sampleNumbers.push(analizatorData.sampleNumber);
           }
     
         });
@@ -117,21 +134,10 @@ export class AppComponent implements OnInit{
     }
     )
     });
-  
   }
+//#endregion
 
-
-  // private getDdkPatientsWithTests(testList: DdkTestData[]){
-  //   this.ddkService.getPatientsWithTests(testList).subscribe(
-  //     (response: RegistryDDKData[]) =>{
-  //       this.mainDataService.registryDdkDatas = response;
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       alert(error.message + "\nPokusavam dohvatiti sve DDK pacijente sa testovima ali nejde!");
-  //     }
-  //   )
-  // }
-
+//#region DDK
   private getDdkPatients(){
     this.ddkService.getAllPatients().subscribe(
       (response:RegistryDDKData[]) =>{
@@ -168,4 +174,5 @@ export class AppComponent implements OnInit{
           }
         )
   }
+//#endregion
 }
