@@ -33,6 +33,10 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
     private tempAnalizatorData?:AnalizatorData | undefined;
     private dataListTemp: AnalizatorData[] = [];
 
+    public showFromIndex:number = 0;
+    private numberOfShownTests: number = 20;
+    private fullAnalizazorDataList: AnalizatorData[] = []
+
     // public isStatisticFilterNumbOfPatients: boolean = false;
     // public isStatisticFilterNumbOfSamples: boolean = false;
     // public isStatisticFilterNumbOfTests: boolean = false;
@@ -47,7 +51,7 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
     { label: FiltersEnum.analizatorName, key: 'analizatorName', active: false, value: '' },
     { label: FiltersEnum.AssayName, key: 'assayTest', active: false, value: '' },
     { label: FiltersEnum.dateOfReading, key: 'dateOfReading', active: false, value: '' },
-    { label: FiltersEnum.timeOfReading, key: 'timeOfReading', active: false, value: '' },
+    // { label: FiltersEnum.timeOfReading, key: 'timeOfReading', active: false, value: '' },
     { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
     { label: FiltersEnum.specimenID, key: 'specimenID', active: false, value: '' },
     { label: FiltersEnum.positiveResults, key: 'positiveResults', active: false, value: '' },
@@ -78,7 +82,10 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
 //#endregion
   ngOnDestroy(): void {
     this.clearEditedTestIfNotConfirmed();
-    this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+    this.fullAnalizazorDataList = this.mainDataService.activeAnalizators;
+
+    this.showFromIndex = 0;
+    this.showList(0);
   }
 
   ngAfterViewInit(): void {
@@ -98,21 +105,50 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
   }
 
    ngOnInit():void{
-      this.filteredAnalizatorTests = this.mainDataService.archivedAnalizators;
-       this.clearEditedTestIfNotConfirmed();
+    this.clearEditedTestIfNotConfirmed();
+    
+    this.fullAnalizazorDataList = this.mainDataService.archivedAnalizators;
+    this.showFromIndex = 0;
+    this.showList(0);
+  }
+
+public showList(value:number){
+    this.filteredAnalizatorTests = [];
+    if(value == 0){
+      this.showFromIndex -= this.numberOfShownTests;
+      if(this.showFromIndex < 0){
+        this.showFromIndex = 0;
+      }
+    }
+    else if(value == 1){
+      this.showFromIndex += this.numberOfShownTests;
+      if(this.showFromIndex > this.fullAnalizazorDataList.length){
+        this.showFromIndex = this.fullAnalizazorDataList.length;
+      }
+    }
+
+    for(let i = this.showFromIndex; i < this.numberOfShownTests + this.showFromIndex && i < this.fullAnalizazorDataList.length; i++){
+      this.filteredAnalizatorTests.push(this.fullAnalizazorDataList[i]);
+    }
   }
 
   public goBack():void {
     this.router.navigate([`/analizatorTestsTab`]);
-    this.filteredAnalizatorTests = this.mainDataService.archivedAnalizators;
     this.disableAllFilters();
     this.clearEditedTestIfNotConfirmed();
+    
+    this.fullAnalizazorDataList = this.mainDataService.archivedAnalizators;
+    this.showFromIndex = 0;
+    this.showList(0);
   }
 
   public onRefresh(){
     this.disableAllFilters();
-    this.filteredAnalizatorTests = this.mainDataService.archivedAnalizators;
     this.clearEditedTestIfNotConfirmed();
+    
+    this.fullAnalizazorDataList = this.mainDataService.archivedAnalizators;
+    this.showFromIndex = 0;
+    this.showList(0);
   }
 
   public toggleFilter(filter: any) {
@@ -139,7 +175,8 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
       this.getByDate();
     }
     else{
-      this.filteredAnalizatorTests = this.genericMethods.getFilteredArrayOnSearch(this.filters, this.mainDataService.archivedAnalizators);
+      this.filterAnalizators();
+      // this.filteredAnalizatorTests = this.genericMethods.getFilteredArrayOnSearch(this.filters, this.mainDataService.archivedAnalizators);
     }
   }
 
@@ -247,7 +284,7 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
         (response: AnalizatorData) => {
           if (response != null) {
             console.log("analizator found when updated");
-            this.mainDataService.archivedAnalizators = this.genericMethods.replaceObjectById(this.mainDataService.analizatorDatas, response);
+            this.mainDataService.archivedAnalizators = this.genericMethods.replaceObjectById(this.mainDataService.activeAnalizators, response);
           }
           else {
             alert("Error wont update Analizator Test"); // Handle existing user
@@ -263,10 +300,32 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
       this.analizatorService.getArchivedAnalizatorsDataByDateRange(this.dateStart, this.dateEnd).subscribe(
         (response: AnalizatorData[])=>{
           if(response != null){
-              this.filteredAnalizatorTests = this.genericMethods.getFilteredArrayOnSearch(this.filters, response);
+            this.filterAnalizators();
+              // this.filteredAnalizatorTests = this.genericMethods.getFilteredArrayOnSearch(this.filters, response);
           }
         else {
             alert("Error cant find archived tests by date"); // Handle existing user
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
+        }
+      );
+    }
+
+    private filterAnalizators():void{
+      this.analizatorService.filterAnalizatorsByGivenList(this.filters, this.mainDataService.archivedAnalizators).subscribe(
+        (response: AnalizatorData[]) => {
+          if (response != null) {
+            this.fullAnalizazorDataList = response;
+
+            this.showFromIndex = 0;
+            this.showList(0);
+             return response;
+          }
+          else {
+            alert("Error wont add Analizator Test"); // Handle existing user
+            return null;
           }
         },
         (error: HttpErrorResponse) => {

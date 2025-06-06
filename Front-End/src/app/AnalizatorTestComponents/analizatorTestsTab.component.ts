@@ -13,7 +13,6 @@ import { FiltersEnum } from '../dataStructure/FiltersEnum';
 import { GenericServices } from '../services/GenericMethods.Service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PatientService } from '../services/Patient.Services';
-import { PatientData } from '../dataStructure/PatientData';
 
 @Component({
   selector: 'app-analizatorTestsTab',
@@ -31,11 +30,14 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     public isEditing:boolean = false;
     public isTestSelected:boolean = false;
     public menuOpen:boolean = false;
-    private editedAnalizatorTemp: AnalizatorData | undefined;
-    private currentlyEditedAnalizator: AnalizatorData | undefined;
+    // private editedAnalizatorTemp: AnalizatorData | undefined;
+    // private currentlyEditedAnalizator: AnalizatorData | undefined;
     private currentSelectedAnalizator: AnalizatorData | undefined;
+    public showFromIndex:number = 0;
+    private numberOfShownTests: number = 20;
 
     filteredAnalizatorTests: AnalizatorData[] = [];
+    fullAnalizazorDataList: AnalizatorData[] = [];
     
     @ViewChildren('TextareaNotes') textareaNoteRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
     @ViewChildren('TextareaFinalResult') textareaFinalResultRefs!: QueryList<ElementRef<HTMLTextAreaElement>>;
@@ -45,7 +47,7 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
     { label: FiltersEnum.analizatorName, key: 'analizatorName', active: false, value: '' },
     { label: FiltersEnum.AssayName, key: 'AssayName', active: false, value: '' },
     { label: FiltersEnum.dateOfReading, key: 'dateOfReading', active: false, value: '' },
-    { label: FiltersEnum.timeOfReading, key: 'timeOfReading', active: false, value: '' },
+    // { label: FiltersEnum.timeOfReading, key: 'timeOfReading', active: false, value: '' },
     { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
     { label: FiltersEnum.specimenID, key: 'specimenID', active: false, value: '' },
     
@@ -63,9 +65,12 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnDestroy(): void {
     this.clearAddingTestIfNotConfirmed();
-    this.clearVariablesForEditing();
-    this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+    // this.clearVariablesForEditing();
+    this.fullAnalizazorDataList = this.mainDataService.activeAnalizators;
     this.menuOpen = false;
+
+    this.showFromIndex = 0;
+    this.showList(0);
   }
 
   ngAfterViewInit(): void {
@@ -81,37 +86,60 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
           this.autoResize({ target: ref.nativeElement } as unknown as Event);
         });
       });
-
-    // setTimeout(() => {
-    //   this.textareaNoteRefs.forEach(ref => {
-    //     this.autoResize({ target: ref.nativeElement } as any as Event);
-    //   });
-    // });
     this.clearAddingTestIfNotConfirmed();
-    this.clearVariablesForEditing();
+    // this.clearVariablesForEditing();
     this.menuOpen = false;
   }
 
   ngOnInit():void{
-      this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
       this.clearAddingTestIfNotConfirmed();
-      this.clearVariablesForEditing();
+      // this.clearVariablesForEditing();
       this.menuOpen = false;
+      
+      this.fullAnalizazorDataList = this.mainDataService.activeAnalizators;
+      this.showFromIndex = 0;
+      this.showList(0);
+  }
+
+  public showList(value:number){
+    this.filteredAnalizatorTests = [];
+    if(value == 0){
+      this.showFromIndex -= this.numberOfShownTests;
+      if(this.showFromIndex < 0){
+        this.showFromIndex = 0;
+      }
+    }
+    else if(value == 1){
+      this.showFromIndex += this.numberOfShownTests;
+      if(this.showFromIndex > this.fullAnalizazorDataList.length){
+        this.showFromIndex = this.fullAnalizazorDataList.length;
+      }
+    }
+
+    for(let i = this.showFromIndex; i < this.numberOfShownTests + this.showFromIndex && i < this.fullAnalizazorDataList.length; i++){
+      this.filteredAnalizatorTests.push(this.fullAnalizazorDataList[i]);
+    }
   }
 
   public onRefresh(){
     this.disableAllFilters();
-    this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+
+    this.fullAnalizazorDataList = this.mainDataService.activeAnalizators;
+    this.showFromIndex = 0;
+    this.showList(0);
     // this.clearAddingTestIfNotConfirmed();
   }
 
   public goBack():void {
     this.router.navigate([`/home`]);
-    this.filteredAnalizatorTests = this.mainDataService.analizatorDatas;
+    this.fullAnalizazorDataList = this.mainDataService.activeAnalizators;
     this.disableAllFilters();
     this.clearAddingTestIfNotConfirmed();
-    this.clearVariablesForEditing();
+    // this.clearVariablesForEditing();
     this.menuOpen = false;
+
+    this.showFromIndex = 0;
+    this.showList(0);
   }
 
   public navigateTo(route: string) {
@@ -162,7 +190,11 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
       if (isSure) {
         this.filteredAnalizatorTests.forEach(test=>{
           test.validated = ValidationStatus.Validated;
+          test.dateOfValidation = new Date().toISOString().split('T')[0];
+          const now = new Date();
+          test.testWasValidatedBy = this.mainDataService.currentUser.fullName + " / " + now.toLocaleDateString() + " / " + now.toLocaleTimeString();
           this.updateAnalizatorData(test, test.id);
+          this.mainDataService.validatedAnalizators.push(test);
         })
       }
   }
@@ -227,8 +259,11 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
       if(this.mainDataService.currentUser.password == adminPass){
         analizator.validated = ValidationStatus.Validated;
         if(analizator.id != undefined)
-          
+          analizator.dateOfValidation = new Date().toISOString().split('T')[0];
+          const now = new Date();
+          analizator.testWasValidatedBy = this.mainDataService.currentUser.fullName + " / " + now.toLocaleDateString() + " / " + now.toLocaleTimeString();
           this.updateAnalizatorData(analizator, analizator.id);
+          this.mainDataService.validatedAnalizators.push(analizator);
       }
       else{
         alert("Password je netočan!");
@@ -241,43 +276,43 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
 //#endregion
 
 //#region EditingAnalizators
-  public editAnalizator(analizator:AnalizatorData):void{
-    if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
-      return;
-    }
+  // public editAnalizator(analizator:AnalizatorData):void{
+  //   if(this.mainDataService.currentUser.securityLevelStatus != SecurityLevel.High){
+  //     return;
+  //   }
 
-    if(this.isEditing){
-      return;
-    }
+  //   if(this.isEditing){
+  //     return;
+  //   }
 
-    this.isEditing = true;
-    analizator.isEdited = true;
-    this.editedAnalizatorTemp = {...analizator};
-    this.currentlyEditedAnalizator = analizator;
-  }
+  //   this.isEditing = true;
+  //   analizator.isEdited = true;
+  //   this.editedAnalizatorTemp = {...analizator};
+  //   this.currentlyEditedAnalizator = analizator;
+  // }
 
-  public confirmEdit(analizator: AnalizatorData){
-    if(analizator.isEdited && this.isEditing){
-      this.updateAnalizatorData(analizator, analizator.id);
-      this.clearVariablesForEditing();
-    }
-  }
+  // public confirmEdit(analizator: AnalizatorData){
+  //   if(analizator.isEdited && this.isEditing){
+  //     this.updateAnalizatorData(analizator, analizator.id);
+  //     this.clearVariablesForEditing();
+  //   }
+  // }
 
-  public cancelEdit(analizator: AnalizatorData){
-    if (this.editedAnalizatorTemp != null) {
-    Object.assign(analizator, this.editedAnalizatorTemp);
-    }
-    this.clearVariablesForEditing();
-  }
+  // public cancelEdit(analizator: AnalizatorData){
+  //   if (this.editedAnalizatorTemp != null) {
+  //   Object.assign(analizator, this.editedAnalizatorTemp);
+  //   }
+  //   this.clearVariablesForEditing();
+  // }
 
-  private clearVariablesForEditing(){
-    this.editedAnalizatorTemp = undefined;
-    this.isEditing = false;
-    if(this.currentlyEditedAnalizator){
-      this.currentlyEditedAnalizator.isEdited = false;
-      this.currentlyEditedAnalizator = undefined;
-    }
-  }
+  // private clearVariablesForEditing(){
+  //   this.editedAnalizatorTemp = undefined;
+  //   this.isEditing = false;
+  //   if(this.currentlyEditedAnalizator){
+  //     this.currentlyEditedAnalizator.isEdited = false;
+  //     this.currentlyEditedAnalizator = undefined;
+  //   }
+  // }
 //#endregion
 
 //#region AddingAnalizator
@@ -381,7 +416,7 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
       this.analizatorService.updateAnalizator(analizator, id).subscribe(
         (response: AnalizatorData) => {
           if (response != null) {
-            this.mainDataService.analizatorDatas = this.genericMethods.replaceObjectById(this.mainDataService.analizatorDatas, response);
+            this.mainDataService.activeAnalizators = this.genericMethods.replaceObjectById(this.mainDataService.activeAnalizators, response);
           }
           else {
             alert("Error wont update Analizator Test"); // Handle existing user
@@ -393,28 +428,31 @@ export class AnalizatorTestsTabComponent implements OnInit, AfterViewInit, OnDes
       );
     }
 
-    private findPatientBySpecimenID(specimenID:string):void{
-      this.patientService.getPatientBySpecimenID(specimenID).subscribe(
-        (response: PatientData) => {
-          if (response != null) {
-             return response;
-          }
-          else {
-            alert("Error wont add Analizator Test"); // Handle existing user
-            return null;
-          }
-        },
-        (error: HttpErrorResponse) => {
-          alert(`Error: ${error.error.message || error.message}`);
-        }
-      );
-    }
+    // private findPatientBySpecimenID(specimenID:string):void{
+    //   this.patientService.getPatientBySpecimenID(specimenID).subscribe(
+    //     (response: PatientData) => {
+    //       if (response != null) {
+    //          return response;
+    //       }
+    //       else {
+    //         alert("Error wont add Analizator Test"); // Handle existing user
+    //         return null;
+    //       }
+    //     },
+    //     (error: HttpErrorResponse) => {
+    //       alert(`Error: ${error.error.message || error.message}`);
+    //     }
+    //   );
+    // }
 
     private filterAnalizators():void{
       this.analizatorService.filterAnalizators(this.filters).subscribe(
         (response: AnalizatorData[]) => {
           if (response != null) {
-            this.filteredAnalizatorTests = response;
+            this.fullAnalizazorDataList = response;
+
+            this.showFromIndex = 0;
+            this.showList(0);
              return response;
           }
           else {

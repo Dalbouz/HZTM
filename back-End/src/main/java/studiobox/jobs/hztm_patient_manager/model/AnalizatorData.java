@@ -39,6 +39,7 @@ public class AnalizatorData implements Serializable {
     @Column(name="RLU")
     private String RLU;
     private String idOcitanjaAnalizatora;
+    private String dateOfValidation;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,7 +81,8 @@ public class AnalizatorData implements Serializable {
             Number numberOfNegativeTests,
             Number numberOfPositiveTests,
             String RLU,
-            String idOcitanjaAnalizatora
+            String idOcitanjaAnalizatora,
+            String dateOfValidation
     ) {
         this.sampleNumber = SampleNumber;
         this.analizatorName = AnalizatorName;
@@ -111,6 +113,15 @@ public class AnalizatorData implements Serializable {
         this.numberOfNegativeTests = numberOfNegativeTests;
         this.RLU = RLU;
         this.idOcitanjaAnalizatora = idOcitanjaAnalizatora;
+        this.dateOfValidation = dateOfValidation;
+    }
+
+    public String getDateOfValidation() {
+        return dateOfValidation;
+    }
+
+    public void setDateOfValidation(String dateOfValidation) {
+        this.dateOfValidation = dateOfValidation;
     }
 
     public String getRLU(){

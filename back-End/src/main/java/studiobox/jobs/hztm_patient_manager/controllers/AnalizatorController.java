@@ -1,8 +1,10 @@
 package studiobox.jobs.hztm_patient_manager.controllers;
 
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import studiobox.jobs.hztm_patient_manager.SearchRequest;
 import studiobox.jobs.hztm_patient_manager.model.AnalizatorData;
 import studiobox.jobs.hztm_patient_manager.model.ControlSampleData;
 import studiobox.jobs.hztm_patient_manager.model.FilterDTO;
@@ -148,11 +150,35 @@ public class AnalizatorController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @GetMapping("/find/active")
+    public ResponseEntity <List<AnalizatorData>> findActive(){
+        List<AnalizatorData> list = analizatorService.getActiveAnalizators();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/find/validated")
+    public ResponseEntity <List<AnalizatorData>> findValidated(){
+        List<AnalizatorData> list = analizatorService.getValidatedAnalizators();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @PostMapping("/search")
     public ResponseEntity<List<AnalizatorData>> searchAnalizators(
             @RequestBody List<FilterDTO> filterDTOs
     ) {
         List<AnalizatorData> filteredList = analizatorService.getFilteredAnalizators(filterDTOs);
+
+        return new ResponseEntity<>(filteredList, HttpStatus.OK);
+    }
+
+    @PostMapping("/search/byGivenList")
+    public ResponseEntity<List<AnalizatorData>> searchAnalizatorsByGivenList(
+            @RequestBody SearchRequest request
+            ) {
+
+        List<FilterDTO> filterDTOs = request.getFilters();
+        List<AnalizatorData> analizatorData = request.getAnalizators();
+        List<AnalizatorData> filteredList = analizatorService.getFilteredAnalizatorsByGivenList(filterDTOs, analizatorData);
 
         return new ResponseEntity<>(filteredList, HttpStatus.OK);
     }

@@ -2,6 +2,7 @@ export enum FiltersEnum{
     sampleNumber = "broj uzorka",
     dateOfReading = "datum očitavanja",
     timeOfReading = "vrijeme očitavanja",
+    dateOfValidation = "vrijeme validiranja",
     analizatorName = "naziv analizatora",
     AssayName = "naziv pretrage",
     specimenID ="ID pacijenta",

@@ -321,3 +321,71 @@ tr.editing-test:hover {
     padding: 0.4rem 0.9rem;
   }
 }
+
+
+
+/* Next Table Button (top-right corner, fixed) */
+.next-table-view {
+  position: fixed;
+  top: 8rem;
+  right: 2rem;
+  z-index: 1100;
+}
+
+.nextTable-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  padding: 0.7rem 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.12);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.nextTable-btn:hover {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.RightArrow-icon {
+  font-size: 1.3rem;
+}
+
+/* Previous Table Button (top-right, below next button, fixed) */
+.previous-table-view {
+  position: fixed;
+  top: 12rem; /* below the next-table-view button */
+  right: 2rem;
+  z-index: 1100;
+}
+
+.previousTable-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  padding: 0.7rem 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.12);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.previousTable-btn:hover {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.LeftArrow-icon {
+  font-size: 1.3rem;
+}

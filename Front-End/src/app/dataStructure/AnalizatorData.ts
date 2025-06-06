@@ -34,4 +34,5 @@ export interface AnalizatorData{
     isSelected:boolean;
     RLU: string;
     idOcitanjaAnalizatora:string;
+    dateOfValidation:string;
 }

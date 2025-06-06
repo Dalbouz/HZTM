@@ -82,6 +82,18 @@
 </button>
 </div>
 
+<div class ="next-table-view">
+  <button class="nextTable-btn" (click)="showList(1)" title="NextTable">
+    <span class="RightArrow-icon">&#8594;</span> <!-- Unicode left arrow -->
+  </button>
+  </div>
+
+  <div class ="previous-table-view" *ngIf="showFromIndex > 0">
+  <button class="previousTable-btn" (click)="showList(0)" title="previousTable">
+    <span class="LeftArrow-icon">&#8592;</span> <!-- Unicode left arrow -->
+  </button>
+  </div>
+
     <!--TABLE OF ANALIZATORS PART-->
     <div class="table-wrapper">
       <table class="analizators-table">

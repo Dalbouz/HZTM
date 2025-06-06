@@ -68,4 +68,17 @@ export class AnalizatorServices{
     public filterAnalizators(filters: any[]):Observable<AnalizatorData[]>{
          return this.http.post<AnalizatorData[]>(`${this.apiServerUrl}/analizators/search`,filters);
     }
+
+    public filterAnalizatorsByGivenList(filters: any[], analizators: AnalizatorData[]):Observable<AnalizatorData[]>{
+        const body = {filters, analizators};
+         return this.http.post<AnalizatorData[]>(`${this.apiServerUrl}/analizators/search/byGivenList`, body);
+    }
+
+    public getActiveAnalizators():Observable<AnalizatorData[]>{
+        return this.http.get<AnalizatorData[]>(`${this.apiServerUrl}/analizators/find/active`);
+    }
+
+    public getValidatedAnalizators():Observable<AnalizatorData[]>{
+        return this.http.get<AnalizatorData[]>(`${this.apiServerUrl}/analizators/find/validated`);
+    }
 }

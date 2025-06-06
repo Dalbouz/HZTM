@@ -40,25 +40,10 @@ public class AnalizatorService {
         return analizatorDataRepository.findById(id).orElseThrow(()->new DataNotFound("Analizator data not found"));
     }
 
-    public void deleteAnalizatorDataById(Long id){
-        analizatorDataRepository.deleteById(id);
-    }
+
 
     public AnalizatorData findByAnalizatorOib(Long analizatorOib){
         return analizatorDataRepository.findByAnalizatorOib(analizatorOib).orElseThrow(()->new DataNotFound("Analizator data not found"));
-    }
-
-    public AnalizatorData linkAnalizatorToPatient(Long analizatorId, Long patientId){
-        AnalizatorData analizator = analizatorDataRepository.findById(analizatorId).orElseThrow(()->new DataNotFound("Analizator data not found"));
-        PatientData patientData = patientService.findPatientById(patientId);
-        analizator.setPatient(patientData);
-        return analizatorDataRepository.save(analizator);
-    }
-
-    public void unlinkAnalizatorFromParent(Long analizatorId){
-        AnalizatorData analizator = analizatorDataRepository.findById(analizatorId).orElseThrow(() -> new DataNotFound("Analizator not found"));;
-        analizator.setPatient(null);
-        analizatorDataRepository.save(analizator);
     }
 
     public List<AnalizatorData> findAnalizatorsByPatientId(Long patientId){
@@ -109,8 +94,43 @@ public class AnalizatorService {
                 .collect(Collectors.toList());
     }
 
+    public List<AnalizatorData> getValidatedAnalizators(){
+        return analizatorDataRepository.findAll().stream()
+                .filter(a -> "VALIDATED".equals(a.getValidated()))
+                .collect(Collectors.toList());
+    }
+
+    public List<AnalizatorData> getActiveAnalizators(){
+        return analizatorDataRepository.findAll().stream()
+                .filter(a -> "ACTIVE".equals(a.getTestStatus()) && "NOT_VALIDATED".equals((a.getValidated())))
+                .collect(Collectors.toList());
+    }
+
     public List<AnalizatorData> getFilteredAnalizators(List<FilterDTO> filters) {
         Map<String, String> searchCriteria = searchEngine.convertFilters(filters);
         return SearchEngine.searchByFilters(analizatorDataRepository.findAll(), searchCriteria);
     }
+
+    public List<AnalizatorData> getFilteredAnalizatorsByGivenList(List<FilterDTO> filters, List<AnalizatorData> analizators) {
+        Map<String, String> searchCriteria = searchEngine.convertFilters(filters);
+        return SearchEngine.searchByFilters(analizators, searchCriteria);
+    }
+
+
+     /*public AnalizatorData linkAnalizatorToPatient(Long analizatorId, Long patientId){
+        AnalizatorData analizator = analizatorDataRepository.findById(analizatorId).orElseThrow(()->new DataNotFound("Analizator data not found"));
+        PatientData patientData = patientService.findPatientById(patientId);
+        analizator.setPatient(patientData);
+        return analizatorDataRepository.save(analizator);
+    }
+
+    public void unlinkAnalizatorFromParent(Long analizatorId){
+        AnalizatorData analizator = analizatorDataRepository.findById(analizatorId).orElseThrow(() -> new DataNotFound("Analizator not found"));;
+        analizator.setPatient(null);
+        analizatorDataRepository.save(analizator);
+    }
+    public void deleteAnalizatorDataById(Long id){
+        analizatorDataRepository.deleteById(id);
+    }
+    */
 }

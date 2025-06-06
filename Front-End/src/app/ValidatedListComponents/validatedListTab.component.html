@@ -17,13 +17,35 @@
       >
         {{ filter.label }}
       </button>
-      <input
-        *ngIf="filter.active"
-        type="text"
-        class="filter-input"
-        [(ngModel)]="filter.value"
-        [placeholder]="'Upišite ' + filter.label"
-      />
+      <ng-container *ngIf="filter.active">
+          <ng-container *ngIf="filter.key == 'dateOfReading' || filter.key == 'dateOfValidation'; else normalInput">
+            <div style="display: flex; flex-direction: column; margin-right: 1rem;">
+              <input 
+                type="date"
+                class="filter-input"
+                [(ngModel)]="filter.value"
+                placeholder="Početni datum"
+              />
+              <!--<input *ngIf="filter.key == 'timeOfReading'"
+                type="time"
+                class="filter-input"
+                [(ngModel)]="filter.value"
+                placeholder="Vrijeme očitanja"
+              />-->
+              <span style="font-size: 0.93em; color: #555; margin-top: 2px;" >Početni datum (<i>npr.01.01.2025</i>)</span>
+              <!-- <span style="font-size: 0.93em; color: #555; margin-top: 2px;" *ngIf="filter.key == 'timeOfReading'">Vrijeme očitanja</span>-->
+            </div>
+          </ng-container>
+
+          <ng-template #normalInput>
+            <input 
+              type="text"
+              class="filter-input"
+              [(ngModel)]="filter.value"
+              [placeholder]="'Upišite ' + filter.label"
+            />
+          </ng-template>
+        </ng-container>
     </div>
     </ng-container>
     <div class="search-actions-row">
@@ -37,84 +59,63 @@
   </div>
 </div>
 
+
+<div class ="next-table-view">
+  <button class="nextTable-btn" (click)="showList(1)" title="NextTable">
+    <span class="RightArrow-icon">&#8594;</span> <!-- Unicode left arrow -->
+  </button>
+  </div>
+
+  <div class ="previous-table-view" *ngIf="showFromIndex > 0">
+  <button class="previousTable-btn" (click)="showList(0)" title="previousTable">
+    <span class="LeftArrow-icon">&#8592;</span> <!-- Unicode left arrow -->
+  </button>
+  </div>
+
     <!--TABLE OF CONTROL SAMPLES PART-->
     <div class="table-wrapper">
       <table class="analizators-table">
         <thead>
           <tr>
-            <th>Ime Analizatora</th>
-            <th>Testna oznaka</th>
+            <th>Datum validacije</th>
+            <th>Validirano od</th>
             <th>Broj uzorka</th>
-            <th>LOT</th>
-            <th>Datum isteka reagensa</th>
-            <th>Interpretacijski rezultat</th>
+            <th>Skračena oznaka analizatora</th>
             <th>Numerička vrijednost iz Analizatora</th>
-            <th>Interpretacija za eD</th>
-            <th>Testna oznaka za eD</th>
-            <th>Datum očitavanja</th>
-            <th>Vrijeme očitavanja</th>
-            <!--<th>Status testa</th>-->
             <th>Naziv pretrage</th>
-            <th>Min vrijednost testa</th>
-            <th>Max vrijednost testa</th>
             <th>ID pacijenta</th>
-            <th>Bilješke</th>
-            <th>Zaključni rezultat</th>
             <th>Status validacije</th>
+            <th>Akcije</th>
           </tr>
         </thead>
         <tbody>
         <ng-container *ngFor="let analizator of filteredListTemp">
-          <tr>
+          <tr *ngIf="analizator.testStatus == 'ACTIVE'">
             <td>
-              {{analizator.analizatorName}}
+              {{analizator.dateOfValidation}}
             </td>
             <td>
-              {{analizator.testMark}}
+              {{analizator.testWasValidatedBy}}
             </td>
             <td>{{ analizator.sampleNumber }}</td>
             <td>
-              {{analizator.lot}}
-            </td>
-            <td>
-              {{analizator.expirationDateReagens}}
-            </td>
-            <td>
-              {{analizator.interpretedResult}}
+              {{analizator.testMark}}
             </td>
             <td>
               {{analizator.numericValueFromAnalizator}}
             </td>
             <td>
-              {{analizator.interpretationForEDelphyn}}
-            </td>
-            <td>
-              {{analizator.testMarkForEDelphyn}}
-            </td>
-            <td>
-              {{analizator.dateOfReading}}
-            </td>
-            <td>
-              {{analizator.timeOfReading}}
-            </td>
-            <!--<td>{{ analizator.testStatus }}</td>-->
-            <td>
               {{analizator.assayName}}
             </td>
-            <td>
-              {{analizator.minDataValue}}
-            </td>
-            <td>
-              {{analizator.maxDataValue}}
-            </td>
-            <td>{{ analizator.specimenID }}</td>
-            <td>
-              {{analizator.notes}}
-            </td>
-            <td>
-              {{analizator.finalResult}}
-            </td>
+             <td>{{ analizator.specimenID }}</td>
             <td>{{ analizator.validated }}</td>
+            <td>
+              <button class="icon-btn archive" 
+                              [disabled]=" mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
+                              (click)="archiveAnalizator(analizator)">
+                        <span title="Archive">🗃️</span>
+                      </button>
+            </td>
         </tr>
       </ng-container>
     </tbody>

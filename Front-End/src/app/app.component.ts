@@ -50,6 +50,10 @@ export class AppComponent implements OnInit{
 
     this.getArchivedAnalizators();
 
+    this.getActiveAnalizators();
+
+    this.getValidatedAnalizators();
+
     this.userService.getUserById(1).subscribe(
         (response: UserData) => {
           if(response == null){
@@ -99,7 +103,7 @@ export class AppComponent implements OnInit{
     private getAnalizatorDatas():void{
       this.analizatorService.getAllAnalizators().subscribe(
         (response: AnalizatorData[]) =>{
-          this.mainDataService.analizatorDatas = response;
+          this.mainDataService.allAnalizatorDatas = response;
           this.setAnalizatorDataForPatients();
         },
         (error: HttpErrorResponse) => {
@@ -124,8 +128,8 @@ export class AppComponent implements OnInit{
               analizatorData.isNew = false;
               analizatorData.isEdited = false;
               if (!patient.sampleNumbers.includes(analizatorData.sampleNumber)) {
-                patient.sampleNumbers.push(analizatorData.sampleNumber);
-          }
+                  patient.sampleNumbers.push(analizatorData.sampleNumber);
+             }
     
         });
       },
@@ -134,6 +138,37 @@ export class AppComponent implements OnInit{
     }
     )
     });
+  }
+
+  private getActiveAnalizators():void{
+    this.analizatorService.getActiveAnalizators().subscribe(
+      (response:AnalizatorData[])=>{
+        if(response){
+          this.mainDataService.activeAnalizators = response;
+          console.log(response.length);
+        }
+        else{
+          alert("Nemožemo dokvatiti aktivne testove")
+        }
+      },
+       (error: HttpErrorResponse) => {
+        console.log(error.message + "\nNemožemo dokvatiti aktivne testove!");}
+    );
+  }
+
+  private getValidatedAnalizators():void{
+    this.analizatorService.getValidatedAnalizators().subscribe(
+      (response:AnalizatorData[])=>{
+        if(response){
+          this.mainDataService.validatedAnalizators = response;
+        }
+        else{
+          alert("Nemožemo dokvatiti validirane testove")
+        }
+      },
+       (error: HttpErrorResponse) => {
+        console.log(error.message + "\nNemožemo dokvatiti validirane testove!");}
+    );
   }
 //#endregion
 

@@ -5,10 +5,13 @@ import { Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { MainDataService } from '../services/MainData.Services';
 import { GenericServices } from '../services/GenericMethods.Service';
-import { ControlSampleServices } from '../services/ControlSample.Service';
 import { FiltersEnum } from '../dataStructure/FiltersEnum';
 import { AnalizatorData } from '../dataStructure/AnalizatorData';
 import { ValidationStatus } from '../dataStructure/ValidationStatus';
+import { AnalizatorServices } from '../services/Analizator.Services';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SecurityLevel } from '../dataStructure/SecurityLevel';
+import { TestStatusEnum } from '../dataStructure/TestStatusEnum';
 
 @Component({
   selector: 'app-validatedListTab',
@@ -32,15 +35,21 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
     public filterActiveStatus: boolean = false;
     private activeFilter: FiltersEnum | undefined;
 
+    public showFromIndex:number = 0;
+    private numberOfShownTests: number = 20;
+
+    private listOfActiveFilters: FiltersEnum[] = [];
+
     constructor(
         public mainDataService: MainDataService,
         private router: Router,
-        private controlSampleService:ControlSampleServices,
-        public genericMethods: GenericServices
+        public genericMethods: GenericServices,
+        public analizatorService: AnalizatorServices
     ){}
 
      filters = [
         { label: FiltersEnum.dateOfReading, key: 'dateOfReading', active: false, value: '' },
+        { label: FiltersEnum.dateOfValidation, key: 'dateOfValidation', active: false, value: '' },
         { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
         { label: FiltersEnum.AssayName, key: 'assayName', active: false, value: '' },
         
@@ -48,28 +57,78 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
       ];
 
       ngOnInit(): void {
-        this.getValidatedTests();
+        this.filteredValidatedTests = this.mainDataService.validatedAnalizators;
+
+        this.showFromIndex = 0;
+        this.showList(0);
+        // this.getValidatedTests();
       }
 
       ngOnDestroy(): void {
-        
+        this.filteredValidatedTests = this.mainDataService.validatedAnalizators;
+
+        this.showFromIndex = 0;
+        this.showList(0);
       }
+
+      public showList(value:number){
+        this.filteredListTemp = [];
+        if(value == 0){
+          this.showFromIndex -= this.numberOfShownTests;
+          if(this.showFromIndex < 0){
+            this.showFromIndex = 0;
+          }
+        }
+        else if(value == 1){
+          this.showFromIndex += this.numberOfShownTests;
+          if(this.showFromIndex > this.filteredValidatedTests.length){
+            this.showFromIndex = this.filteredValidatedTests.length;
+          }
+        }
+
+        for(let i = this.showFromIndex; i < this.numberOfShownTests + this.showFromIndex && i < this.filteredValidatedTests.length; i++){
+          this.filteredListTemp.push(this.filteredValidatedTests[i]);
+      }
+    }
 
     public goBack():void {
       this.router.navigate([`/analizatorTestsTab`]);
       this.disableAllFilters();
+
+      this.filteredValidatedTests = this.mainDataService.validatedAnalizators;
+
+      this.showFromIndex = 0;
+      this.showList(0);
     }
 
     public toggleFilter(selectedFilter: any):void {
       this.genericMethods.toggleFilter(selectedFilter);
+
+      if(selectedFilter.active == true)
+        this.listOfActiveFilters.push(selectedFilter.label);
+      else{
+        if(this.listOfActiveFilters.length != 0){
+            const newArr = this.listOfActiveFilters.filter(obj=> obj !== selectedFilter.label);
+            this.listOfActiveFilters = newArr;
+        }
+      }
     }
 
   public onSearch():void
   {
     const isSure = window.confirm('Jeste li siguni da želite započeti pretragu?\n(ova pretraga može trajati neko vrijeme)');
       if (isSure) {
-        this.filteredListTemp = [];
-        this.filteredListTemp = this.genericMethods.getFilteredArrayOnSearch(this.filters,this.filteredValidatedTests);
+        this.listOfActiveFilters.forEach(filter=>{
+          if(filter == FiltersEnum.dateOfReading || filter == FiltersEnum.dateOfValidation){
+            this.filters.forEach(filter2=>{
+              if(filter2.label == FiltersEnum.dateOfReading || filter2.label == FiltersEnum.dateOfValidation)
+              filter2.value = this.genericMethods.formatDateToYYYYMMDD(filter2.value);
+            })
+          }
+        })
+        this.filterAnalizators();
+        // this.filteredListTemp = [];
+        // this.filteredListTemp = this.genericMethods.getFilteredArrayOnSearch(this.filters,this.filteredValidatedTests);
         this.showTable = true;
     }
   }
@@ -81,22 +140,59 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
   public onRefresh(){
     this.disableAllFilters();
     
+    this.filteredValidatedTests = this.mainDataService.validatedAnalizators;
+
+    this.showFromIndex = 0;
+    this.showList(0);
   }
 
+  public archiveAnalizator(analizator: AnalizatorData):void {
+      if (analizator.validated == ValidationStatus.Validated && this.mainDataService.currentUser.securityLevelStatus == SecurityLevel.High) {
+        const isSure = window.confirm('Želite li arhivirati test za uzorak:' + " " + analizator.sampleNumber + " " + "za pacijenta:" + " " + analizator.specimenID +"?");
+        if (isSure) {
+          analizator.testStatus = TestStatusEnum.Archived;
+          this.mainDataService.archivedAnalizators.push(analizator);
+          this.mainDataService.validatedAnalizators.filter(obj=> obj !== analizator);
+          this.updateAnalizatorData(analizator, analizator.id);
+        }
+      }
+    }
   
 //#region PrivateMethods
-    private getValidatedTests():void{
-      this.mainDataService.analizatorDatas.forEach(analizatorTest=>{
-        if(analizatorTest.validated == ValidationStatus.Validated){
-          this.filteredValidatedTests.push(analizatorTest);
+  private filterAnalizators():void{
+        this.analizatorService.filterAnalizatorsByGivenList(this.filters, this.mainDataService.validatedAnalizators).subscribe(
+          (response: AnalizatorData[]) => {
+            if (response != null) {
+              this.filteredValidatedTests = response;
+  
+              this.showFromIndex = 0;
+              this.showList(0);
+               return response;
+            }
+            else {
+              alert("Error wont add Analizator Test"); // Handle existing user
+              return null;
+            }
+          },
+          (error: HttpErrorResponse) => {
+            alert(`Error: ${error.error.message || error.message}`);
+          }
+        );
+      }
+
+       private updateAnalizatorData(analizator: AnalizatorData, id:number = -1):void{
+      this.analizatorService.updateAnalizator(analizator, id).subscribe(
+        (response: AnalizatorData) => {
+          if (response != null) {
+            this.mainDataService.activeAnalizators = this.genericMethods.replaceObjectById(this.mainDataService.activeAnalizators, response);
+          }
+          else {
+            alert("Error wont update Analizator Test"); // Handle existing user
+          }
+        },
+        (error: HttpErrorResponse) => {
+          alert(`Error: ${error.error.message || error.message}`);
         }
-      })
+      );
     }
-
-    private formatDateToDDMMYYYY(dateString: string): string {
-    if (!dateString) return '';
-    const [year, month, day] = dateString.split('-');
-    return `${day}.${month}.${year}`;
-  }
-
 }

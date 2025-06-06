@@ -37,17 +37,25 @@
         {{ filter.label }}
       </button>
       <ng-container *ngIf="filter.active">
-          <ng-container *ngIf="filter.key == 'dateOfReading'; else normalInput">
+          <ng-container *ngIf="filter.key == 'dateOfReading' || filter.key == 'timeOfReading'; else normalInput">
             <div style="display: flex; flex-direction: column; margin-right: 1rem;">
-              <input
+              <input *ngIf="filter.key == 'dateOfReading'"
                 type="date"
                 class="filter-input"
                 [(ngModel)]="filter.value"
                 placeholder="Početni datum"
               />
-              <span style="font-size: 0.93em; color: #555; margin-top: 2px;">Početni datum (<i>npr.01.01.2025</i>)</span>
+              <!--<input *ngIf="filter.key == 'timeOfReading'"
+                type="time"
+                class="filter-input"
+                [(ngModel)]="filter.value"
+                placeholder="Vrijeme očitanja"
+              />-->
+              <span style="font-size: 0.93em; color: #555; margin-top: 2px;" *ngIf="filter.key == 'dateOfReading'">Početni datum (<i>npr.01.01.2025</i>)</span>
+              <!-- <span style="font-size: 0.93em; color: #555; margin-top: 2px;" *ngIf="filter.key == 'timeOfReading'">Vrijeme očitanja</span>-->
             </div>
           </ng-container>
+
           <ng-template #normalInput>
             <input 
               type="text"
@@ -76,6 +84,21 @@
     <span class="validate-text">Validiraj sve</span>
   </button>
   </div>
+
+
+<div class ="next-table-view">
+  <button class="nextTable-btn" (click)="showList(1)" title="NextTable">
+    <span class="RightArrow-icon">&#8594;</span> <!-- Unicode left arrow -->
+  </button>
+  </div>
+
+  <div class ="previous-table-view" *ngIf="showFromIndex > 0">
+  <button class="previousTable-btn" (click)="showList(0)" title="previousTable">
+    <span class="LeftArrow-icon">&#8592;</span> <!-- Unicode left arrow -->
+  </button>
+  </div>
+
+
     <!--TABLE OF ANALIZATORS PART-->
     <div class="table-wrapper">
       

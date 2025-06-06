@@ -17,12 +17,14 @@ import { DdkTestData } from "../dataStructure/DdkTestData";
 export class MainDataService{
 
     public patients: PatientData[] = [];
-    public analizatorDatas: AnalizatorData[] = [];
+    public activeAnalizators: AnalizatorData[] = [];
     public institutions: InstitutionLabData[] = [];
     public controlSamples: ControlSampleData[] = [];
     public registryDdkDatas: RegistryDDKData[] = [];
     public ddkTests: DdkTestData[] = [];
     public archivedAnalizators: AnalizatorData[] = [];
+    public validatedAnalizators: AnalizatorData[] = [];
+    public allAnalizatorDatas: AnalizatorData[] = [];
 
     public adminUserExist: boolean = false;
     public adminUserName:string = "";
