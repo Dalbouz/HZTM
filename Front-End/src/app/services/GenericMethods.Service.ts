@@ -127,4 +127,67 @@ export class GenericServices{
     utils.book_append_sheet(workbook, worksheet, 'All_Tests');
     writeFile(workbook, fileName);
   }
+
+  public printTable(tableClass: string) {
+    const table = document.querySelector(`table.${tableClass}`);
+    if (!table) {
+      alert('Table not found!');
+      return;
+    }
+
+    // Clone the table to avoid modifying the original
+    const tableClone = table.cloneNode(true) as HTMLElement;
+
+    // Create a new window for printing
+    const printWindow = window.open('', '', 'width=900,height=700');
+    if (!printWindow) {
+      alert('Unable to open print window');
+      return;
+    }
+
+    // Optional: Get your table styles (copy from your CSS or <style> block)
+    const style = `
+      <style>
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          font-family: Arial, sans-serif;
+        }
+        th, td {
+          border: 1px solid #333;
+          padding: 8px;
+          text-align: left;
+        }
+        th {
+          background: #6c8df5;
+          color: #fff;
+        }
+        tr:nth-child(even) {
+          background: #f2f2f2;
+        }
+        .no-print {
+          display: none !important;
+        }
+      </style>
+    `;
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Print Table</title>
+          ${style}
+        </head>
+        <body>
+          ${tableClone.outerHTML}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+
+    // Wait for the content to load, then print and close
+    printWindow.onload = () => {
+      printWindow.print();
+      printWindow.close();
+    };
+  }
 }

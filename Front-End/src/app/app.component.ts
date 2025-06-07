@@ -14,6 +14,9 @@ import { MainDataService } from './services/MainData.Services';
 import { DDKServices } from './services/DDKServices';
 import { RegistryDDKData } from './dataStructure/RegistryDDKData';
 import { DdkTestData } from './dataStructure/DdkTestData';
+import { SifrarnikService } from './services/Sifrarnik.Service';
+import { AnalizatorDeviceData } from './dataStructure/AnalizatorDeviceData';
+import { AssayaData } from './dataStructure/AssayaData';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +39,8 @@ export class AppComponent implements OnInit{
     private patientService: PatientService,
     private analizatorService: AnalizatorServices,
     private mainDataService: MainDataService,
-    private ddkService: DDKServices
+    private ddkService: DDKServices,
+    private sifrarnik: SifrarnikService
   ){}
 
 
@@ -53,6 +57,10 @@ export class AppComponent implements OnInit{
     this.getActiveAnalizators();
 
     this.getValidatedAnalizators();
+
+    this.getAllAnalizatorDevices();
+
+    this.getAllAssayaData();
 
     this.userService.getUserById(1).subscribe(
         (response: UserData) => {
@@ -209,5 +217,30 @@ export class AppComponent implements OnInit{
           }
         )
   }
+//#endregion
+
+
+//#region sifrarnik
+private getAllAnalizatorDevices():void{
+      this.sifrarnik.getAllAnalizatorDevices().subscribe(
+        (response: AnalizatorDeviceData[]) =>{
+          this.mainDataService.analizatorDevicesList = response;
+        },
+        (error: HttpErrorResponse) => {
+        console.log(error.message + "\nPokusavam dohvatiti sve analizator uređaje ali nejde!");
+      }
+      )
+    }
+
+    private getAllAssayaData():void{
+      this.sifrarnik.getAllAssayaData().subscribe(
+        (response: AssayaData[]) =>{
+          this.mainDataService.assayaDataList = response;
+        },
+        (error: HttpErrorResponse) => {
+        console.log(error.message + "\nPokusavam dohvatiti sve Assaya podatke ali nejde!");
+      }
+      )
+    }
 //#endregion
 }

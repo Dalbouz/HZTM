@@ -10,7 +10,7 @@
 }
 
 /* === TABLE STYLES === */
-.analizators-table {
+.analizators-table-validated {
   width: 100%;
   min-width: 1200px; /* Ensures table is wide enough for all columns */
   border-collapse: collapse;
@@ -22,39 +22,39 @@
   box-shadow: 0 4px 18px rgba(60, 60, 120, 0.10);
 }
 
-.analizators-table th, .analizators-table td {
+.analizators-table-validated  th, .analizators-table td {
   padding: 0.8rem 0.7rem;
   text-align: left;
   white-space: nowrap;
 }
 
-.analizators-table th {
+.analizators-table-validated  th {
   background: #eaf1fb;
   font-weight: 600;
   letter-spacing: 0.5px;
   border-bottom: 2px solid #d9e7fa;
 }
 
-.analizators-table tr {
+.analizators-table-validated  tr {
   transition: background 0.15s;
 }
 
-.analizators-table tr:hover {
+.analizators-table-validated  tr:hover {
   background: #f5faff;
 }
 
-.analizators-table td {
+.analizators-table-validated  td {
   border-bottom: 1px solid #e2e9fa;
   vertical-align: middle;
 }
 
 /* Zebra striping for rows */
-.analizators-table tbody tr:nth-child(even) {
+.analizators-table-validated  tbody tr:nth-child(even) {
   background: #f6fafd;
 }
 
 /* Last column min width for action buttons */
-.analizators-table td:last-child {
+.analizators-table-validated  td:last-child {
   min-width: 120px;
 }
 
@@ -296,7 +296,7 @@ tr.editing-test:hover {
   .table-wrapper {
     padding: 1rem 0.2rem;
   }
-  .analizators-table th, .analizators-table td {
+  .analizators-table-validated  th, .analizators-table-validated  td {
     padding: 0.4rem 0.3rem;
     font-size: 0.95rem;
   }
@@ -306,7 +306,7 @@ tr.editing-test:hover {
   .table-wrapper {
     padding: 0.5rem 0.1rem;
   }
-  .analizators-table {
+  .analizators-validated -table {
     font-size: 0.92rem;
   }
   .search-container {
@@ -388,4 +388,27 @@ tr.editing-test:hover {
 
 .LeftArrow-icon {
   font-size: 1.3rem;
+}
+
+/*Excel Export button*/
+.print-btn, .export-excel-btn {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  padding: 0.5rem 1.3rem;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, transform 0.1s;
+  padding-right: 2px;
+}
+
+.print-btn:hover, .print-btn:focus, .export-excel-btn:hover, .export-excel-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
 }

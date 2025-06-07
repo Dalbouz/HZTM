@@ -53,9 +53,6 @@ export class PatientsTabComponent implements OnInit, OnDestroy{
 
   public getFilteredAnalizatorDataBySampleNumber(patient: PatientData): AnalizatorData[] {
     if (!patient.analizatorDatas) return [];
-  
-    console.log('Selected sample number:', patient.selectedSampleNumber);
-    console.log('All analizator datas:', patient.analizatorDatas);
     
     return patient.analizatorDatas.filter(a => {
       const match = String(a.sampleNumber).trim() === String(patient.selectedSampleNumber).trim();

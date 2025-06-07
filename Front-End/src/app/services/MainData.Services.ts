@@ -9,6 +9,8 @@ import { InstitutionService } from "./Institution.Services";
 import { ControlSampleData } from "../dataStructure/ControlSampleData";
 import { RegistryDDKData } from "../dataStructure/RegistryDDKData";
 import { DdkTestData } from "../dataStructure/DdkTestData";
+import { AnalizatorDeviceData } from "../dataStructure/AnalizatorDeviceData";
+import { AssayaData } from "../dataStructure/AssayaData";
 
 @Injectable({
     providedIn:'root'
@@ -25,6 +27,8 @@ export class MainDataService{
     public archivedAnalizators: AnalizatorData[] = [];
     public validatedAnalizators: AnalizatorData[] = [];
     public allAnalizatorDatas: AnalizatorData[] = [];
+    public analizatorDevicesList: AnalizatorDeviceData[] = [];
+    public assayaDataList: AssayaData[] = [];
 
     public adminUserExist: boolean = false;
     public adminUserName:string = "";

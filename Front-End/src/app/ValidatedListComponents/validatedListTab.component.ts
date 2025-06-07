@@ -12,6 +12,7 @@ import { AnalizatorServices } from '../services/Analizator.Services';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SecurityLevel } from '../dataStructure/SecurityLevel';
 import { TestStatusEnum } from '../dataStructure/TestStatusEnum';
+import { AssayaData } from '../dataStructure/AssayaData';
 
 @Component({
   selector: 'app-validatedListTab',
@@ -34,6 +35,9 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
     public showTable:boolean = false;
     public filterActiveStatus: boolean = false;
     private activeFilter: FiltersEnum | undefined;
+    public selectedAssayaName: string = '';
+
+    public assayaNameList: String[] = [];
 
     public showFromIndex:number = 0;
     private numberOfShownTests: number = 20;
@@ -48,10 +52,11 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
     ){}
 
      filters = [
+        { label: FiltersEnum.AssayName, key: 'AssayName', active: true, value: this.selectedAssayaName},
         { label: FiltersEnum.dateOfReading, key: 'dateOfReading', active: false, value: '' },
         { label: FiltersEnum.dateOfValidation, key: 'dateOfValidation', active: false, value: '' },
         { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
-        { label: FiltersEnum.AssayName, key: 'assayName', active: false, value: '' },
+        
         
         // Add more filters as needed
       ];
@@ -61,6 +66,12 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
 
         this.showFromIndex = 0;
         this.showList(0);
+
+        this.mainDataService.assayaDataList.forEach(element => {
+          this.assayaNameList.push(element.assayaName);
+        });
+
+        this.filters[0].active = true;
         // this.getValidatedTests();
       }
 
@@ -126,6 +137,9 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
             })
           }
         })
+
+        this.filters[0].active = true;
+        this.filters[0].value = this.selectedAssayaName;
         this.filterAnalizators();
         // this.filteredListTemp = [];
         // this.filteredListTemp = this.genericMethods.getFilteredArrayOnSearch(this.filters,this.filteredValidatedTests);
@@ -139,11 +153,11 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
 
   public onRefresh(){
     this.disableAllFilters();
-    
-    this.filteredValidatedTests = this.mainDataService.validatedAnalizators;
 
-    this.showFromIndex = 0;
-    this.showList(0);
+    this.filters[0].active = true;
+    this.filters[0].value = this.selectedAssayaName;
+
+    this.onSearch();
   }
 
   public archiveAnalizator(analizator: AnalizatorData):void {

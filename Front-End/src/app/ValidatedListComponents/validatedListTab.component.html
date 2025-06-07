@@ -4,11 +4,16 @@
   <span class="back-text">Back</span>
 </button>
 
+<select [(ngModel)]="selectedAssayaName" (change)="onSearch()">
+          <option value="">Clear</option>
+          <option *ngFor="let sn of assayaNameList" [value]="sn">{{ sn }}</option>
+        </select>
+
 <!--SEARCH PART-->
 <div class="search-container">
   <div class="filter-buttons-vertical">
     <ng-container *ngFor="let filter of filters">
-      <div class="filter-row">
+      <div class="filter-row" *ngIf="filter.key != 'AssayName'">
       <button
         type="button"
         class="filter-btn"
@@ -72,9 +77,19 @@
   </button>
   </div>
 
+    <button class="icon-btn export export-excel-btn" (click)="genericMethods.exportAllTestTables('analizators-table-validated')">
+      <span>➕</span>
+      Izvoz u Excel
+  </button>
+
+  <button class="icon-btn print print-btn" (click)="genericMethods.printTable('analizators-table-validated')">
+    <span>🖨️</span>
+    Print
+  </button>
+
     <!--TABLE OF CONTROL SAMPLES PART-->
-    <div class="table-wrapper">
-      <table class="analizators-table">
+    <div class="table-wrapper" *ngIf="selectedAssayaName">
+      <table class="analizators-table-validated">
         <thead>
           <tr>
             <th>Datum validacije</th>
@@ -85,7 +100,7 @@
             <th>Naziv pretrage</th>
             <th>ID pacijenta</th>
             <th>Status validacije</th>
-            <th>Akcije</th>
+            <th class="no-print">Akcije</th>
           </tr>
         </thead>
         <tbody>
@@ -109,7 +124,7 @@
             </td>
              <td>{{ analizator.specimenID }}</td>
             <td>{{ analizator.validated }}</td>
-            <td>
+            <td class="no-print">
               <button class="icon-btn archive" 
                               [disabled]=" mainDataService.currentUser.securityLevelStatus.trim() != 'HIGH'"
                               (click)="archiveAnalizator(analizator)">

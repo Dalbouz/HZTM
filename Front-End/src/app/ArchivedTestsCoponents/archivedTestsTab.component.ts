@@ -49,7 +49,7 @@ export class ArchivedTestsTabComponent implements OnInit, AfterViewInit, OnDestr
 //#region filters
     filters = [
     { label: FiltersEnum.analizatorName, key: 'analizatorName', active: false, value: '' },
-    { label: FiltersEnum.AssayName, key: 'assayTest', active: false, value: '' },
+    { label: FiltersEnum.AssayName, key: 'AssayName', active: false, value: '' },
     { label: FiltersEnum.dateOfReading, key: 'dateOfReading', active: false, value: '' },
     // { label: FiltersEnum.timeOfReading, key: 'timeOfReading', active: false, value: '' },
     { label: FiltersEnum.sampleNumber, key: 'sampleNumber', active: false, value: '' },
