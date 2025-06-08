@@ -36,8 +36,9 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
     public filterActiveStatus: boolean = false;
     private activeFilter: FiltersEnum | undefined;
     public selectedAssayaName: string = '';
+    public todaysDate: string = '';
 
-    public assayaNameList: String[] = [];
+    
 
     public showFromIndex:number = 0;
     private numberOfShownTests: number = 20;
@@ -67,12 +68,11 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
         this.showFromIndex = 0;
         this.showList(0);
 
-        this.mainDataService.assayaDataList.forEach(element => {
-          this.assayaNameList.push(element.assayaName);
-        });
-
         this.filters[0].active = true;
         // this.getValidatedTests();
+
+        this.todaysDate = new Date().toISOString().split('T')[0];
+        this.todaysDate = this.genericMethods.formatDateToYYYYMMDD(this.todaysDate);
       }
 
       ngOnDestroy(): void {
@@ -127,6 +127,9 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
 
   public onSearch():void
   {
+    if(this.selectedAssayaName == '' || this.selectedAssayaName == 'clear'){
+      return;
+    }
     const isSure = window.confirm('Jeste li siguni da želite započeti pretragu?\n(ova pretraga može trajati neko vrijeme)');
       if (isSure) {
         this.listOfActiveFilters.forEach(filter=>{

@@ -27,6 +27,10 @@ export class SifrarnikService{
     public getAssayaDataForDevice(data: AnalizatorDeviceData):Observable<AssayaData>{
          return this.http.post<AssayaData>(`${this.apiServerUrl}/analizatorDevice/find/assayaData`, data);
     }
+
+    public getDeviceByID(id:number):Observable<AnalizatorDeviceData>{
+         return this.http.get<AnalizatorDeviceData>(`${this.apiServerUrl}/analizatorDevice/find/id/${id}`);
+    }
 //#endregion
 
 //#region AssayaData
@@ -36,6 +40,18 @@ export class SifrarnikService{
 
     public SaveAssayaData(data: AssayaData):Observable<AssayaData>{
          return this.http.post<AssayaData>(`${this.apiServerUrl}/assayaData/save`, data);
+    }
+
+    public getAssayById(id:number):Observable<AssayaData>{
+         return this.http.get<AssayaData>(`${this.apiServerUrl}/assayaData/find/${id}`);
+    }
+
+    public getAssayByName(name:string):Observable<AssayaData>{
+         return this.http.get<AssayaData>(`${this.apiServerUrl}/assayaData/find/name/${name}`);
+    }
+
+    public getAllUniqueByName():Observable<AssayaData[]>{
+      return this.http.get<AssayaData[]>(`${this.apiServerUrl}/assayaData/find/all/uniqueByName`);
     }
 //#endregion
 }

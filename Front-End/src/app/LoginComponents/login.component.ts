@@ -231,4 +231,18 @@ export class LoginComponent implements OnInit{
   private loginSuccess(): void{
     this.router.navigate(['/home']);
   }
+
+  public goToSifrarnik():void{
+    const adminUser = prompt('Enter username:');
+    if(this.mainDataService.adminUserName == adminUser){
+      const adminPass = prompt('Enter password:');
+      if(this.mainDataService.adminPassword == adminPass){
+       this.router.navigate(['/sifrarnik']);
+       console.log("GO");
+      }
+      else{
+        console.log("wrong password");
+      }
+    }
+  }
 }

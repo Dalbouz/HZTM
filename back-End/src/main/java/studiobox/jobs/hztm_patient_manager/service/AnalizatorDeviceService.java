@@ -30,11 +30,11 @@ public class AnalizatorDeviceService {
     }
 
     public AnalizatorDeviceData save(AnalizatorDeviceData data) {
-        List<AnalizatorDeviceData> tempList = analizatorDeviceDataRepository.findAll();
+        /*List<AnalizatorDeviceData> tempList = analizatorDeviceDataRepository.findAll();
         for (AnalizatorDeviceData data1 : tempList) {
             data1.getAnalizatorName().equals(data.getAnalizatorName());
             return null;
-        }
+        }*/
         return analizatorDeviceDataRepository.save(data);
     }
 
@@ -45,8 +45,8 @@ public class AnalizatorDeviceService {
     public List<AssayaData> getAllAssayaDataForDevice(AnalizatorDeviceData data) {
         List<AssayaData> assayaList = this.assayaDataRepository.findAll();
         List<AssayaData> filteredList = assayaList.stream()
-                .filter(a -> data.getAnalizatorID().equals(a.getAnalizatorID()))
-                .collect(Collectors.toList());;
+                .filter(a -> data.getId().equals(a.getAnalizatorID()))
+                .collect(Collectors.toList());
         return filteredList;
     }
 }

@@ -1,7 +1,8 @@
+import { AssayaData } from "./AssayaData";
 
 
 export interface AnalizatorDeviceData{
-    id:number;
+    id?:number;
     analizatorName:string;
-    analizatorID:string;
+    assayDatas?: AssayaData[];
 }

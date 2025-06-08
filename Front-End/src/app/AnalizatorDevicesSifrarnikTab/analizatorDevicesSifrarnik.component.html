@@ -1,0 +1,76 @@
+<body>
+  <!-- Back Button -->
+  <button class="back-btn" (click)="goBack()">
+    ← Back
+  </button>
+
+  <div class="container">
+    <!-- Device Selection Dropdown -->
+    <div class="dropdown-section">
+      <label for="deviceSelect">Analizator Devices:</label>
+      <select id="deviceSelect" [(ngModel)]="currentValueSelected" (change)="onDeviceChange()">
+  <option value="create">➕ Create New Device</option>
+  <option *ngFor="let sn of mainDataService.analizatorDevicesList" [value]="sn.id">{{ sn.analizatorName }}</option>
+</select>
+    </div>
+    
+    <form class="info" *ngIf="currentValueSelected != 'create' && currentValueSelected != ''">
+      <span>{{currentSelectedDevice?.analizatorName}}</span>
+      <select>
+          <option *ngFor="let sn of currentSelectedDevice?.assayDatas" [value]="sn.assayaName">{{ sn.assayaName }}</option>
+        </select>
+    </form>
+
+    <form class = "device-form" *ngIf="currentValueSelected == 'create'">
+      <input
+          type="text"
+          id="deviceName"
+          name="deviceName"
+          [(ngModel)]="deviceNameTemp"
+          placeholder="Enter device name"
+          required
+        />
+       <div *ngFor="let assay of selectedAssays; let i = index" class="assay-row">
+    <select
+      [(ngModel)]="selectedAssays[i]"
+      name="assay-{{i}}"
+      (change)="onSelectionChange(i)"
+      required
+    >
+      <option value="">Dodaj pretragu</option>
+      <option
+        *ngFor="let sn of mainDataService.assayaDataList"
+        [value]="sn.assayaName"
+      >
+        {{ sn.assayaName }}
+      </option>
+    </select>
+    <button
+      *ngIf="i > 0"
+      type="button"
+      (click)="removeDropdown(i)"
+      class="remove-btn"
+    >−</button>
+  </div>
+  <div class="form-actions">
+  <button
+    type="button"
+    class="cancel-btn"
+    (click)="onCancel()"
+    title="Cancel"
+  >✖</button>
+  <button
+    type="button"
+    class="approve-btn"
+    (click)="onConfirm()"
+    title="Confirm"
+  >➔</button>
+</div>
+    </form>
+
+    <!-- Device Info/Form Section -->
+    <div class="device-form-section" id="deviceFormSection">
+      <!-- Dynamic content will be injected here -->
+    </div>
+  </div>
+</body>

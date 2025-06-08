@@ -9,6 +9,8 @@ import { ValidatedListTabComponent } from './ValidatedListComponents/validatedLi
 import { DdkTabComponent } from './DdkTab/ddkTab.component';
 import { ArchivedTestsTabComponent } from './ArchivedTestsCoponents/archivedTestsTab.component';
 import { ListsTabTabComponent } from './ListsComponents/listsTab.component';
+import { SifrarnikComponent } from './SifrarnikTabHome/sifrarnik.component';
+import { AddnalizatorDevicesSifrarnikComponent } from './AnalizatorDevicesSifrarnikTab/analizatorDevicesSifrarnik.component';
 
 
 export const routes: Routes = [
@@ -21,6 +23,8 @@ export const routes: Routes = [
   { path: 'ddkTab', component: DdkTabComponent, canActivate: [AuthGuard]},
   { path: 'archivedTestsTab', component: ArchivedTestsTabComponent, canActivate: [AuthGuard]},
   { path: 'listsTab', component: ListsTabTabComponent, canActivate: [AuthGuard]},
+  { path: 'sifrarnik', component: SifrarnikComponent,canActivate: [AuthGuard]},
+  { path: 'analizatorDevicesSifrarnik', component: AddnalizatorDevicesSifrarnikComponent,canActivate: [AuthGuard]},
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 

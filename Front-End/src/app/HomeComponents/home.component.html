@@ -44,5 +44,10 @@
         DDK koji je pozitivan na jedan od biljega
       </span>
     </button>
+    <button class="nav-box" (click)="navigateTo('sifrarnik')" *ngIf="mainDataService.currentUser.userName == mainDataService.adminUserName">
+      <span class="nav-title">Šifrarnik</span>
+      <span class="nav-desc">
+      </span>
+    </button>
   </div>
 </div>

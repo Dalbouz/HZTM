@@ -233,7 +233,7 @@ private getAllAnalizatorDevices():void{
     }
 
     private getAllAssayaData():void{
-      this.sifrarnik.getAllAssayaData().subscribe(
+      this.sifrarnik.getAllUniqueByName().subscribe(
         (response: AssayaData[]) =>{
           this.mainDataService.assayaDataList = response;
         },

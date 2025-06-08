@@ -39,4 +39,10 @@ public class AnalizatorDeviceController {
         return new ResponseEntity<>(newObj, HttpStatus.OK);
     }
 
+    @GetMapping("/find/id/{id}")
+    public ResponseEntity <AnalizatorDeviceData> findById(@PathVariable Long id){
+        AnalizatorDeviceData obj = this.analizatorDeviceService.findById(id);
+        return new ResponseEntity<>(obj, HttpStatus.OK);
+    }
+
 }

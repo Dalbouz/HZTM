@@ -1,0 +1,173 @@
+body {
+  background: linear-gradient(90deg, #e3ecfc 0%, #f6fafd 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+.container {
+  max-width: 500px;
+  margin: 60px auto 0 auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(60, 60, 120, 0.08);
+}
+.back-btn {
+  margin: 20px 0 0 20px;
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  padding: 0.5rem 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  transition: background 0.2s, transform 0.1s;
+}
+.back-btn:hover, .back-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+.dropdown-section {
+  margin-bottom: 2rem;
+}
+label {
+  font-weight: 600;
+  color: #3a3a5a;
+  margin-right: 8px;
+}
+select, input[type="text"] {
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+  border: 1px solid #b3c6f7;
+  background: #f6fafd;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.device-form {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: #f6fafd;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.device-form input[type="text"],
+.device-form select {
+  width: 80%;
+  margin-bottom: 1rem;
+}
+.assay-list {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.assay-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.assay-row select {
+  flex: 1;
+}
+.add-assay-btn {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 1.3rem;
+  margin-left: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+}
+.add-assay-btn:hover, .add-assay-btn:focus {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+  transform: scale(1.08);
+}
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.cancel-btn, .approve-btn {
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+}
+.cancel-btn:hover {
+  background: #ffebee;
+  color: #e53935;
+}
+.approve-btn {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+}
+.approve-btn:hover {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+}
+.device-form-section {
+  margin-top: 2rem;
+}
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+    max-width: 98vw;
+  }
+  .device-form {
+    padding: 1rem;
+  }
+}
+
+/*Confirm/Cancle Buttons*/
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+.cancel-btn, .approve-btn {
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 60, 120, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+}
+.cancel-btn:hover {
+  background: #ffebee;
+  color: #e53935;
+}
+.approve-btn {
+  background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
+  color: #fff;
+}
+.approve-btn:hover {
+  background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
+}

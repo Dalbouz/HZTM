@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Table(name = "analizatorDeviceData")
 public class AnalizatorDeviceData implements Serializable {
     private String analizatorName;
-    private String analizatorID;
 
 
     @Id
@@ -23,7 +22,6 @@ public class AnalizatorDeviceData implements Serializable {
 
     ) {
         this.analizatorName = AnalizatorName;
-        this.analizatorID = AnalizatorID;
     }
 
 
@@ -42,13 +40,5 @@ public class AnalizatorDeviceData implements Serializable {
 
     public String getAnalizatorName() {
         return analizatorName;
-    }
-
-    public void setAnalizatorID(String analizatorID) {
-        this.analizatorID = analizatorID;
-    }
-
-    public String getAnalizatorID() {
-        return analizatorID;
     }
 }

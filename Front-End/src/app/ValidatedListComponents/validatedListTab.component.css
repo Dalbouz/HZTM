@@ -159,7 +159,7 @@
 .back-btn {
   position: fixed;
   top: 2rem;
-  right: 2.5rem; /* Adjust as needed */
+  right: 2rem; /* Adjust as needed */
   z-index: 1000;
 
   display: flex;
@@ -390,7 +390,7 @@ tr.editing-test:hover {
   font-size: 1.3rem;
 }
 
-/*Excel Export button*/
+/* Export button*/
 .print-btn, .export-excel-btn {
   background: linear-gradient(90deg, #6c8df5 0%, #5ac8fa 100%);
   color: #fff;
@@ -406,9 +406,16 @@ tr.editing-test:hover {
   gap: 0.5rem;
   transition: background 0.2s, transform 0.1s;
   padding-right: 2px;
+  margin-top: 5px;
 }
 
 .print-btn:hover, .print-btn:focus, .export-excel-btn:hover, .export-excel-btn:focus {
   background: linear-gradient(90deg, #5a7dfa 0%, #3fa3f7 100%);
   transform: translateY(-2px) scale(1.04);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }

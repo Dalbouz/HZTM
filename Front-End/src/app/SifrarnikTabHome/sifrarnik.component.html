@@ -1,0 +1,19 @@
+<div class="logout-container">
+  <button class="logout-btn" (click)="logout()">Logout</button>
+</div>
+
+<div class="homepage-nav">
+  <h1>Dobrodošli {{mainDataService.currentUser.fullName}}</h1>
+  <div class="nav-boxes">
+    <button class="nav-box" (click)="navigateTo('analizatorDevicesSifrarnik')">
+      <span class="nav-title">Analizator uređaji</span>
+      <span class="nav-desc">
+        Uređivanje analizator uređaja.
+      </span>
+    </button>
+    <button class="nav-box" (click)="navigateTo('assayNames')">
+      <span class="nav-title">Pretrage</span>
+      <span class="nav-desc">Uređivanje pretraga</span>
+    </button>
+  </div>
+</div>

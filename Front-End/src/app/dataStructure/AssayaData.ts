@@ -2,9 +2,9 @@
 
 export interface AssayaData
 {
-    id:number;
+    id?:number;
     assayaName:string;
-    analizatorID:string;
+    analizatorID?:string;
     minimalValue:number;
     maximalValue:number;
 }

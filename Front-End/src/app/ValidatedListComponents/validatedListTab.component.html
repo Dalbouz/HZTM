@@ -6,7 +6,7 @@
 
 <select [(ngModel)]="selectedAssayaName" (change)="onSearch()">
           <option value="">Clear</option>
-          <option *ngFor="let sn of assayaNameList" [value]="sn">{{ sn }}</option>
+          <option *ngFor="let sn of mainDataService.assayaDataList" [value]="sn.assayaName">{{ sn.assayaName }}</option>
         </select>
 
 <!--SEARCH PART-->
@@ -107,6 +107,7 @@
         <ng-container *ngFor="let analizator of filteredListTemp">
           <tr *ngIf="analizator.testStatus == 'ACTIVE'">
             <td>
+              <span *ngIf="analizator.dateOfValidation != todaysDate"> * </span>
               {{analizator.dateOfValidation}}
             </td>
             <td>

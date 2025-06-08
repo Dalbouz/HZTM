@@ -64,7 +64,7 @@
 .back-btn {
   position: fixed;
   top: 2rem;
-  right: 8rem; /* Leaves room if you have a logout button at 2.5rem */
+  right: 2rem; /* Leaves room if you have a logout button at 2.5rem */
   z-index: 1000;
 
   display: flex;
@@ -470,7 +470,7 @@ tr.editing-test:hover {
 /* Next Table Button (top-right corner, fixed) */
 .next-table-view {
   position: fixed;
-  top: 1.5rem;
+  top: 8rem;
   right: 2rem;
   z-index: 1100;
 }
@@ -503,7 +503,7 @@ tr.editing-test:hover {
 /* Previous Table Button (top-right, below next button, fixed) */
 .previous-table-view {
   position: fixed;
-  top: 5rem; /* below the next-table-view button */
+  top: 12rem; /* below the next-table-view button */
   right: 2rem;
   z-index: 1100;
 }
