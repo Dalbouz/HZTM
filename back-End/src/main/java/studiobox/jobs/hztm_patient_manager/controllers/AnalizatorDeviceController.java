@@ -33,7 +33,7 @@ public class AnalizatorDeviceController {
         return new ResponseEntity<>(newObj, HttpStatus.OK);
     }
 
-    @PostMapping("/find/assayaData")
+    @PostMapping("/find/assayaDataForDevice")
     public ResponseEntity<List<AssayaData>> getAssayaDataForDevice(@RequestBody AnalizatorDeviceData data){
         List<AssayaData> newObj = this.analizatorDeviceService.getAllAssayaDataForDevice(data);
         return new ResponseEntity<>(newObj, HttpStatus.OK);

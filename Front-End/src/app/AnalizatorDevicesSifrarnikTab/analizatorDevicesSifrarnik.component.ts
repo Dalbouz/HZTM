@@ -22,7 +22,6 @@ import { consumerPollProducersForChange } from '@angular/core/primitives/signals
 export class AddnalizatorDevicesSifrarnikComponent implements OnInit{
     title = 'hztm_pacient_management';
 
-    public analizatorNames: string[] = [];
     public currentValueSelected:string = '';
     public deviceNameTemp: string = '';
     public selectedAssays: string[] = [''];
@@ -41,7 +40,6 @@ export class AddnalizatorDevicesSifrarnikComponent implements OnInit{
     }
 
     ngOnInit(): void {
-      this.getAnalizatorDevices();
     }
 
     public onDeviceChange():void{
@@ -106,27 +104,7 @@ onSelectionChange(index: number) {
         }
       )
     }
-
-    public getAnalizatorDevices():void{
-      this.sifrarnik.getAllAnalizatorDevices().subscribe(
-        (response: AnalizatorDeviceData[]) =>{
-           if(response){
-            this.mainDataService.analizatorDevicesList = response;
-            response.forEach(element => {
-              this.analizatorNames.push(element.analizatorName);// ?????
-            });
-           }
-
-           else{
-            alert("NISMO NAŠLI ANALIZATOR UREĐAJE");
-           }
-        },
-        (error: HttpErrorResponse) => {
-          alert(`Error: ${error.error.message || error.message}`);
-        }
-      )
-    }
-
+//#region BackEndCallback
     public saveAnalizatorData(newObj: AnalizatorDeviceData):void{
       this.sifrarnik.saveAnalizatorDevice(newObj).subscribe(
         (response: AnalizatorDeviceData) =>{
@@ -175,6 +153,7 @@ onSelectionChange(index: number) {
         }
       )
       });
-      
     }
+    //#endregion
+
 }

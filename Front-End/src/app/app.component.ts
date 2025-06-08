@@ -60,7 +60,7 @@ export class AppComponent implements OnInit{
 
     this.getAllAnalizatorDevices();
 
-    this.getAllAssayaData();
+    this.getAllAssayaDataUnique();
 
     this.userService.getUserById(1).subscribe(
         (response: UserData) => {
@@ -225,6 +225,9 @@ private getAllAnalizatorDevices():void{
       this.sifrarnik.getAllAnalizatorDevices().subscribe(
         (response: AnalizatorDeviceData[]) =>{
           this.mainDataService.analizatorDevicesList = response;
+          this.mainDataService.analizatorDevicesList.forEach(element => {
+            this.getAssayDataForDevice(element);
+          });
         },
         (error: HttpErrorResponse) => {
         console.log(error.message + "\nPokusavam dohvatiti sve analizator uređaje ali nejde!");
@@ -232,7 +235,17 @@ private getAllAnalizatorDevices():void{
       )
     }
 
-    private getAllAssayaData():void{
+    private getAssayDataForDevice(device: AnalizatorDeviceData):void{
+      this.sifrarnik.getAssayaDataForDevice(device).subscribe(
+        (response: AssayaData[]) =>{
+            device.assayDatas = response;
+        },
+        (error: HttpErrorResponse) => {
+        console.log(error.message + "\nNema Pretraga za uređaj: " + device.analizatorName);}
+      )
+    }
+
+    private getAllAssayaDataUnique():void{
       this.sifrarnik.getAllUniqueByName().subscribe(
         (response: AssayaData[]) =>{
           this.mainDataService.assayaDataList = response;

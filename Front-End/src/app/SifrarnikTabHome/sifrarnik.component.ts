@@ -26,10 +26,8 @@ export class SifrarnikComponent {
     this.router.navigate([`/${route}`]);
   }
 
-    logout() {
+    back() {
     // Add your logout logic here (e.g., clear tokens, redirect to login)
-    this.router.navigate(['/login']);
-    this.mainDataService.isLoggedIn = false;
-    this.mainDataService.clearCurrentUser();
+    this.router.navigate(['/home']);
     }
 }

@@ -24,8 +24,8 @@ export class SifrarnikService{
          return this.http.post<AnalizatorDeviceData>(`${this.apiServerUrl}/analizatorDevice/save`, data);
     }
 
-    public getAssayaDataForDevice(data: AnalizatorDeviceData):Observable<AssayaData>{
-         return this.http.post<AssayaData>(`${this.apiServerUrl}/analizatorDevice/find/assayaData`, data);
+    public getAssayaDataForDevice(data: AnalizatorDeviceData):Observable<AssayaData[]>{
+         return this.http.post<AssayaData[]>(`${this.apiServerUrl}/analizatorDevice/find/assayaDataForDevice`, data);
     }
 
     public getDeviceByID(id:number):Observable<AnalizatorDeviceData>{

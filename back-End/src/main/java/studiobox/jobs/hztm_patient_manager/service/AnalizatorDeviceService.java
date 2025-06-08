@@ -30,11 +30,11 @@ public class AnalizatorDeviceService {
     }
 
     public AnalizatorDeviceData save(AnalizatorDeviceData data) {
-        /*List<AnalizatorDeviceData> tempList = analizatorDeviceDataRepository.findAll();
+        List<AnalizatorDeviceData> tempList = analizatorDeviceDataRepository.findAll();
         for (AnalizatorDeviceData data1 : tempList) {
             data1.getAnalizatorName().equals(data.getAnalizatorName());
             return null;
-        }*/
+        }
         return analizatorDeviceDataRepository.save(data);
     }
 
