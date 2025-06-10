@@ -24,6 +24,8 @@ export enum FiltersEnum{
     lot = "Lot",
     expirationDateReagens = "Datum isteka reagensa",
     dateRange = "Razdoblje od/do",
-    validated = "Da li je validiran (VALIDATED ili NOT_VALIDATED)"
+    validated = "Da li je validiran (VALIDATED ili NOT_VALIDATED)",
+    analizatorDevice = "Odaberite analizator uređaj"
+
 
 }

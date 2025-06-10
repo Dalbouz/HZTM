@@ -80,7 +80,6 @@ export class AppComponent implements OnInit{
       this.analizatorService.getArchivedAnalizators().subscribe(
         (response: AnalizatorData[]) =>{
           this.mainDataService.archivedAnalizators = response;
-          console.log(response.length);
         },
         (error: HttpErrorResponse) => {
         console.log(error.message + "\nPokusavam dohvatiti sve analizator testove ali nejde!");
@@ -218,7 +217,6 @@ export class AppComponent implements OnInit{
         )
   }
 //#endregion
-
 
 //#region sifrarnik
 private getAllAnalizatorDevices():void{

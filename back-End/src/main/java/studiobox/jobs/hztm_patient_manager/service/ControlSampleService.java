@@ -2,25 +2,25 @@ package studiobox.jobs.hztm_patient_manager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import studiobox.jobs.hztm_patient_manager.SearchEngine;
 import studiobox.jobs.hztm_patient_manager.exception.DataNotFound;
 import studiobox.jobs.hztm_patient_manager.model.ControlSampleData;
+import studiobox.jobs.hztm_patient_manager.model.FilterDTO;
 import studiobox.jobs.hztm_patient_manager.repositorys.ControlSampleDataRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ControlSampleService {
     private final ControlSampleDataRepository controlSampleDataRepository;
+    private final SearchEngine searchEngine;
 
     @Autowired
-    public ControlSampleService(ControlSampleDataRepository controlSampleDataRepository) {
+    public ControlSampleService(ControlSampleDataRepository controlSampleDataRepository, SearchEngine searchEngine) {
         this.controlSampleDataRepository = controlSampleDataRepository;
+        this.searchEngine = searchEngine;
     }
 
     public List<ControlSampleData> findAllControlSampleData(){
@@ -66,7 +66,7 @@ public class ControlSampleService {
         List<ControlSampleData> list = controlSampleDataRepository.findAll();
         List<ControlSampleData> newList = new ArrayList<>();
         for (ControlSampleData controlSampleData : list) {
-            String lotTest = controlSampleData.getLotTest();
+            String lotTest = controlSampleData.getLot();
             if(lotTest != null && lotTest.equals(lot)){
                 newList.add(controlSampleData);
             }
@@ -78,11 +78,21 @@ public class ControlSampleService {
         List<ControlSampleData> list = controlSampleDataRepository.findAll();
         List<ControlSampleData> newList = new ArrayList<>();
         for (ControlSampleData controlSampleData : list) {
-            String testname = controlSampleData.getTestName();
+            String testname = controlSampleData.getAssayName();
             if(testname != null && testname.equals(name)){
                 newList.add(controlSampleData);
             }
         }
         return newList;
+    }
+
+    public List<ControlSampleData> getFilteredControlsByGivenList(List<FilterDTO> filters, List<ControlSampleData> controls) {
+        Map<String, String> searchCriteria = searchEngine.convertFilters(filters);
+        return SearchEngine.searchByFilters(controls, searchCriteria);
+    }
+
+    public List<ControlSampleData> getFilteredControls(List<FilterDTO> filters) {
+        Map<String, String> searchCriteria = searchEngine.convertFilters(filters);
+        return SearchEngine.searchByFilters(controlSampleDataRepository.findAll(), searchCriteria);
     }
 }

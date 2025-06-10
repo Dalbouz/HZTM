@@ -1,6 +1,6 @@
 
 import { Injectable } from "@angular/core";
-import { utils, writeFile } from 'xlsx';
+import { utils, writeFile } from "xlsx";
 
 @Injectable({
     providedIn:'root'

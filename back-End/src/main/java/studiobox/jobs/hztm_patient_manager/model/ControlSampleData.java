@@ -14,8 +14,9 @@ public class ControlSampleData implements Serializable {
 
     private String analizatorName;
     private String controlSampleName;
-    private String testName;
-    private String lotTest;
+    @Column(name="AssayName")
+    private String assayName;
+    private String lot;
     private String expirationDateTest;
     private String lotControlSamples;
     private String expirationDateControlSamples;
@@ -33,16 +34,16 @@ public class ControlSampleData implements Serializable {
 
     }
 
-    public ControlSampleData(String AnalizatorName, String ControlSampleName, String TestName,
-                             String LotTest, String ExpirationDateTest, String LotControlSamples, String ExpirationDateControlSamples,
+    public ControlSampleData(String AnalizatorName, String ControlSampleName, String assayName,
+                             String lot, String ExpirationDateTest, String LotControlSamples, String ExpirationDateControlSamples,
                              String SampleNumber, String AnalizatorResult, String AnalizatorUnit, String InterpretationFromAnalizator, String SampleDate,
                              String acceptableValueLimits, Integer targetValue, String manufacturer, String controlLabel
 
     ) {
         this.analizatorName = AnalizatorName;
         this.controlSampleName = ControlSampleName;
-        this.testName = TestName;
-        this.lotTest = LotTest;
+        this.assayName = assayName;
+        this.lot = lot;
         this.expirationDateTest = ExpirationDateTest;
         this.lotControlSamples = LotControlSamples;
         this.expirationDateControlSamples = ExpirationDateControlSamples;
@@ -113,20 +114,20 @@ public class ControlSampleData implements Serializable {
         this.controlSampleName = controlSampleName;
     }
 
-    public String getTestName() {
-        return testName;
+    public String getAssayName() {
+        return assayName;
     }
 
-    public void setTestName(String testName) {
-        this.testName = testName;
+    public void setAssayName(String asayName) {
+        this.assayName = assayName;
     }
 
-    public String getLotTest() {
-        return lotTest;
+    public String getLot() {
+        return lot;
     }
 
-    public void setLotTest(String lotTest) {
-        this.lotTest = lotTest;
+    public void setLot(String lotTest) {
+        this.lot = lotTest;
     }
 
     public String getExpirationDateTest() {

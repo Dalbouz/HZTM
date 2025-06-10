@@ -45,7 +45,7 @@ public class AnalizatorDeviceService {
     public List<AssayaData> getAllAssayaDataForDevice(AnalizatorDeviceData data) {
         List<AssayaData> assayaList = this.assayaDataRepository.findAll();
         List<AssayaData> filteredList = assayaList.stream()
-                .filter(a -> data.getId().equals(a.getAnalizatorID()))
+                .filter(a -> String.valueOf(data.getId()).equals(a.getAnalizatorID()))
                 .collect(Collectors.toList());
         return filteredList;
     }

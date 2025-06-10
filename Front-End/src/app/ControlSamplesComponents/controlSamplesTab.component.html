@@ -4,12 +4,22 @@
   <span class="back-text">Back</span>
 </button>
 
+<select [(ngModel)]="selectedDeviceName" (change)="onDeviceSelected()">
+    <option value="">Clear</option>
+    <option *ngFor="let sn of mainDataService.analizatorDevicesList" [value]="sn.analizatorName">{{ sn.analizatorName }}</option>
+</select>
+
+<select [(ngModel)]="selectedAssayName" (change)="onAssaySelected()" *ngIf="selectedDeviceName != ''">
+    <option value="">Clear</option>
+    <option *ngFor="let sn of selectedDevice?.assayDatas" [value]="sn.assayaName">{{ sn.assayaName }}</option>
+</select>
+
 <!--SEARCH PART-->
 <div class="search-container">
   <div class="filter-buttons-vertical">
     <ng-container *ngFor="let filter of filters">
-      <div class="filter-row">
-        <button
+      <div class="filter-row" *ngIf="filter.key == 'sampleDate' || filter.key == 'lot'">
+        <button 
           type="button"
           class="filter-btn"
           [class.active]="filter.active"
@@ -60,56 +70,181 @@
   </div>
 </div>
 
-    <!--TABLE OF CONTROL SAMPLES PART-->
+    <!--TABLE OF CONTROL SAMPLES PART POZ-->
     <div class="table-wrapper">
-      <table class="controlSample-table" *ngIf="showTable">
-        <thead>
-          <tr>
-            <th>Ime analizatora</th>
-            <th>Ime kontrolnog uzorka</th>
-            <th>Ime Testa</th>
-            <th>Lot test</th>
-            <th>Datum isteka testa</th>
-            <th>Lot kontrolnih uzoraka</th>
-            <th>Datum isteka kontrolnih uzoraka</th>
-            <th>Broj uzorka</th>
-            <th>Analizator rezultat</th>
-            <th>Analizator - mjerna jedinica</th>
-            <th>Interpretacija iz analizatora</th>
-            <th>Datum uzorka</th>
-            <th>Granice prihvatljive vrijednosti</th>
-            <th>Ciljana vrijednost</th>
-            <th>Proizvođač</th>
-            <th>Oznaka Kontrole High/Low</th>
-          </tr>
-        </thead>
-        <tbody>
-        <ng-container *ngFor="let controlSamples of mainDataService.controlSamples; let i = index">
-          <tr >
-            <td>{{ controlSamples.analizatorName }}</td>
-            <td>{{ controlSamples.controlSampleName}}</td>
-            <td>{{ controlSamples.testName }}</td>
-            <td>{{ controlSamples.lotTest }}</td>
-            <td>{{ controlSamples.expirationDateTest }}</td>
-            <td>{{ controlSamples.lotControlSamples }}</td>
-            <td>{{ controlSamples.expirationDateControlSamples }}</td>
-            <td>{{ controlSamples.sampleNumber }}</td>
-            <td>{{ controlSamples.analizatorResult }}</td>
-            <td>{{ controlSamples.analizatorUnit }}</td>
-            <td>{{ controlSamples.interpretationFromAnalizator }}</td>
-            <td>{{ controlSamples.sampleDate }}</td>
-            <td>{{ controlSamples.acceptableValueLimits }}</td>
-            <td>{{ controlSamples.targetValue }}</td>
-            <td>{{ controlSamples.manufacturer }}</td>
-            <td>{{ controlSamples.controlLabel }}</td>
-          </tr>
-        </ng-container>
-</tbody>
-      </table>
+        <table class="controlSample-table" *ngIf="showTable">
+          <thead>
+            <tr>
+              <th>Ime analizatora</th>
+              <th>Ime kontrolnog uzorka</th>
+              <th>Ime Testa</th>
+              <th>Lot test</th>
+              <th>Datum isteka testa</th>
+              <th>Lot kontrolnih uzoraka</th>
+              <th>Datum isteka kontrolnih uzoraka</th>
+              <th>Broj uzorka</th>
+              <th>Analizator rezultat</th>
+              <th>Analizator - mjerna jedinica</th>
+              <th>Interpretacija iz analizatora</th>
+              <th>Datum uzorka</th>
+              <th>Granice prihvatljive vrijednosti</th>
+              <th>Ciljana vrijednost</th>
+              <th>Proizvođač</th>
+              <th>Oznaka Kontrole High/Low</th>
+            </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let controlSamples of pozControls; let i = index">
+            <tr >
+              <td>{{ controlSamples.analizatorName }}</td>
+              <td>{{ controlSamples.controlSampleName}}</td>
+              <td>{{ controlSamples.assayName }}</td>
+              <td>{{ controlSamples.lot }}</td>
+              <td>{{ controlSamples.expirationDateTest }}</td>
+              <td>{{ controlSamples.lotControlSamples }}</td>
+              <td>{{ controlSamples.expirationDateControlSamples }}</td>
+              <td>{{ controlSamples.sampleNumber }}</td>
+              <td>{{ controlSamples.analizatorResult }}</td>
+              <td>{{ controlSamples.analizatorUnit }}</td>
+              <td>{{ controlSamples.interpretationFromAnalizator }}</td>
+              <td>{{ controlSamples.sampleDate }}</td>
+              <td>{{ controlSamples.acceptableValueLimits }}</td>
+              <td>{{ controlSamples.targetValue }}</td>
+              <td>{{ controlSamples.manufacturer }}</td>
+              <td>{{ controlSamples.controlLabel }}</td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+
+      <!--GRAFIKON-->    
+      <div class="container">
+        <h1>Levey-Jennings Quality Control Chart POZ</h1>
+        <!--
+        <div class="controls">
+          <div class="form-row">
+            <label>Start Date: <input
+                      type="date"
+                      class="filter-input"
+                      [(ngModel)]="graphDateStart"
+                      placeholder="Početni datum"
+                    /></label>
+            <label>End Date: 
+              <input
+                      type="date"
+                      class="filter-input"
+                      [(ngModel)]="graphDateEnd"
+                      placeholder="Početni datum"
+                    />
+            </label>
+            <label>Control Lot: 
+              <input
+                      type="text"
+                      class="filter-input"
+                      [(ngModel)]="graphControlLot"
+                      placeholder="Lot"
+                    />
+            </label>
+          </div>
+          <button (click)="generateReport()">Generate Report</button>
+        </div>
+        -->
+          <div class="chart-container">
+          <canvas id="leveyJenningsChartPOZ"></canvas>
+        </div>
+      </div>
     </div>
 
 
-<!--GRAFIKON-->    
+    <!--TABLE OF CONTROL SAMPLES PART NEG-->
+    <div class="table-wrapper">
+        <table class="controlSample-table" *ngIf="showTable">
+          <thead>
+            <tr>
+              <th>Ime analizatora</th>
+              <th>Ime kontrolnog uzorka</th>
+              <th>Ime Testa</th>
+              <th>Lot test</th>
+              <th>Datum isteka testa</th>
+              <th>Lot kontrolnih uzoraka</th>
+              <th>Datum isteka kontrolnih uzoraka</th>
+              <th>Broj uzorka</th>
+              <th>Analizator rezultat</th>
+              <th>Analizator - mjerna jedinica</th>
+              <th>Interpretacija iz analizatora</th>
+              <th>Datum uzorka</th>
+              <th>Granice prihvatljive vrijednosti</th>
+              <th>Ciljana vrijednost</th>
+              <th>Proizvođač</th>
+              <th>Oznaka Kontrole High/Low</th>
+            </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let controlSamples of negControls; let i = index">
+            <tr >
+              <td>{{ controlSamples.analizatorName }}</td>
+              <td>{{ controlSamples.controlSampleName}}</td>
+              <td>{{ controlSamples.assayName }}</td>
+              <td>{{ controlSamples.lot }}</td>
+              <td>{{ controlSamples.expirationDateTest }}</td>
+              <td>{{ controlSamples.lotControlSamples }}</td>
+              <td>{{ controlSamples.expirationDateControlSamples }}</td>
+              <td>{{ controlSamples.sampleNumber }}</td>
+              <td>{{ controlSamples.analizatorResult }}</td>
+              <td>{{ controlSamples.analizatorUnit }}</td>
+              <td>{{ controlSamples.interpretationFromAnalizator }}</td>
+              <td>{{ controlSamples.sampleDate }}</td>
+              <td>{{ controlSamples.acceptableValueLimits }}</td>
+              <td>{{ controlSamples.targetValue }}</td>
+              <td>{{ controlSamples.manufacturer }}</td>
+              <td>{{ controlSamples.controlLabel }}</td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+
+      <!--GRAFIKON-->    
+      <div class="container">
+        <h1>Levey-Jennings Quality Control Chart NEG</h1>
+        <!--
+        <div class="controls">
+          <div class="form-row">
+            <label>Start Date: <input
+                      type="date"
+                      class="filter-input"
+                      [(ngModel)]="graphDateStart"
+                      placeholder="Početni datum"
+                    /></label>
+            <label>End Date: 
+              <input
+                      type="date"
+                      class="filter-input"
+                      [(ngModel)]="graphDateEnd"
+                      placeholder="Početni datum"
+                    />
+            </label>
+            <label>Control Lot: 
+              <input
+                      type="text"
+                      class="filter-input"
+                      [(ngModel)]="graphControlLot"
+                      placeholder="Lot"
+                    />
+            </label>
+          </div>
+          <button (click)="generateReport()">Generate Report</button>
+        </div>
+        -->
+          <div class="chart-container">
+          <canvas id="leveyJenningsChartNEG"></canvas>
+        </div>
+      </div>
+    </div>
+    
+
+
+<!--GRAFIKON-->
+<!--    
 <div class="container">
   <h1>Levey-Jennings Quality Control Chart</h1>
   
@@ -145,3 +280,4 @@
     <canvas id="leveyJenningsChart"></canvas>
   </div>
 </div>
+-->

@@ -34,7 +34,6 @@ export class ValidatedListTabComponent implements OnInit, OnDestroy{
     public filteringDate:string ='';
     public showTable:boolean = false;
     public filterActiveStatus: boolean = false;
-    private activeFilter: FiltersEnum | undefined;
     public selectedAssayaName: string = '';
     public todaysDate: string = '';
 

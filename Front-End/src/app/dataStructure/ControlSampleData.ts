@@ -4,8 +4,8 @@ export interface ControlSampleData{
     id: number;
     analizatorName:string;
     controlSampleName: string;
-    testName:string;
-    lotTest:string;
+    assayName:string;
+    lot:string;
     expirationDateTest:string;
     lotControlSamples:string;
     expirationDateControlSamples:string;
