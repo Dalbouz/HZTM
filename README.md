@@ -32,3 +32,5 @@ Its connected with the local MySQL database. Most of the work in terms of search
 <br>
 <h3>Database</h3>
 <p>The database is created using MySQL, and its mostly controled using MariaDB. Inside the database system there are multiple triggers that distribute data withing the repositorys. The machines that conduct the tests are sending unfiltered data that with the triggers we can distrubute in the right slots inside the right repository.</p>
+<br>
+<img src=""
