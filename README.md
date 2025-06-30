@@ -33,5 +33,5 @@ Its connected with the local MySQL database. Most of the work in terms of search
 <h3>Database</h3>
 <p>The database is created using MySQL, and its mostly controled using MariaDB. Inside the database system there are multiple triggers that distribute data withing the repositorys. The machines that conduct the tests are sending unfiltered data that with the triggers we can distrubute in the right slots inside the right repository.</p>
 <br>
-![HZTM_image-01](https://github.com/user-attachments/assets/e0061265-7ce8-481a-a768-761213abeba3)
+<img src="https://github.com/user-attachments/assets/e0061265-7ce8-481a-a768-761213abeba3">
 
